@@ -1,0 +1,157 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.logistics-dropdown-menu {
+  display: block;
+}
+
+.mat-mdc-fab.mat-accent {
+  background-color: #008000;
+}
+
+.float-right{
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+.display-block {
+  display: block;
+}
+
+.quantity-table-input {
+  margin-top: 10px;
+  width: 80px;
+}
+
+.export-excel {
+  margin: 0 15px;
+}
+
+.form-login-container .mat-mdc-form-field {
+  width: 300px !important;
+}
+
+.mat-mdc-form-field, .mat-mdc-form-field-small, .mat-mdc-form-field-large {
+  width: 100%;
+  padding-right: 25px;
+}
+
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.form-cell-10 {
+  margin-top: 10px;
+  width: 83.333%;
+}
+
+.form-cell-6 {
+  margin-top: 10px;
+  width: 50%;
+}
+
+.form-cell-5 {
+  margin-top: 10px;
+  width: 41.666%;
+}
+
+.form-cell-4 {
+  margin-top: 10px;
+  width: 33.333%;
+}
+
+.form-cell-3 {
+  margin-top: 10px;
+  width: 25%;
+}
+
+.form-cell-2 {
+  margin-top: 10px;
+  width: 16.666%;
+}
+
+.form-cell-1 {
+  margin-top: 10px;
+  width: 8.333%;
+}
+
+.table-container {
+  margin-top: 5px;
+}
+
+.mat-column-idRecibo, .mat-column-idOrden {
+  width: 50px;
+  flex: none;
+}
+
+.mat-column-idBodega, .mat-column-idEstatus, .mat-column-pedimento, .mat-column-fCaptura {
+  width: 130px;
+  flex: none;
+}
+
+.mat-column-action {
+  width: 325px;
+  flex: none;
+}
+
+.mat-mdc-card-header {
+  color: #fff;
+  background-color: #1b6ec2;
+  margin-bottom: 10px;
+}
+
+.mat-mdc-card-footer {
+  margin: 25px;
+  text-align: center;
+}
+
+.error-message {
+  color: rgb(239 68 68);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: left;
+}
+
+.error-message-small {
+  font-size: 0.75rem;
+}
+
+.error-dialog-header {
+  background-color: #eb1616;
+  color: #fff !important;
+}
+
+.success-dialog-header {
+  background-color: #008000;
+  color: #fff !important;
+}
+
+.mat-mdc-fab:hover, .button-back:hover {
+  color: #fff;
+}
+
+.button-back {
+  --mdc-fab-container-color: gray !important;
+  margin-bottom: 12px;
+}

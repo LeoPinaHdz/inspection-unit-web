@@ -1,0 +1,46 @@
+mat-card {
+  max-width: 400px;
+
+  img {
+    margin-bottom: 35px;
+  }
+
+  .mat-list-base {
+    background-color: antiquewhite;
+    border: 1px solid #ccc;
+    padding: 0;
+    margin: 5px 0 15px 0;
+
+    .mat-list-item {
+      height: 22px;
+      font-size: .7rem;
+      text-align: center;
+
+      .mat-list-item-content {
+        justify-content: center;
+      }
+    }
+  }
+
+  mat-card-content {
+    padding: 20px 35px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      margin: 25px 0;
+    }
+
+    a {
+      color: rgb(52, 117, 184);
+      text-align: center;
+    }
+
+    mat-icon {
+      margin-right: 10px;
+    }
+  }
+}

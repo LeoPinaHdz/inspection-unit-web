@@ -1,0 +1,94 @@
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Reportes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="formReports">
+        <div class="form-container">
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Reporte</mat-label>
+            <mat-select formControlName="idReporte" required>
+              <mat-option *ngFor="let type of reportTypes" [value]="type.idReporte">{{type.nombre}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <error-message [control]="form.idReporte" nomCampo="Reporte"></error-message>
+            </mat-error>
+          </mat-form-field></div>
+          
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Almacen</mat-label>
+            <mat-select formControlName="idBodega" required>
+              <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.idBodega">{{warehouse.nombre}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <error-message [control]="form.idBodega" nomCampo="Almacen"></error-message>
+            </mat-error>
+          </mat-form-field></div>
+          
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="idCliente" required>
+              <mat-option *ngFor="let client of clients" [value]="client.idCliente">{{client.nombre}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <error-message [control]="form.idCliente" nomCampo="Cliente"></error-message>
+            </mat-error>
+          </mat-form-field></div>
+
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Movimientos en cero</mat-label>
+            <mat-select formControlName="MovimientosEnCero" required>
+              <mat-option [value]="1">Si</mat-option>
+              <mat-option [value]="2">No</mat-option>
+            </mat-select>
+            <mat-error>
+              <error-message [control]="form.MovimientosEnCero" nomCampo="Movimientos en cero"></error-message>
+            </mat-error>
+          </mat-form-field></div>
+          
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Recibo Inicial</mat-label>
+            <input matInput formControlName="ReciboIni" appCurrencyMask type="text" />
+          </mat-form-field></div>
+          
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Recibo Final</mat-label>
+            <input matInput formControlName="ReciboFin" appCurrencyMask type="text" />
+          </mat-form-field></div>
+
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Selecciona rango de fechas</mat-label>
+            <mat-date-range-input [rangePicker]="picker" required>
+              <input formControlName="Fecha" matStartDate placeholder="Fecha Inicio" required>
+              <input formControlName="FechaCierre" matEndDate placeholder="Fecha Fin" required>
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            <mat-error>
+              <error-message [control]="form.Fecha" nomCampo="Selecciona rango de fechas"></error-message>
+            </mat-error>
+          </mat-form-field></div>
+          
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Articulo Inicial</mat-label>
+            <input matInput formControlName="ArticuloIni" appCurrencyMask type="text" />
+          </mat-form-field></div>
+          
+          <div class="form-cell-4"><mat-form-field appearance="outline">
+            <mat-label>Articulo Final</mat-label>
+            <input matInput formControlName="ArticuloFin" appCurrencyMask type="text" />
+          </mat-form-field></div>
+        </div>
+      </form>
+
+    </mat-card-content>
+    <mat-card-footer>
+      <button matTooltip="Descargar Excel" (click)="onSubmit()" mat-fab extended>
+        <mat-icon>get_app</mat-icon> Descargar Excel
+      </button>
+    </mat-card-footer>
+  </mat-card>
+    
+</div>

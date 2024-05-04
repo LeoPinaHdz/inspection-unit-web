@@ -1,0 +1,27 @@
+<mat-card>
+  <mat-card-content class="form-login-container">
+    <img width="300px" mat-card-image src="../../../../assets/logo.jpeg">
+    <form [formGroup]="formLogin">
+      <span *ngIf="errorLogin" class="error-message">
+        Credenciales incorrectas
+      </span>
+      <mat-form-field>
+        <mat-label>Usuario</mat-label>
+        <mat-icon matPrefix color="primary">account_circle</mat-icon>
+        <input matInput formControlName="usuario" appCurrencyMask type="text" required />
+        <mat-error>
+          <error-message [control]="form.usuario" nomCampo="Usuario"></error-message>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Contraseña</mat-label>
+        <mat-icon matPrefix color="primary">lock</mat-icon>
+        <input matInput formControlName="Constrasena" type="password" required />
+        <mat-error>
+          <error-message [control]="form.Constrasena" nomCampo="Contraseña"></error-message>
+        </mat-error>
+      </mat-form-field>
+      <button (click)="onSubmit()" mat-raised-button color="primary">Ingresar</button>
+    </form>
+  </mat-card-content>
+</mat-card>

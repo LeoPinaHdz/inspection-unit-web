@@ -1,0 +1,56 @@
+<header>
+  <nav
+    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+  >
+    <div class="container">
+      <a class="navbar-brand" [routerLink]="['/secure/home']">
+        <img class="navbar-logo" src="../../assets/logo.jpeg" /> Inventarios CF</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target=".navbar-collapse"
+        aria-label="Toggle navigation"
+        [attr.aria-expanded]="isExpanded"
+        (click)="toggle()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
+        [ngClass]="{ show: isExpanded }"
+      >
+        <ul class="navbar-nav flex-grow">
+          <li *ngIf="hasRole('USUARIOS')" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/users']">Usuarios</a>
+          </li>
+          <li *ngIf="hasRole('RECIBOS') || hasRole('SALIDAS')"
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span class="nav-link dropdown-toggle" (click)="toggleMenu('op')" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Operaci&oacute;n
+            </span>
+            <div *ngIf="isMenuOpen('op')" class="dropdown-menu logistics-dropdown-menu" aria-labelledby="navbarDropdown">
+              <a *ngIf="hasRole('RECIBOS')" class="nav-link text-dark" (click)="toggleMenu('op')" [routerLink]="['/secure/receipts']">Recibos</a>
+              <a *ngIf="hasRole('SALIDAS')" class="nav-link text-dark" (click)="toggleMenu('op')" [routerLink]="['/secure/outbounds']">Salidas</a>
+            </div>
+          </li>
+          <li *ngIf="hasRole('REPORTES')" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/reports']">Reportes</a>
+          </li>
+          <li *ngIf="hasRole('INVENTARIO')" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/inventory']">Inventario</a>
+          </li>
+          <li *ngIf="hasRole('PEDIDOS')" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/order']">Pedidos</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="logout()" [routerLink]="['/']">Cerrar sesi&oacute;n</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

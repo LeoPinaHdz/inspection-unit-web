@@ -1,0 +1,54 @@
+<div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Gestión de usuarios</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <a [routerLink]="['/secure/user/new']" class="float-left" color="primary" mat-fab extended>
+            Nuevo usuario
+        </a>
+        <div class="float-right">
+          <mat-form-field class="table-filter" appearance="outline">
+          
+            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
+    <div class="table-container mat-elevation-z8">
+        <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">  
+          <ng-container matColumnDef="idUsuario">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.idUsuario }} </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="usuario">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Usuario </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.usuario }} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.nombre }} </mat-cell>
+          </ng-container>
+    
+          <ng-container matColumnDef="idEstatus">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <a [routerLink]="['/secure/user/', row.idUsuario]"  mat-raised-button color="primary" >Editar</a>
+            </mat-cell>
+          </ng-container>
+      
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

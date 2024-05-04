@@ -1,0 +1,171 @@
+<div>
+  <mat-card *ngIf="orderDetails.length > 0">
+    <mat-card-header>
+      <mat-card-title>Autorizar Orden de Salida</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="float-left form-cell-6">
+        <mat-form-field class="mat-mdc-form-field-large" appearance="outline">
+          <mat-label>Transportista que recoge la mercancia:</mat-label>
+          <input matInput [formControl]="transportControl" type="text" appCurrencyMask maxlength="100"/>
+          <mat-error>
+            <error-message [control]="transportControl" nomCampo="Transportista"></error-message>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <div class="table-container mat-elevation-z8">
+      <mat-table [dataSource]="orderDetails" matSort class="mat-elevation-z8 box-shadow">  
+        <ng-container matColumnDef="Almacen">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Almacen</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.Almacen }} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="Cliente">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.Cliente }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Recibo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Recibo</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.Recibo }} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="Articulo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Articulo</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.Articulo }} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="DetalleArticulo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Detalle</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.DetalleArticulo }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="LoteArticulo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Lote</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.LoteArticulo }} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="Disponible">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Disponible</mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.Disponible }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="retirar">
+          <mat-header-cell *matHeaderCellDef>Retirar</mat-header-cell>
+          <mat-cell *matCellDef="let row" class="display-block">
+            <div>
+              <input class="quantity-table-input w-50" type="number" [(ngModel)]="row.retirar" minlength="1" maxlength="{{row.Disponible}}" (change)="validateQty(row)" required />
+              <button mat-icon-button class="w-50" color="warn" (click)="deleteFromOrderDetail(row)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>  
+            <div *ngIf="row.showError" class="error-message error-message-small">
+              *El valor a retirar debe ser un valor entre 1 y {{row.Disponible}}
+            </div>
+            <!--button  mat-mini-fab matTooltip="Eliminar" color="warn">
+              <mat-icon>delete</mat-icon>
+            </button-->
+          </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+    <mat-card-footer>
+      <button (click)="onSubmit()" mat-fab extended [disabled]="disabledSubmitOrder">Enviar Orden</button>
+    </mat-card-footer>
+  </mat-card>
+
+  
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Mercancia Disponible</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-container">
+      <div><mat-form-field appearance="outline">
+        <mat-label>Almacen</mat-label>
+        <mat-select [formControl]="warehouseControl" required>
+          <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.idBodega">{{warehouse.nombre}}</mat-option>
+        </mat-select>
+        <mat-error>
+          <error-message [control]="warehouseControl" nomCampo="Almacen"></error-message>
+        </mat-error>
+      </mat-form-field></div>
+
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Cliente</mat-label>
+          <mat-select [formControl]="clientControl" required>
+            <mat-option *ngFor="let client of clients" [value]="client.idCliente">{{client.nombre}}</mat-option>
+          </mat-select>
+          <mat-error>
+            <error-message [control]="clientControl" nomCampo="Cliente"></error-message>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="search-box">
+        <mat-form-field class="table-filter" appearance="outline">
+        
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" [(ngModel)]="filterValue"/>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+    
+  <div class="table-container mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">   
+      <ng-container matColumnDef="Almacen">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Almacen</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Almacen }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Cliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Cliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Recibo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Recibo</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Recibo }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Articulo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Articulo</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Articulo }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="DetalleArticulo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Detalle</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.DetalleArticulo }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="LoteArticulo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Lote</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.LoteArticulo }} </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Disponible">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Disponible</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Disponible }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="retirar">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-raised-button color="primary" [disabled]="isAssigned(row.IdReciboDetalle)" (click)="moveToOrderDetail(row)">Asignar</button>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

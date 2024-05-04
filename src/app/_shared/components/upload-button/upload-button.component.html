@@ -1,0 +1,4 @@
+<input hidden type="file" accept="{{accept}}" #fileInput (change)="fileChanged($event)"/>
+<button class="upload" (click)="fileInput.click()" mat-fab extended>
+    <mat-icon>upload</mat-icon> {{buttonTitle}}
+</button>
