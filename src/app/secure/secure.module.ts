@@ -36,7 +36,6 @@ import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgChartsModule } from 'ng2-charts';
-import { HomeService } from './home/home.service';
 import { InventoryComponent } from './inventory/intenvory.component';
 
 @NgModule({
@@ -83,8 +82,7 @@ import { InventoryComponent } from './inventory/intenvory.component';
     ReceiptDetailService,
     OutboundsService,
     ReportsService,
-    OrderService,
-    HomeService
+    OrderService
   ],
   exports: [
   ],

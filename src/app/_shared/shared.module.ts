@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './components/guards/auth.guard';
 import { ScreenService } from './services/screen.service';
-import { UsersService } from './services/users.service';
+import { UsersService } from './services/user.service';
 
 
 @NgModule({

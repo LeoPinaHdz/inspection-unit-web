@@ -1,21 +1,35 @@
-import { Injectable, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Login } from '../models/user.model';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnInit {
-  private currentUser;
+export class AuthService {
+  private currentUser: any = JSON.parse(sessionStorage.getItem('currentUser') || '{\"pantallas\": []}');
   
-  constructor() {
-    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{\"pantallas\": []}');
+  constructor(private http: HttpClient) {
   }
 
-  ngOnInit(): void {
-    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{\"pantallas\": []}');
+  login(params: Login): Observable<any> {
+    return this.http.post<any>(`${environment.url}auth/Login`, params);
+  }
+
+  setCurrentUser(user: any) {
+    if (sessionStorage.getItem('currentUser') !== null) {
+      sessionStorage.removeItem('currentUser');
+      sessionStorage.removeItem('token');
+    }
+
+    sessionStorage.setItem('currentUser', JSON.stringify(user));
+    sessionStorage.setItem('token', user.token);
+    this.currentUser = user;
   }
 
   isAuthenticated(): boolean {
-    return sessionStorage.getItem('currentUser') !== undefined;
+    return this.currentUser.idUsuario !== undefined;
   }
 
   getCurrentUser() {
@@ -30,6 +44,7 @@ export class AuthService implements OnInit {
     const loggedUser = JSON.parse(sessionStorage.getItem('currentUser') || '{\"pantallas\": []}');
 
     return loggedUser.pantallas.includes(role);
+    //TODO: refactor return this.currentUser.pantallas.includes(role);
   }
 
   hasUserRoles(expectedRoles: string[]): boolean {

@@ -47,45 +47,6 @@
             <div class="form-container">
                 <div class="form-cell-3">
                     <span class="example-list-section">
-                        <mat-checkbox class="example-margin" [checked]="allClientsSelected" color="primary"
-                                    [indeterminate]="someClientsSelected()" (change)="selectAllClients($event.checked)">
-                        Clientes
-                        </mat-checkbox>
-                    </span>
-                    <span class="example-list-section">
-                        <ul>
-                            <li *ngFor="let client of clients">
-                            <mat-checkbox [(ngModel)]="client.selected" color="primary" (ngModelChange)="selectClient()">
-                                {{client.nombre}}
-                            </mat-checkbox>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
-                <div class="form-cell-3">
-                    <span class="example-list-section">
-                        <mat-checkbox class="example-margin" [checked]="allWarehousesSelected" color="primary"
-                                    [indeterminate]="someWarehousesSelected()" (change)="selectAllWarehouses($event.checked)">
-                        Bodegas
-                        </mat-checkbox>
-                    </span>
-                    <span class="example-list-section">
-                        <ul>
-                            <li *ngFor="let warehouse of warehouses">
-                                <mat-checkbox [(ngModel)]="warehouse.selected" color="primary" (ngModelChange)="selectWarehouse()">
-                                    {{warehouse.nombre}}
-                                </mat-checkbox>
-                                
-                                <mat-form-field *ngIf="warehouse.selected" class="mat-mdc-form-field-large" appearance="outline">
-                                    <mat-label>Email:</mat-label>
-                                    <input matInput [(ngModel)]="warehouse.email" type="text" appCurrencyMask maxlength="255"/>
-                                </mat-form-field>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
-                <div class="form-cell-3">
-                    <span class="example-list-section">
                         <mat-checkbox class="example-margin" [checked]="allScreensSelected" color="primary"
                                     [indeterminate]="someScreensSelected()" (change)="selectAllScreens($event.checked)">
                         Pantallas

@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { User, UsersService } from 'src/app/_shared/services/users.service';
+import { UsersService } from 'src/app/_shared/services/user.service';
+import { User } from 'src/app/_shared/models/user.model';
 
 @Component({
   selector: 'users',

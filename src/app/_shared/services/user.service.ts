@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class UsersService {
@@ -22,24 +23,3 @@ export class UsersService {
   }
 }
 
-export interface User {
-    idUsuario: Number;
-    idUsuarioCreacion?: Number;
-    usuario?: string;
-    nombre?: string;
-    idEstatus?: Number;
-    contrasena?: string;
-    clientes?: ClientUser[];
-    bodegas?: WarehouseUser[];
-    pantallas?: string[];
-}
-
-export interface ClientUser {
-  idCliente: Number;
-  email?: string; 
-}
-
-export interface WarehouseUser {
-  idBodega: Number;
-  email?: string; 
-}

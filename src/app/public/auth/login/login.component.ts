@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { LoginService } from './login.service';
+import { AuthService } from 'src/app/_shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly loginService: LoginService) { }
+    private readonly authService: AuthService) { }
 
   ngOnInit() {
     this.formLogin = new FormGroup({
@@ -28,17 +27,11 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.valid) {
       const login = this.formLogin.getRawValue();
 
-      this.loginService.login(login)
+      this.authService.login(login)
       .pipe()
       .subscribe({
         next: (response) => {
-          if (sessionStorage.getItem('currentUser') !== null) {
-            sessionStorage.removeItem('currentUser');
-            sessionStorage.removeItem('token');
-          }
-  
-          sessionStorage.setItem('currentUser', JSON.stringify(response));
-          sessionStorage.setItem('token', response.token);
+          this.authService.setCurrentUser(response);
           this.router.navigate(['/secure/home']);
         },
         error: () => {

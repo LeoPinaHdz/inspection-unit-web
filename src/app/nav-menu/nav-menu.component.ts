@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../_shared/services/auth.service';
 
 @Component({
@@ -6,17 +6,11 @@ import { AuthService } from '../_shared/services/auth.service';
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.css']
 })
-export class NavMenuComponent implements OnInit{
+export class NavMenuComponent {
   complexMenus= [{name: 'op', isOpen: false}];
   isExpanded = false;
-  roles: string[] = [];
 
   constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{\"pantallas\": []}');
-    this.roles = currentUser.pantallas;
-  }
 
   toggleMenu(key: string): void {
     const selectedMenu = this.complexMenus.filter(m => m.name === key)[0];
@@ -28,7 +22,7 @@ export class NavMenuComponent implements OnInit{
   }
 
   hasRole(role: string) {
-    return this.roles.includes(role);
+    return this.authService.hasUserRole(role);
   }
 
   closeAllMenus(): void {
