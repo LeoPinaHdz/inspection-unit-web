@@ -7,13 +7,17 @@ import { AuthService } from '../_shared/services/auth.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  complexMenus= [{name: 'op', isOpen: false}];
+  complexMenus= [{name: 'op', isOpen: false}, {name: 'cat', isOpen: false}];
   isExpanded = false;
 
   constructor(private authService: AuthService) {}
 
   toggleMenu(key: string): void {
     const selectedMenu = this.complexMenus.filter(m => m.name === key)[0];
+    
+    if (!selectedMenu.isOpen) {
+      this.closeAllMenus();
+    }
     selectedMenu.isOpen = !selectedMenu.isOpen;
   }
 
@@ -23,6 +27,10 @@ export class NavMenuComponent {
 
   hasRole(role: string) {
     return this.authService.hasUserRole(role);
+  }
+
+  hasRoles(roles: string[]) {
+    return this.authService.hasUserRoles(roles);
   }
 
   closeAllMenus(): void {

@@ -21,10 +21,23 @@
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
-          <li *ngIf="hasRole('USUARIOS')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/users']">Usuarios</a>
+          <li *ngIf="hasRoles(['CLIENTES', 'NORMAS', 'EJECUTIVOS', 'FUNCIONARIOS', 'CONVERSION'])"
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span class="nav-link dropdown-toggle" (click)="toggleMenu('cat')" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Cat&aacute;logos
+            </span>
+            <div *ngIf="isMenuOpen('cat')" class="dropdown-menu logistics-dropdown-menu" aria-labelledby="navbarDropdown">
+              <a *ngIf="hasRole('CLIENTES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/clients']">Clientes</a>
+              <a *ngIf="hasRole('NORMAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/standars']">Normas</a>
+              <a *ngIf="hasRole('EJECUTIVOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/executives']">Ejecutivos</a>
+              <a *ngIf="hasRole('FUNCIONARIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/officers']">Funcionarios</a>
+              <a *ngIf="hasRole('CONVERSION')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/conversions']">Conversi&oacute;n</a>
+            </div>
           </li>
-          <li *ngIf="hasRole('RECIBOS') || hasRole('SALIDAS')"
+          <li *ngIf="hasRoles(['CONTRATOS', 'FOLIOS', 'SOLICITUDES', 'OFICIOS', 'ACTAS', 'LISTAS', 'DICTAMENES'])"
             class="nav-item"
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -33,18 +46,20 @@
               Operaci&oacute;n
             </span>
             <div *ngIf="isMenuOpen('op')" class="dropdown-menu logistics-dropdown-menu" aria-labelledby="navbarDropdown">
-              <a *ngIf="hasRole('RECIBOS')" class="nav-link text-dark" (click)="toggleMenu('op')" [routerLink]="['/secure/receipts']">Recibos</a>
-              <a *ngIf="hasRole('SALIDAS')" class="nav-link text-dark" (click)="toggleMenu('op')" [routerLink]="['/secure/outbounds']">Salidas</a>
+              <a *ngIf="hasRole('CONTRATOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/contracts']">Contratos</a>
+              <a *ngIf="hasRole('FOLIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/references']">Folios</a>
+              <a *ngIf="hasRole('SOLICITUDES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/requests']">Solicitudes</a>
+              <a *ngIf="hasRole('OFICIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/letters']">Oficios</a>
+              <a *ngIf="hasRole('ACTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/minutes']">Actas</a>
+              <a *ngIf="hasRole('LISTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/lists']">Listas</a>
+              <a *ngIf="hasRole('DICTAMENES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/decisions']">Dictamenes</a>
             </div>
           </li>
           <li *ngIf="hasRole('REPORTES')" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/reports']">Reportes</a>
           </li>
-          <li *ngIf="hasRole('INVENTARIO')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/inventory']">Inventario</a>
-          </li>
-          <li *ngIf="hasRole('PEDIDOS')" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/order']">Pedidos</a>
+          <li *ngIf="hasRole('USUARIOS')" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/users']">Usuarios</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" (click)="logout()" [routerLink]="['/']">Cerrar sesi&oacute;n</a>

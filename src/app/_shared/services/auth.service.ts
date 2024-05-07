@@ -48,7 +48,8 @@ export class AuthService {
   }
 
   hasUserRoles(expectedRoles: string[]): boolean {
-    return this.getUserRoles().some(elemento => expectedRoles.indexOf(elemento) !== -1);
+    const loggedUser = JSON.parse(sessionStorage.getItem('currentUser') || '{\"pantallas\": []}');
+    return loggedUser.pantallas.some((elemento: string) => expectedRoles.indexOf(elemento) !== -1);
   }
 
   logout(): void {
