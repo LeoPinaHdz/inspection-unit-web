@@ -2,37 +2,36 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { UsersService } from 'src/app/_shared/services/user.service';
-import { User } from 'src/app/_shared/models/user.model';
+import { Client, ClientService } from 'src/app/_shared/services/client.service';
 
 @Component({
-  selector: 'users',
-  templateUrl: './users.component.html'
+  selector: 'client-list',
+  templateUrl: './client-list.component.html'
 })  
 
-export class UsersComponent implements OnInit{  
+export class ClientListComponent implements OnInit{  
   displayedColumns: string[] = [
-    'idUsuario', 
-    'usuario',
-    'nombre', 
+    'idCliente', 
+    'nombre',
+    'rfc', 
     'idEstatus',
     'action'
   ];
-  dataSource: MatTableDataSource<User> = new MatTableDataSource();
+  dataSource: MatTableDataSource<Client> = new MatTableDataSource();
   
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   constructor(
-    private userService: UsersService
+    private clientService: ClientService
   ) {  }
 
   ngOnInit() {
-    this.loadAllUsers();
+    this.loadAllClients();
   }
 
-  loadAllUsers() {
-    this.userService.getAll().
+  loadAllClients() {
+    this.clientService.getAll().
     pipe()
     .subscribe({
       next: (response) => {
@@ -41,7 +40,7 @@ export class UsersComponent implements OnInit{
         this.dataSource.sort = this.sort;
       },
       error: () => {
-        console.error('Error trying to get user list');
+        console.error('Error trying to get client list');
       }      
     });
   }

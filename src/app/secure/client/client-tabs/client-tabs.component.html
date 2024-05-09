@@ -1,0 +1,26 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <a [routerLink]="['/secure/clients']" class="button-back" color="accent" mat-mini-fab>
+                <mat-icon>arrow_circle_left</mat-icon>
+            </a>
+            {{ isEdit ? 'Detalle de cliente:' : 'Nuevo Cliente' }} {{client.rfc}} - {{client.nombre}}
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-tab-group>
+            <mat-tab label="Generales">
+                <client-detail [client]="client" [isEdit]="isEdit"></client-detail>
+            </mat-tab>
+            <mat-tab label="Notariales">
+                <client-list></client-list>
+            </mat-tab>
+            <mat-tab label="Dom. Verificación">
+            </mat-tab>
+            <mat-tab label="Representantes">
+            </mat-tab>
+            <mat-tab label="Contactos">
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

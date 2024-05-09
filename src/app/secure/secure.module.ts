@@ -32,11 +32,16 @@ import { ReportsComponent } from './reports/reports.component';
 import { ReportsService } from './reports/reports.service';
 import { OrderService } from './order/order.service';
 import { OrderComponent } from './order/order.component';
-import { UsersComponent } from './users/users.component';
-import { UserDetailComponent } from './users/user-detail/user-detail.component';
+import { UsersComponent } from './user/user-list/user-list.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
 import { NgChartsModule } from 'ng2-charts';
 import { InventoryComponent } from './inventory/intenvory.component';
+import { ClientListComponent } from './client/client-list/client-list.component';
+import { ClientDetailComponent } from './client/client-detail/client-detail.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,10 @@ import { InventoryComponent } from './inventory/intenvory.component';
     OrderComponent,
     UsersComponent,
     UserDetailComponent,
-    InventoryComponent
+    InventoryComponent,
+    ClientListComponent,
+    ClientDetailComponent,
+    ClientTabsComponent
   ],
   imports: [
     SecureRoutingModule,
@@ -74,7 +82,9 @@ import { InventoryComponent } from './inventory/intenvory.component';
     MatDialogModule,
     NgxMatSelectSearchModule,
     MatCheckboxModule,
-    NgChartsModule
+    MatRadioModule,
+    NgChartsModule,
+    MatTabsModule
   ],
   providers: [
     NativeDateAdapter,

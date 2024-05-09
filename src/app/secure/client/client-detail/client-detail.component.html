@@ -1,0 +1,163 @@
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="clientForm">
+            <div class="form-container">
+                <div class="form-cell-2"><mat-form-field appearance="outline">
+                        <mat-label>No. Cliente</mat-label>
+                        <input matInput formControlName="idCliente" appCurrencyMask type="text" />
+                    </mat-form-field></div>
+                <div class="form-cell-4">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Raz&oacute;n Social</mat-label>
+                        <input matInput formControlName="nombre" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Razón Social"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>R.F.C.</mat-label>
+                        <input matInput formControlName="rfc" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="R.F.C."></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-label>Tipo de Persona</mat-label>
+                    <mat-radio-group formControlName="persona">
+                        <mat-radio-button class="example-margin" value="2">Fisica</mat-radio-button>
+                        <mat-radio-button class="example-margin" value="1">Moral</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="form-cell-6">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Calle</mat-label>
+                        <input matInput formControlName="calle" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Calle"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label>No. Exterior</mat-label>
+                        <input matInput formControlName="exterior" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="No. Exterior"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label>No. Interior</mat-label>
+                        <input matInput formControlName="interior" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="No. Interior"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-2">
+                    <mat-form-field appearance="outline">
+                        <mat-label>C.P.</mat-label>
+                        <input matInput formControlName="cp" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="C.P."></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Colonia</mat-label>
+                        <input matInput formControlName="colonia" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Colonia"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Municipio</mat-label>
+                        <input matInput formControlName="municipio" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Municipio"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Estado</mat-label>
+                        <input matInput formControlName="idEstado" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Estado"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Pa&iacute;s</mat-label>
+                        <mat-select formControlName="idPais" required>
+                            <mat-option *ngFor="let country of countries"
+                                [value]="country.idPais">{{country.nombre}}</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            <error-message nomCampo="País"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-label>Delegaci&oacute;n o Municipio</mat-label><br />
+                    <mat-radio-group formControlName="tipoMunicipio">
+                        <mat-radio-button class="example-margin" value="0">Municipio</mat-radio-button>
+                        <mat-radio-button class="example-margin" value="1">Delegaci&oacute;n</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Telefono</mat-label>
+                        <input matInput formControlName="telefono" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Telefono"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>E-mail</mat-label>
+                        <input matInput formControlName="email" type="email" required />
+                        <mat-error>
+                            <error-message nomCampo="E-mail"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Promotor</mat-label>
+                        <input matInput formControlName="idPromotor" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Promotor"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ejecutivo</mat-label>
+                        <input matInput formControlName="idEjecutivo" type="text" required />
+                        <mat-error>
+                            <error-message nomCampo="Ejecutivo"></error-message>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-checkbox formControlName="active" color="primary">
+                        Activo
+                    </mat-checkbox>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+    <mat-card-footer>
+        <button (click)="onSubmit()" mat-fab extended>Guardar</button>
+    </mat-card-footer>
+</mat-card>

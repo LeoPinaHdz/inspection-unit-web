@@ -15,6 +15,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './components/guards/auth.guard';
 import { ScreenService } from './services/screen.service';
 import { UsersService } from './services/user.service';
+import { CountryService } from './services/country.service';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { UsersService } from './services/user.service';
     AuthGuard,
     WarehouseService,
     ScreenService,
-    UsersService
+    UsersService,
+    CountryService
   ],
 })
 export class SharedModule { }

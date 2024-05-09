@@ -92,7 +92,7 @@ export class UserDetailComponent implements OnInit, OnDestroy{
     });
     this.active = (user.idEstatus && user.idEstatus === 1) || false;
     this.user = user;
-    this.screens.forEach(p => p.selected = this.isScreenAssigned(p.nombre));
+    this.screens.forEach(p => p.selected = this.isScreenAssigned(p.pantalla));
   }
 
   isScreenAssigned(key: string): boolean {
@@ -119,7 +119,7 @@ export class UserDetailComponent implements OnInit, OnDestroy{
     }
 
     userRequest.idEstatus = this.active ? 1 : 2;
-    userRequest.pantallas = this.screens.filter(t => t.selected).map(t => t.nombre);
+    userRequest.pantallas = this.screens.filter(t => t.selected).map(t => t.pantalla);
 
     this.usersService.save(userRequest)
     .pipe()

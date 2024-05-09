@@ -7,31 +7,18 @@ import { OutboundsComponent } from './outbounds/outbounds.component';
 import { ReportsComponent } from './reports/reports.component';
 import { OrderComponent } from './order/order.component';
 import { AuthGuard } from '../_shared/components/guards/auth.guard';
-import { UsersComponent } from './users/users.component';
-import { UserDetailComponent } from './users/user-detail/user-detail.component';
+import { UsersComponent } from './user/user-list/user-list.component';
+import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { InventoryComponent } from './inventory/intenvory.component';
+import { ClientListComponent } from './client/client-list/client-list.component';
+import { ClientDetailComponent } from './client/client-detail/client-detail.component';
+import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'clients', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'} },
-  { path: 'client/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-  { path: 'client/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-
-  { path: 'client/:clientId/notarials', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'} },
-  { path: 'client/:clientId/notarial/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-  { path: 'client/:clientId/notarial/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-
-  { path: 'client/:clientId/addresses', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'} },
-  { path: 'client/:clientId/address/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-  { path: 'client/:clientId/address/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-
-  { path: 'client/:clientId/representatives', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'} },
-  { path: 'client/:clientId/representative/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-  { path: 'client/:clientId/representative/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-
-  { path: 'client/:clientId/contacts', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'} },
-  { path: 'client/:clientId/contact/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
-  { path: 'client/:clientId/contact/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
+  { path: 'clients', component: ClientListComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'} },
+  { path: 'client/new', component: ClientTabsComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
+  { path: 'client/:id', component: ClientTabsComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
 
   { path: 'standars', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
   { path: 'standar/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
