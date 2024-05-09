@@ -2,37 +2,43 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ClientService } from 'src/app/_shared/services/client.service';
-import { Client } from 'src/app/_shared/models/client.model';
+import { ClientContactService } from 'src/app/_shared/services/client-contact.service';
+import { ClientContact } from 'src/app/_shared/models/client-contact.model';
 
 @Component({
-  selector: 'client-list',
-  templateUrl: './client-list.component.html'
+  selector: 'client-contact',
+  templateUrl: './client-contact.component.html'
 })  
 
-export class ClientListComponent implements OnInit{  
+export class ClientContactComponent implements OnInit{  
   displayedColumns: string[] = [
-    'idCliente', 
+    'idContacto', 
+    'idCliente',
     'nombre',
-    'rfc', 
-    'idEstatus',
+    'puesto', 
+    'telefono',
+    'extension',
+    'email',
+    'idTipo',
+    'fCaptura',
+    'fModificacion',
     'action'
   ];
-  dataSource: MatTableDataSource<Client> = new MatTableDataSource();
+  dataSource: MatTableDataSource<ClientContact> = new MatTableDataSource();
   
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   constructor(
-    private clientService: ClientService
+    private clientContactService: ClientContactService
   ) {  }
 
   ngOnInit() {
-    this.loadAllClients();
+    this.loadAllClientContacts();
   }
 
-  loadAllClients() {
-    this.clientService.getAll().
+  loadAllClientContacts() {
+    this.clientContactService.getAll().
     pipe()
     .subscribe({
       next: (response) => {
@@ -41,7 +47,7 @@ export class ClientListComponent implements OnInit{
         this.dataSource.sort = this.sort;
       },
       error: () => {
-        console.error('Error trying to get client list');
+        console.error('Error trying to get client-contact list');
       }      
     });
   }

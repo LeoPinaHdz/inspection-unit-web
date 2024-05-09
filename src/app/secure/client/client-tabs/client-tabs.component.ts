@@ -2,7 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SimpleDialogComponent } from "src/app/_shared/components/simple-dialog/simple-dialog.component";
-import { Client, ClientService } from "src/app/_shared/services/client.service";
+import { Client } from "src/app/_shared/models/client.model";
+import { ClientService } from "src/app/_shared/services/client.service";
 
 @Component({
     selector: 'client-tabs',

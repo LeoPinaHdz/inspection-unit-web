@@ -4,8 +4,9 @@ import { ReportType, ReportsService } from './reports.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ExcelService } from 'src/app/_shared/services/excel.service';
-import { Client, ClientService } from 'src/app/_shared/services/client.service';
+import { ClientService } from 'src/app/_shared/services/client.service';
 import { Warehouse, WarehouseService } from 'src/app/_shared/services/warehouse.service';
+import { Client } from 'src/app/_shared/models/client.model';
 
 @Component({
   selector: 'reports',

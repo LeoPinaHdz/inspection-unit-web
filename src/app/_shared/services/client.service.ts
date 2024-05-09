@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Client } from '../models/client.model';
 
 @Injectable()
 export class ClientService {
@@ -24,25 +25,4 @@ export class ClientService {
       return this.http.post<any>(`${environment.url}Clientes/Create`, user);
     return this.http.put<any>(`${environment.url}Clientes/Update`, user);
   }
-}
-
-export interface Client {
-  idCliente: number;
-  nombre?: string;
-  rfc?: string;
-  calle?: string;
-  exterior?: number;
-  interior?: number;
-  colonia?: string;
-  cp?: string;
-  municipio?: string;
-  idEstado?: number;
-  idPais?: number;
-  telefono?: number;
-  email?: string;
-  idEstatus?: number;
-  persona?: number;
-  idPromotor?: number;
-  idEjecutivo?: number;
-  tipoMunicipio?: boolean;
 }

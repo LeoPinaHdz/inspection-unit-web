@@ -2,37 +2,40 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ClientService } from 'src/app/_shared/services/client.service';
-import { Client } from 'src/app/_shared/models/client.model';
+import { StandardService } from 'src/app/_shared/services/standard.service';
+import { Standard } from 'src/app/_shared/models/standard.model';
 
 @Component({
-  selector: 'client-list',
-  templateUrl: './client-list.component.html'
+  selector: 'standards',
+  templateUrl: './standards.component.html'
 })  
 
-export class ClientListComponent implements OnInit{  
+export class StandardsComponent implements OnInit{  
   displayedColumns: string[] = [
-    'idCliente', 
+    'idNorma', 
     'nombre',
-    'rfc', 
-    'idEstatus',
+    'descripcion', 
+    'puntos',
+    'exceptos',
+    'fCaptura',
+    'fModificacion',
     'action'
   ];
-  dataSource: MatTableDataSource<Client> = new MatTableDataSource();
+  dataSource: MatTableDataSource<Standard> = new MatTableDataSource();
   
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   constructor(
-    private clientService: ClientService
+    private standardService: StandardService
   ) {  }
 
   ngOnInit() {
-    this.loadAllClients();
+    this.loadAllStandards();
   }
 
-  loadAllClients() {
-    this.clientService.getAll().
+  loadAllStandards() {
+    this.standardService.getAll().
     pipe()
     .subscribe({
       next: (response) => {
@@ -41,7 +44,7 @@ export class ClientListComponent implements OnInit{
         this.dataSource.sort = this.sort;
       },
       error: () => {
-        console.error('Error trying to get client list');
+        console.error('Error trying to get standard list');
       }      
     });
   }

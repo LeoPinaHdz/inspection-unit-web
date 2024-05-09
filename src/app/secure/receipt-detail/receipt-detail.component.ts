@@ -9,8 +9,9 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil} from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
-import { Client, ClientService } from 'src/app/_shared/services/client.service';
+import { ClientService } from 'src/app/_shared/services/client.service';
 import { Warehouse, WarehouseService } from 'src/app/_shared/services/warehouse.service';
+import { Client } from 'src/app/_shared/models/client.model';
 
 @Component({
   selector: 'receipt-detail',

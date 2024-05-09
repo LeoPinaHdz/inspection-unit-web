@@ -8,10 +8,11 @@ import { MatSort } from '@angular/material/sort';
 import { ConfirmationDialogComponent } from 'src/app/_shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
-import { Client, ClientService } from 'src/app/_shared/services/client.service';
+import { ClientService } from 'src/app/_shared/services/client.service';
 import { Warehouse, WarehouseService } from 'src/app/_shared/services/warehouse.service';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { Client } from 'src/app/_shared/models/client.model';
 
 @Component({
   selector: 'outbounds',

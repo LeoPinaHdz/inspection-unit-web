@@ -16,7 +16,8 @@ import { AuthGuard } from './components/guards/auth.guard';
 import { ScreenService } from './services/screen.service';
 import { UsersService } from './services/user.service';
 import { CountryService } from './services/country.service';
-
+import { StandardService } from './services/standard.service';
+import { ClientContactService } from './services/client-contact.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -38,7 +39,9 @@ import { CountryService } from './services/country.service';
     WarehouseService,
     ScreenService,
     UsersService,
-    CountryService
+    CountryService,
+    StandardService,
+    ClientContactService
   ],
 })
 export class SharedModule { }

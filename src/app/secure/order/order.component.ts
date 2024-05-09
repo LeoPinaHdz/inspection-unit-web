@@ -5,11 +5,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
-import { Client, ClientService } from 'src/app/_shared/services/client.service';
+import { ClientService } from 'src/app/_shared/services/client.service';
 import { FormControl, Validators } from '@angular/forms';
 import { OrderService } from './order.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Warehouse, WarehouseService } from 'src/app/_shared/services/warehouse.service';
+import { Client } from 'src/app/_shared/models/client.model';
 
 @Component({
   selector: 'order',

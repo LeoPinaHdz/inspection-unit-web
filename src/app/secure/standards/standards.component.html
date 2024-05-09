@@ -1,0 +1,68 @@
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Gestión de normas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <a [routerLink]="['/secure/standards/new']" class="float-left" color="primary" mat-fab extended>
+        Nuevo
+      </a>
+      <div class="float-right">
+        <mat-form-field class="table-filter" appearance="outline">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+    
+  <div class="table-container mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">  
+        <ng-container matColumnDef="idNorma">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.idNorma }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nombre">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.nombre }} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.descripcion }} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="puntos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Puntos </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.puntos }} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="exceptos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Exceptos </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.exceptos }} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="fCaptura">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Captura </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.fCaptura }} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="fModificacion">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de modificación </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{ row.fModificacion }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef ></mat-header-cell>
+          <mat-cell *matCellDef="let row" >
+            <a [routerLink]="['/secure/standards', row.idNorma]"  mat-raised-button color="primary" >Editar</a>
+          </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

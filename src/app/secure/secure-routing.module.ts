@@ -11,8 +11,11 @@ import { UsersComponent } from './user/user-list/user-list.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { InventoryComponent } from './inventory/intenvory.component';
 import { ClientListComponent } from './client/client-list/client-list.component';
-import { ClientDetailComponent } from './client/client-detail/client-detail.component';
 import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
+import { StandardsComponent } from './standards/standards.component';
+import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
+import { ClientContactComponent } from './client/client-contact/client-contact.component';
+import { ClientContactDetailComponent } from './client/client-contact/client-contact-detail/client-contact-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,9 +23,13 @@ const routes: Routes = [
   { path: 'client/new', component: ClientTabsComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
   { path: 'client/:id', component: ClientTabsComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
 
-  { path: 'standars', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
-  { path: 'standar/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
-  { path: 'standar/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+  { path: 'standards', component: StandardsComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
+  { path: 'standards/new', component: StandardDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+  { path: 'standards/:id', component: StandardDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+
+  { path: 'client-contacts', component: ClientContactComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
+  { path: 'client-contacts/new', component: ClientContactDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+  { path: 'client-contacts/:id', component: ClientContactDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
   
   { path: 'executives', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'} },
   { path: 'executive/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},

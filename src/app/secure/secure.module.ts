@@ -42,6 +42,11 @@ import { ClientListComponent } from './client/client-list/client-list.component'
 import { ClientDetailComponent } from './client/client-detail/client-detail.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
+import { StandardsComponent } from './standards/standards.component';
+import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
+import { ClientComponent } from './client/client.component';
+import { ClientContactComponent } from './client/client-contact/client-contact.component';
+import { ClientContactDetailComponent } from './client/client-contact/client-contact-detail/client-contact-detail.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +61,12 @@ import { ClientTabsComponent } from './client/client-tabs/client-tabs.component'
     InventoryComponent,
     ClientListComponent,
     ClientDetailComponent,
-    ClientTabsComponent
+    ClientTabsComponent,
+    StandardsComponent,
+    StandardDetailComponent,
+    ClientComponent,
+    ClientContactComponent,
+    ClientContactDetailComponent
   ],
   imports: [
     SecureRoutingModule,

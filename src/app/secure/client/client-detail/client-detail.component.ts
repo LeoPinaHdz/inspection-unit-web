@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
-import { Client, ClientService } from 'src/app/_shared/services/client.service';
+import { ClientService } from 'src/app/_shared/services/client.service';
 import { CountryService } from 'src/app/_shared/services/country.service';
+import { Client } from 'src/app/_shared/models/client.model';
 
 @Component({
   selector: 'client-detail',
