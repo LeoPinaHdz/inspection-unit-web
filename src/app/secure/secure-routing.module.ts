@@ -10,6 +10,10 @@ import { AuthGuard } from '../_shared/components/guards/auth.guard';
 import { UsersComponent } from './users/users.component';
 import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { InventoryComponent } from './inventory/intenvory.component';
+import { StandardsComponent } from './standards/standards.component';
+import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
+import { ClientContactComponent } from './client/client-contact/client-contact.component';
+import { ClientContactDetailComponent } from './client/client-contact/client-contact-detail/client-contact-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -33,9 +37,13 @@ const routes: Routes = [
   { path: 'client/:clientId/contact/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
   { path: 'client/:clientId/contact/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CLIENTES'}},
 
-  { path: 'standars', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
-  { path: 'standar/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
-  { path: 'standar/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+  { path: 'standards', component: StandardsComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
+  { path: 'standards/new', component: StandardDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+  { path: 'standards/:id', component: StandardDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+
+  { path: 'client-contacts', component: ClientContactComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'} },
+  { path: 'client-contacts/new', component: ClientContactDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
+  { path: 'client-contacts/:id', component: ClientContactDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
   
   { path: 'executives', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'} },
   { path: 'executive/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},

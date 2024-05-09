@@ -110,11 +110,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   flex: none;
 }
 
-.mat-column-action {
-  width: 325px;
-  flex: none;
-}
-
 .mat-mdc-card-header {
   color: #fff;
   background-color: #1b6ec2;

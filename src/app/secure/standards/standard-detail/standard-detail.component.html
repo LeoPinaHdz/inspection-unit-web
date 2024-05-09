@@ -1,0 +1,68 @@
+<div>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <a [routerLink]="['/secure/standards']" class="button-back" color="accent" mat-mini-fab>
+                    <mat-icon>arrow_circle_left</mat-icon>
+                </a>
+                Nueva norma
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="standardForm">
+                <div class="form-container">
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>ID</mat-label>
+                            <input matInput formControlName="idNorma" appCurrencyMask type="text" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput formControlName="nombre" type="text" required />
+                            <mat-error>
+                                <error-message nomCampo="Nombre"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3"><mat-form-field appearance="outline">
+                            <mat-label>Descripci&otilde;n</mat-label>
+                            <textarea matInput formControlName="descripcion" appCurrencyMask maxlength="255"
+                                required></textarea>
+                            <mat-error>
+                                <error-message [control]="standardForm" nomCampo="Descripción"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Puntos</mat-label>
+                            <input matInput formControlName="puntos" type="text" />
+                            <mat-error>
+                                <error-message nomCampo="Puntos"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Exceptos</mat-label>
+                            <input matInput formControlName="exceptos" type="text" />
+                            <mat-error>
+                                <error-message nomCampo="Exceptos"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <div class="form-container">
+                <div class="form-cell-3">
+                    <mat-checkbox [(ngModel)]="active" color="primary">Activo</mat-checkbox>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-footer>
+            <button (click)="onSubmit()" mat-fab extended>Guardar</button>
+        </mat-card-footer>
+    </mat-card>
+</div>

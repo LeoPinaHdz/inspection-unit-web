@@ -37,6 +37,11 @@ import { UserDetailComponent } from './users/user-detail/user-detail.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgChartsModule } from 'ng2-charts';
 import { InventoryComponent } from './inventory/intenvory.component';
+import { StandardsComponent } from './standards/standards.component';
+import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
+import { ClientComponent } from './client/client.component';
+import { ClientContactComponent } from './client/client-contact/client-contact.component';
+import { ClientContactDetailComponent } from './client/client-contact/client-contact-detail/client-contact-detail.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,12 @@ import { InventoryComponent } from './inventory/intenvory.component';
     OrderComponent,
     UsersComponent,
     UserDetailComponent,
-    InventoryComponent
+    InventoryComponent,
+    StandardsComponent,
+    StandardDetailComponent,
+    ClientComponent,
+    ClientContactComponent,
+    ClientContactDetailComponent
   ],
   imports: [
     SecureRoutingModule,
