@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-cell-3">
                     <mat-label>Tipo de Persona</mat-label>
-                    <mat-radio-group formControlName="persona">
+                    <mat-radio-group formControlName="persona"><br />
                         <mat-radio-button class="example-margin" value="2">Fisica</mat-radio-button>
                         <mat-radio-button class="example-margin" value="1">Moral</mat-radio-button>
                     </mat-radio-group>
@@ -88,7 +88,10 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Estado</mat-label>
-                        <input matInput formControlName="idEstado" type="text" required />
+                        <mat-select formControlName="idEstado" required>
+                            <mat-option *ngFor="let state of states"
+                                [value]="state.idEstado">{{state.nombre}}</mat-option>
+                        </mat-select>
                         <mat-error>
                             <error-message nomCampo="Estado"></error-message>
                         </mat-error>
@@ -134,7 +137,10 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Promotor</mat-label>
-                        <input matInput formControlName="idPromotor" type="text" required />
+                        <mat-select formControlName="idPromotor" required>
+                            <mat-option *ngFor="let promoter of promoters"
+                                [value]="promoter.idEstado">{{promoter.nombre}}</mat-option>
+                        </mat-select>
                         <mat-error>
                             <error-message nomCampo="Promotor"></error-message>
                         </mat-error>

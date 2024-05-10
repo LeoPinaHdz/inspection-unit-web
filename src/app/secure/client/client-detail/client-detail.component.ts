@@ -1,12 +1,14 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ClientService } from 'src/app/_shared/services/client.service';
 import { CountryService } from 'src/app/_shared/services/country.service';
 import { Client } from 'src/app/_shared/models/client.model';
+import { StateService } from 'src/app/_shared/services/state.service';
+import { PromoterService } from 'src/app/_shared/services/promoter.service';
 
 @Component({
   selector: 'client-detail',
@@ -18,6 +20,8 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   @Input() isEdit: Boolean = false;
   id: any;
   countries: any[] = [];
+  states: any[] = [];
+  promoters: any[] = [];
   clientForm!: FormGroup;
   _onDestroy = new Subject<void>();
   allClientsSelected: boolean = false;
@@ -26,9 +30,10 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private clientService: ClientService,
     private countryService: CountryService,
+    private stateService: StateService,
+    private promoterService: PromoterService,
     private dialog: MatDialog
   ) {
     this.clientForm = new FormGroup({
@@ -59,8 +64,6 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-
     this.countryService.getAll()
       .pipe()
       .subscribe({
@@ -72,10 +75,43 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
           console.error('Error trying to get countries');
         }
       });
+    this.stateService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.states = response;
+          if (!this.isEdit) this.clientForm.get('idEstado')!.setValue(this.states[0].idEstado);
+        },
+        error: () => {
+          console.error('Error trying to get states');
+        }
+      });
+    this.stateService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.states = response;
+          if (!this.isEdit) this.clientForm.get('idEstado')!.setValue(this.states[0].idEstado);
+        },
+        error: () => {
+          console.error('Error trying to get states');
+        }
+      });
+    this.promoterService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.promoters = response;
+          if (!this.isEdit && response.length > 0) this.clientForm.get('idPromotor')!.setValue(this.promoters[0].idPromotor);
+        },
+        error: () => {
+          console.error('Error trying to get promoters');
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.client) {
+    if (changes.client && this.client.idCliente !== 0) {
       this.updateForm(this.client);
     }
   }
@@ -96,8 +132,8 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
       telefono: client.telefono,
       email: client.email,
       idEstatus: client.idEstatus,
-      persona: client.persona,
-      tipoMunicipio: client.tipoMunicipio ? 0 : 1,
+      persona: `${client.persona}`,
+      tipoMunicipio: `${client.tipoMunicipio ? 0 : 1}`,
       idPromotor: client.idPromotor,
       idEjecutivo: client.idEjecutivo,
       active: (client.idEstatus && client.idEstatus === 1) || false
@@ -108,12 +144,10 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   onSubmit(): void {
     this.clientForm.markAllAsTouched();
 
-    console.log(this.clientForm);
-    console.log(this.clientForm.valid);
     if (!this.clientForm.valid) return;
 
     const clientRequest = this.clientForm.getRawValue();
-    clientRequest.idEstatus = clientRequest.active ? 1 : 2;
+    clientRequest.idEstatus = clientRequest.active ? 1 : 3;
     clientRequest.tipoMunicipio = clientRequest.tipoMunicipio === '0';
 
     this.clientService.save(clientRequest)
@@ -121,7 +155,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El cliente ${clientRequest.idUsuario} fue guardado con éxito` },
+            data: { type: 'success', message: `El cliente ${clientRequest.idCliente} fue guardado con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
@@ -130,7 +164,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el cliente ${clientRequest.idUsuario}` },
+            data: { type: 'error', message: `Error al guardar el cliente ${clientRequest.idCliente}` },
           });
           console.error('Error trying to save client');
         }

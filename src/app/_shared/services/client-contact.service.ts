@@ -8,8 +8,8 @@ import { ClientContact } from '../models/client-contact.model';
 export class ClientContactService {
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<ClientContact[]> {
-    return this.http.get<ClientContact[]>(`${environment.url}ClientContact/GetAll`);
+  getAll(idCliente: number): Observable<ClientContact[]> {
+    return this.http.get<ClientContact[]>(`${environment.url}ClientContact/GetByClientes?idCliente${idCliente}`);
   }
 
   getById(id: number): Observable<ClientContact> {

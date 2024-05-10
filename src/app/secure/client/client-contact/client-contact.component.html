@@ -1,83 +1,125 @@
-<div>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Gestión de contactos</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <a [routerLink]="['/secure/client-contacts/new']" class="float-left" color="primary" mat-fab extended>
-        Nuevo
-      </a>
-      <div class="float-right">
-        <mat-form-field class="table-filter" appearance="outline">
-          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
+<mat-card>
+  <mat-card-content *ngIf="isListMode">
+    <a (click)="isListMode = !isListMode" class="float-left" color="primary" mat-fab extended>
+      Nuevo
+    </a>
+    <div class="float-right">
+      <mat-form-field class="table-filter" appearance="outline">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+  <mat-card-content *ngIf="!isListMode">
+    <form [formGroup]="clientContactForm">
+      <div class="form-container">
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>ID</mat-label>
+            <input matInput formControlName="idContacto" appCurrencyMask type="text" />
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <input matInput formControlName="idCliente" type="text" required />
+            <mat-error>
+              <error-message nomCampo="Cliente"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" type="text" required />
+            <mat-error>
+              <error-message nomCampo="Nombre"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Puesto</mat-label>
+            <input matInput formControlName="puesto" type="text" />
+            <mat-error>
+              <error-message nomCampo="Puesto"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Tel&eacute;fono</mat-label>
+            <input matInput formControlName="telefono" type="text" />
+            <mat-error>
+              <error-message nomCampo="Teléfono"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Extensi&otilde;</mat-label>
+            <input matInput formControlName="extension" type="text" />
+            <mat-error>
+              <error-message nomCampo="Extensión"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="text" />
+            <mat-error>
+              <error-message nomCampo="Email"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <input matInput formControlName="idTipo" type="text" />
+            <mat-error>
+              <error-message nomCampo="Tipo"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
+        </div>
       </div>
-    </mat-card-content>
-  </mat-card>
+    </form>
+  </mat-card-content>
+  <mat-card-footer *ngIf="!isListMode">
+      <button (click)="onCancel()" color="warn" mat-fab extended>Cancelar</button>
+      <button (click)="onSubmit()" color="primary" mat-fab extended>Guardar</button>
+  </mat-card-footer>
+</mat-card>
 
-  <div class="table-container mat-elevation-z8">
-    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
-      <ng-container matColumnDef="idContacto">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idContacto }} </mat-cell>
-      </ng-container>
+<div class="table-container mat-elevation-z8" *ngIf="isListMode">
+  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.nombre }} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="idCliente">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idCliente }} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="idEstatus">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="nombre">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.nombre }} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="telefono">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tel&eacute;fono </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.telefono }} </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="puesto">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Puesto </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.puesto }} </mat-cell>
-      </ng-container>
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a (click)="onEditContact(row)" mat-raised-button color="primary">Editar</a>
+      </mat-cell>
+    </ng-container>
 
-      <ng-container matColumnDef="telefono">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Tel&eacute;fono </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.telefono }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="extension">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Extensi&otilde; </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.extension }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.email }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="idTipo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idTipo }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fCaptura">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Captura </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.fCaptura }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="fModificacion">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de modificación </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.fModificacion }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="['/secure/client-contacts', row.idNorma]" mat-raised-button color="primary">Editar</a>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
-  </div>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
 </div>
