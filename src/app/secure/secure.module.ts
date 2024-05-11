@@ -46,6 +46,8 @@ import { StandardsComponent } from './standards/standards.component';
 import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
 import { ClientComponent } from './client/client.component';
 import { ClientContactComponent } from './client/client-contact/client-contact.component';
+import { ClientRepresentativeComponent } from './client/client-representative/client-representative.component';
+import { ClientAddressComponent } from './client/client-address/client-address.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { ClientContactComponent } from './client/client-contact/client-contact.c
     StandardsComponent,
     StandardDetailComponent,
     ClientComponent,
-    ClientContactComponent
+    ClientContactComponent,
+    ClientRepresentativeComponent,
+    ClientAddressComponent
   ],
   imports: [
     SecureRoutingModule,

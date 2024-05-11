@@ -11,12 +11,12 @@
     </div>
   </mat-card-content>
   <mat-card-content *ngIf="!isListMode">
-    <form [formGroup]="clientContactForm">
+    <form [formGroup]="clientAddressForm">
       <div class="form-container">
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>ID</mat-label>
-            <input matInput formControlName="idContacto" appCurrencyMask type="text" />
+            <input matInput formControlName="idLugar" appCurrencyMask type="text" />
           </mat-form-field>
         </div>
         <div class="form-cell-3">
@@ -29,47 +29,74 @@
           </mat-form-field>
         </div>
         <div class="form-cell-3">
+          <mat-checkbox formControlName="prioridad" color="primary">Prioridad</mat-checkbox>
+        </div>
+        <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Puesto</mat-label>
-            <input matInput formControlName="puesto" type="text" />
+            <mat-label>Calle</mat-label>
+            <input matInput formControlName="calle" type="text" />
             <mat-error>
-              <error-message nomCampo="Puesto"></error-message>
+              <error-message nomCampo="Calle"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Tel&eacute;fono</mat-label>
-            <input matInput formControlName="telefono" type="text" />
+            <mat-label>N&uacute;mero</mat-label>
+            <input matInput formControlName="numero" type="text" />
             <mat-error>
-              <error-message nomCampo="Teléfono"></error-message>
+              <error-message nomCampo="Número"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Extensi&otilde;</mat-label>
-            <input matInput formControlName="extension" type="text" />
+            <mat-label>Colonia</mat-label>
+            <input matInput formControlName="colonia" type="text" />
             <mat-error>
-              <error-message nomCampo="Extensión"></error-message>
+              <error-message nomCampo="Colonia"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="text" />
+            <mat-label>Municipio</mat-label>
+            <input matInput formControlName="municipio" type="text" />
             <mat-error>
-              <error-message nomCampo="Email"></error-message>
+              <error-message nomCampo="Municipio"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
+            <mat-form-field appearance="outline">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="idEstado" required>
+                    <mat-option *ngFor="let state of states"
+                        [value]="state.idEstado">{{state.nombre}}</mat-option>
+                </mat-select>
+                <mat-error>
+                    <error-message nomCampo="Estado"></error-message>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+            <mat-form-field appearance="outline">
+                <mat-label>Pa&iacute;s</mat-label>
+                <mat-select formControlName="idPais" required>
+                    <mat-option *ngFor="let country of countries"
+                        [value]="country.idPais">{{country.nombre}}</mat-option>
+                </mat-select>
+                <mat-error>
+                    <error-message nomCampo="País"></error-message>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Tipo</mat-label>
-            <input matInput formControlName="idTipo" type="text" />
+            <mat-label>C.P.</mat-label>
+            <input matInput formControlName="cp" type="text" />
             <mat-error>
-              <error-message nomCampo="Tipo"></error-message>
+              <error-message nomCampo="C.P."></error-message>
             </mat-error>
           </mat-form-field>
         </div>
@@ -92,20 +119,30 @@
       <mat-cell *matCellDef="let row"> {{ row.nombre }} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="calle">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tel&eacute;fono </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.calle }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="numero">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> N&uacute;mero </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.numero }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="prioridad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Prioridad </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.prioridad }} </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="idEstatus">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="telefono">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Tel&eacute;fono </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.telefono }} </mat-cell>
-    </ng-container>
-
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <a (click)="onEditContact(row)" mat-raised-button color="primary">Editar</a>
+        <a (click)="onEditAddress(row)" mat-raised-button color="primary">Editar</a>
       </mat-cell>
     </ng-container>
 

@@ -9,6 +9,6 @@ export class PromoterService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Promoter[]> {
-    return this.http.get<Promoter[]>(`${environment.url}Promotores/GetAll`);
+    return this.http.get<Promoter[]>(`${environment.url}Promotores/GetActive`);
   }
 }

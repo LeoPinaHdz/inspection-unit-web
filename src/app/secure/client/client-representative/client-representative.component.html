@@ -11,12 +11,12 @@
     </div>
   </mat-card-content>
   <mat-card-content *ngIf="!isListMode">
-    <form [formGroup]="clientContactForm">
+    <form [formGroup]="clientRepresentativeForm">
       <div class="form-container">
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>ID</mat-label>
-            <input matInput formControlName="idContacto" appCurrencyMask type="text" />
+            <input matInput formControlName="idRepresentante" appCurrencyMask type="text" />
           </mat-form-field>
         </div>
         <div class="form-cell-3">
@@ -30,10 +30,69 @@
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Puesto</mat-label>
-            <input matInput formControlName="puesto" type="text" />
+            <mat-label>Testimonio / Acta</mat-label>
+            <input matInput formControlName="acta" type="text" />
             <mat-error>
-              <error-message nomCampo="Puesto"></error-message>
+              <error-message nomCampo="Testimonio / Acta"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>No. Notaria</mat-label>
+            <input matInput formControlName="notaria" type="text" />
+            <mat-error>
+              <error-message nomCampo="No. Notaria"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Notario</mat-label>
+            <input matInput formControlName="notario" type="text" />
+            <mat-error>
+              <error-message nomCampo="Notario"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Lugar Notaria</mat-label>
+            <input matInput formControlName="lugar" type="text" />
+            <mat-error>
+              <error-message nomCampo="Lugar Notaria"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>De Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fNotaria" required />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>
+              <error-message [control]="form.fNotaria" nomCampo="De Fecha"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Identificaci&oacute;n</mat-label>
+            <mat-select formControlName="idIdentificacion" required>
+                <mat-option *ngFor="let identification of identifications" [value]="identification.idIdentificacion">{{identification.nombre}}</mat-option>
+            </mat-select>
+            <mat-error>
+              <error-message nomCampo="Identificación"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>No. Identificaci&oacute;n</mat-label>
+            <input matInput formControlName="noIdentificacion" type="text" />
+            <mat-error>
+              <error-message nomCampo="No. Identificación"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
@@ -48,28 +107,10 @@
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Extensi&otilde;</mat-label>
-            <input matInput formControlName="extension" type="text" />
-            <mat-error>
-              <error-message nomCampo="Extensión"></error-message>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="form-cell-3">
-          <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" type="text" />
             <mat-error>
               <error-message nomCampo="Email"></error-message>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="form-cell-3">
-          <mat-form-field appearance="outline">
-            <mat-label>Tipo</mat-label>
-            <input matInput formControlName="idTipo" type="text" />
-            <mat-error>
-              <error-message nomCampo="Tipo"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
@@ -105,7 +146,7 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <a (click)="onEditContact(row)" mat-raised-button color="primary">Editar</a>
+        <a (click)="onEditRepresentative(row)" mat-raised-button color="primary">Editar</a>
       </mat-cell>
     </ng-container>
 

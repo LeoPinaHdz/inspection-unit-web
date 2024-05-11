@@ -17,8 +17,6 @@ export class StandardsComponent implements OnInit{
     'descripcion', 
     'puntos',
     'exceptos',
-    'fCaptura',
-    'fModificacion',
     'action'
   ];
   dataSource: MatTableDataSource<Standard> = new MatTableDataSource();

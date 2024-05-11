@@ -41,14 +41,13 @@ export class ClientContactComponent implements OnInit, OnChanges {
     this.dataSource.sort = this.sort;
     this.clientContactForm = new FormGroup({
       idContacto: new FormControl({ value: '', disabled: true }, []),
-      idCliente: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
       puesto: new FormControl(''),
       telefono: new FormControl(''),
       extension: new FormControl(''),
       email: new FormControl(''),
       idTipo: new FormControl('', [Validators.required]),
-      active: new FormControl('', [Validators.required])
+      active: new FormControl(false, [Validators.required])
     });
   }
 
@@ -75,27 +74,31 @@ export class ClientContactComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     this.clientContactForm.markAllAsTouched();
+    console.log(this.clientContactForm);
+    console.log(this.clientContactForm.valid);
     if (!this.clientContactForm.valid) return;
 
     const clientContactRequest = this.clientContactForm.getRawValue();
-    clientContactRequest.idEstatus = clientContactRequest.active ? 1 : 4;
+    clientContactRequest.idEstatus = clientContactRequest.active ? 1 : 3;
+    clientContactRequest.idCliente = clientContactRequest.idCliente || this.client.idCliente;
 
     this.clientContactService.save(clientContactRequest)
       .pipe()
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El contacto con ID: ${clientContactRequest.idContacto} fue guardada con éxito` },
+            data: { type: 'success', message: `El contacto ${clientContactRequest.idContacto || ''} fue guardada con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
               this.clientContactForm.reset();
+              this.loadAllClientContacts(this.client.idCliente);
             });
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el contacto con ID: ${clientContactRequest.idContacto}` },
+            data: { type: 'error', message: `Error al guardar el contacto ${clientContactRequest.idContacto || ''}` },
           });
           console.error('Error trying to save clientContact');
         }

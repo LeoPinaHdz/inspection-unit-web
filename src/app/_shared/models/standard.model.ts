@@ -4,8 +4,8 @@ export interface Standard {
     descripcion: string;
     puntos?: string;
     exceptos?: Number;
-    fCaptura: string;
-    fModificacion: string;
+    fCaptura?: string;
+    fModificacion?: string;
     idUsuario: Number;
     idEstatus: Number;
 }

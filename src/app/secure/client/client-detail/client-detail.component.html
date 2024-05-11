@@ -139,7 +139,7 @@
                         <mat-label>Promotor</mat-label>
                         <mat-select formControlName="idPromotor" required>
                             <mat-option *ngFor="let promoter of promoters"
-                                [value]="promoter.idEstado">{{promoter.nombre}}</mat-option>
+                                [value]="promoter.idPromotor">{{promoter.nombre}}</mat-option>
                         </mat-select>
                         <mat-error>
                             <error-message nomCampo="Promotor"></error-message>

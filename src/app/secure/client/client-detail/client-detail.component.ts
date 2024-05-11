@@ -13,14 +13,13 @@ import { PromoterService } from 'src/app/_shared/services/promoter.service';
 @Component({
   selector: 'client-detail',
   templateUrl: './client-detail.component.html',
-  styleUrls: ['./client-detail.component.scss'],
 })
 export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   @Input() client: Client = { idCliente: 0 };
   @Input() isEdit: Boolean = false;
+  @Input() countries: any[] = [];
+  @Input() states: any[] = [];
   id: any;
-  countries: any[] = [];
-  states: any[] = [];
   promoters: any[] = [];
   clientForm!: FormGroup;
   _onDestroy = new Subject<void>();
@@ -31,8 +30,6 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private router: Router,
     private clientService: ClientService,
-    private countryService: CountryService,
-    private stateService: StateService,
     private promoterService: PromoterService,
     private dialog: MatDialog
   ) {
@@ -54,7 +51,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
       tipoMunicipio: new FormControl('', [Validators.required]),
       idPromotor: new FormControl('', [Validators.required]),
       idEjecutivo: new FormControl('', [Validators.required]),
-      active: new FormControl('', [Validators.required])
+      active: new FormControl(false, [Validators.required])
     });
   }
 
@@ -64,39 +61,6 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.countryService.getAll()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.countries = response;
-          if (!this.isEdit) this.clientForm.get('idPais')!.setValue(this.countries[0].idPais);
-        },
-        error: () => {
-          console.error('Error trying to get countries');
-        }
-      });
-    this.stateService.getAll()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.states = response;
-          if (!this.isEdit) this.clientForm.get('idEstado')!.setValue(this.states[0].idEstado);
-        },
-        error: () => {
-          console.error('Error trying to get states');
-        }
-      });
-    this.stateService.getAll()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.states = response;
-          if (!this.isEdit) this.clientForm.get('idEstado')!.setValue(this.states[0].idEstado);
-        },
-        error: () => {
-          console.error('Error trying to get states');
-        }
-      });
     this.promoterService.getAll()
       .pipe()
       .subscribe({
@@ -113,6 +77,12 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.client && this.client.idCliente !== 0) {
       this.updateForm(this.client);
+    }
+    if (changes.countries && this.isEdit) {
+      this.clientForm.get('idPais')!.setValue(this.countries[0].idPais);
+    }
+    if (changes.states && this.isEdit) {
+      this.clientForm.get('idEstado')!.setValue(this.states[0].idEstado);
     }
   }
 
@@ -159,7 +129,9 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
-              this.router.navigate([`/secure/clients`]);
+              if (!this.isEdit) {
+                this.router.navigate(['/secure/client', response.idCliente]);
+              }
             });
         },
         error: () => {

@@ -9,16 +9,16 @@ export class ClientContactService {
   constructor(private http: HttpClient) { }
 
   getAll(idCliente: number): Observable<ClientContact[]> {
-    return this.http.get<ClientContact[]>(`${environment.url}ClientContact/GetByClientes?idCliente${idCliente}`);
+    return this.http.get<ClientContact[]>(`${environment.url}Contacto/GetByCliente?id=${idCliente}`);
   }
 
   getById(id: number): Observable<ClientContact> {
-    return this.http.get<ClientContact>(`${environment.url}ClientContact/Get?id=${id}`);
+    return this.http.get<ClientContact>(`${environment.url}Contacto/Get?id=${id}`);
   }
 
   save(clientContact: ClientContact): Observable<any> {
     if (!clientContact.idContacto || clientContact.idContacto === 0)
-      return this.http.post<any>(`${environment.url}ClientContact/Create`, clientContact);
-    return this.http.put<any>(`${environment.url}ClientContact/Update`, clientContact);
+      return this.http.post<any>(`${environment.url}Contacto/Create`, clientContact);
+    return this.http.put<any>(`${environment.url}Contacto/Update`, clientContact);
   }
 }

@@ -10,16 +10,18 @@
     <mat-card-content>
         <mat-tab-group>
             <mat-tab label="Generales">
-                <client-detail [client]="client" [isEdit]="isEdit"></client-detail>
+                <client-detail [client]="client" [isEdit]="isEdit" [countries]="countries" [states]="states"></client-detail>
             </mat-tab>
-            <mat-tab label="Notariales">
+            <mat-tab label="Notariales" *ngIf="isEdit">
                 <client-list></client-list>
             </mat-tab>
-            <mat-tab label="Dom. Verificación">
+            <mat-tab label="Dom. Verificación" *ngIf="isEdit">
+                <client-address [client]="client" [countries]="countries" [states]="states"></client-address>
             </mat-tab>
-            <mat-tab label="Representantes">
+            <mat-tab label="Representantes" *ngIf="isEdit">
+                <client-representative [client]="client"></client-representative>
             </mat-tab>
-            <mat-tab label="Contactos">
+            <mat-tab label="Contactos" *ngIf="isEdit">
                 <client-contact [client]="client"></client-contact>
             </mat-tab>
         </mat-tab-group>
