@@ -5,7 +5,7 @@ export interface ClientNotarialData {
     notaria?: string;
     notario?: string;
     lugar?: string;
-    fNotaria?: Number;
+    fNotaria?: String;
     fCaptura?: string;
     fModificacion?: string;
     idUsuario?: Number;

@@ -39,6 +39,18 @@
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
+            <mat-label>De Fecha</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="fNotaria" required />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>
+              <error-message [control]="form.fNotaria" nomCampo="De Fecha"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
             <mat-label>Notario</mat-label>
             <input matInput formControlName="notario" type="text" />
             <mat-error>

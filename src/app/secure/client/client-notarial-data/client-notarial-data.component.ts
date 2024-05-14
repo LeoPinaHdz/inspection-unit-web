@@ -43,8 +43,9 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
     this.dataSource.sort = this.sort;
     this.clientNotarialDataForm = new FormGroup({
       idNotarial: new FormControl({ value: '', disabled: true }, []),
-      acta: new FormControl('', [Validators.required]),
+      acta: new FormControl(''),
       notaria: new FormControl(''),
+      fNotaria: new FormControl(''),
       notario: new FormControl(''),
       lugar: new FormControl(''),
       active: new FormControl(false, [Validators.required])
@@ -120,6 +121,7 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
       idNotarial: clientNotarialData.idNotarial,
       idCliente: clientNotarialData.idCliente,
       acta: clientNotarialData.acta,
+      fNotaria: clientNotarialData.fNotaria,
       notaria: clientNotarialData.notaria,
       notario: clientNotarialData.notario,
       active: (clientNotarialData.idEstatus && clientNotarialData.idEstatus === 1) || false
@@ -133,5 +135,9 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  } 
+  
+  get form() {
+    return this.clientNotarialDataForm.controls;
   }
 }
