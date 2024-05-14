@@ -14,6 +14,8 @@ import { ClientListComponent } from './client/client-list/client-list.component'
 import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
 import { StandardsComponent } from './standards/standards.component';
 import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
+import { ExecutivesComponent } from './executive/executive-list/executive-list.component';
+import { ExecutiveDetailComponent } from './executive/executive-detail/executive-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -25,9 +27,9 @@ const routes: Routes = [
   { path: 'standards/new', component: StandardDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
   { path: 'standards/:id', component: StandardDetailComponent, canActivate: [AuthGuard], data: {role: 'NORMAS'}},
 
-  { path: 'executives', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'} },
-  { path: 'executive/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},
-  { path: 'executive/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},
+  { path: 'executives', component: ExecutivesComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'} },
+  { path: 'executive/new', component: ExecutiveDetailComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},
+  { path: 'executive/:id', component: ExecutiveDetailComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},
   
   { path: 'officers', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'} },
   { path: 'officer/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},

@@ -155,3 +155,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --mdc-fab-container-color: gray !important;
   margin-bottom: 12px;
 }
+
+.form-button {
+  margin-left: 80px;
+  margin-right: 80px;
+}

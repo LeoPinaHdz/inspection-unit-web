@@ -22,6 +22,8 @@ import { StateService } from './services/state.service';
 import { PromoterService } from './services/promoter.service';
 import { ClientRepresentativeService } from './services/client-representative.service';
 import { ClientAddressService } from './services/client-address.service';
+import { ClientNotarialDataService } from './services/client-notarial-data';
+import { ExecutiveService } from './services/executive.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -49,7 +51,9 @@ import { ClientAddressService } from './services/client-address.service';
     StateService,
     PromoterService,
     ClientRepresentativeService,
-    ClientAddressService
+    ClientAddressService,
+    ClientNotarialDataService,
+    ExecutiveService
   ],
 })
 export class SharedModule { }

@@ -11,65 +11,47 @@
     </div>
   </mat-card-content>
   <mat-card-content *ngIf="!isListMode">
-    <form [formGroup]="clientContactForm">
+    <form [formGroup]="clientNotarialDataForm">
       <div class="form-container">
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>ID</mat-label>
-            <input matInput formControlName="idContacto" appCurrencyMask type="text" />
+            <input matInput formControlName="idNotarial" appCurrencyMask type="text" />
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Nombre</mat-label>
-            <input matInput formControlName="nombre" type="text" required />
+            <mat-label>Acta</mat-label>
+            <input matInput formControlName="acta" type="text" required />
             <mat-error>
-              <error-message nomCampo="Nombre"></error-message>
+              <error-message nomCampo="Acta"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Puesto</mat-label>
-            <input matInput formControlName="puesto" type="text" />
+            <mat-label>Notaria</mat-label>
+            <input matInput formControlName="notaria" type="text" />
             <mat-error>
-              <error-message nomCampo="Puesto"></error-message>
+              <error-message nomCampo="Notaria"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Tel&eacute;fono</mat-label>
-            <input matInput formControlName="telefono" type="text" />
+            <mat-label>Notario</mat-label>
+            <input matInput formControlName="notario" type="text" />
             <mat-error>
-              <error-message nomCampo="Teléfono"></error-message>
+              <error-message nomCampo="Notario"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Extensi&otilde;</mat-label>
-            <input matInput formControlName="extension" type="text" />
+            <mat-label>Lugar</mat-label>
+            <input matInput formControlName="lugar" type="text" />
             <mat-error>
-              <error-message nomCampo="Extensión"></error-message>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="form-cell-3">
-          <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="text" />
-            <mat-error>
-              <error-message nomCampo="Email"></error-message>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="form-cell-3">
-          <mat-form-field appearance="outline">
-            <mat-label>Tipo</mat-label>
-            <input matInput formControlName="idTipo" type="text" />
-            <mat-error>
-              <error-message nomCampo="Tipo"></error-message>
+              <error-message nomCampo="Lugar"></error-message>
             </mat-error>
           </mat-form-field>
         </div>
@@ -80,16 +62,16 @@
     </form>
   </mat-card-content>
   <mat-card-footer *ngIf="!isListMode">
-      <button class="form-button" (click)="onCancel()" color="warn" mat-fab extended>Cancelar</button>
-      <button class="form-button" (click)="onSubmit()" mat-fab extended>Guardar</button>
+    <button class="form-button" (click)="onCancel()" color="warn" mat-fab extended>Cancelar</button>
+    <button class="form-button" (click)="onSubmit()" mat-fab extended>Guardar</button>
   </mat-card-footer>
 </mat-card>
 
 <div class="table-container mat-elevation-z8" *ngIf="isListMode">
   <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
-    <ng-container matColumnDef="nombre">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.nombre }} </mat-cell>
+    <ng-container matColumnDef="acta">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Acta </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.acta }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="idEstatus">
@@ -97,15 +79,25 @@
       <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="telefono">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Tel&eacute;fono </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.telefono }} </mat-cell>
+    <ng-container matColumnDef="notaria">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Notaria </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.notaria }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="notario">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Notario </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.notario }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lugar">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Lugar </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.lugar }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <a (click)="onEditContact(row)" mat-raised-button color="primary">Editar</a>
+        <a (click)="onEditNotarialData(row)" mat-raised-button color="primary">Editar</a>
       </mat-cell>
     </ng-container>
 
