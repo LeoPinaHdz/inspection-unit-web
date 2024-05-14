@@ -80,10 +80,10 @@
           <mat-form-field appearance="outline">
             <mat-label>Identificaci&oacute;n</mat-label>
             <mat-select formControlName="idIdentificacion" required>
-                <mat-option *ngFor="let identification of identifications" [value]="identification.idIdentificacion">{{identification.nombre}}</mat-option>
+                <mat-option *ngFor="let type of typesId" [value]="type.idTipo">{{type.nombre}}</mat-option>
             </mat-select>
             <mat-error>
-              <error-message nomCampo="Identificación"></error-message>
+              <error-message [control]="form.idIdentificacion" nomCampo="Identificación"></error-message>
             </mat-error>
           </mat-form-field>
         </div>

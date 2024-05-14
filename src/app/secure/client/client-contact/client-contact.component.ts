@@ -35,10 +35,6 @@ export class ClientContactComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    const sampleData = [{ idContacto: 1, nombre: 'Prueba', idEstatus: 1, telefono: '123' }] as ClientContact[];
-    this.dataSource = new MatTableDataSource(sampleData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.clientContactForm = new FormGroup({
       idContacto: new FormControl({ value: '', disabled: true }, []),
       nombre: new FormControl('', [Validators.required]),

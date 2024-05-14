@@ -8,6 +8,7 @@ import { Client } from 'src/app/_shared/models/client.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
+import { CatIdService } from 'src/app/_shared/services/type-id.service';
 
 @Component({
   selector: 'client-representative',
@@ -17,6 +18,7 @@ import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/
 export class ClientRepresentativeComponent implements OnInit, OnChanges {
   @Input() client: Client = { idCliente: 0 };
   isListMode = true;
+  typesId: any[] = [];
   displayedColumns: string[] = [
     'nombre',
     'idEstatus',
@@ -25,24 +27,19 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
   ];
   dataSource: MatTableDataSource<ClientRepresentative> = new MatTableDataSource();
   clientRepresentativeForm!: FormGroup;
-  identifications = [{idIdentificacion: 1, nombre: 'Tipo'}]
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   constructor(
     private clientRepresentativeService: ClientRepresentativeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private catIdService: CatIdService
   ) { }
 
   ngOnInit() {
-    const sampleData = [{ idRepresentante: 1, nombre: 'Prueba', idEstatus: 1, telefono: '123' }] as ClientRepresentative[];
-    this.dataSource = new MatTableDataSource(sampleData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.clientRepresentativeForm = new FormGroup({
       idRepresentante: new FormControl({ value: '', disabled: true }, []),
-      idCliente: new FormControl('', [Validators.required]),
       nombre: new FormControl('', [Validators.required]),
       acta: new FormControl(''),
       telefono: new FormControl(''),
@@ -53,8 +50,20 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
       lugar: new FormControl(''),
       idIdentificacion: new FormControl(''),
       noIdentificacion: new FormControl(''),
-      active: new FormControl('', [Validators.required])
+      active: new FormControl(false, [Validators.required])
     });
+
+    this.catIdService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.typesId = response;
+          if (response.length > 0) this.clientRepresentativeForm.get('idIdentificacion')!.setValue(this.typesId[0].idTipo);
+        },
+        error: () => {
+          console.error('Error trying to get types id');
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -83,24 +92,29 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
     if (!this.clientRepresentativeForm.valid) return;
 
     const clientRepresentativeRequest = this.clientRepresentativeForm.getRawValue();
-    clientRepresentativeRequest.idEstatus = clientRepresentativeRequest.active ? 1 : 4;
+    console.log(clientRepresentativeRequest);
+    console.log(this.clientRepresentativeForm.get('idIdentificacion')!.value);
+    console.log(this.clientRepresentativeForm);
+    clientRepresentativeRequest.idEstatus = clientRepresentativeRequest.active ? 1 : 3;
+    clientRepresentativeRequest.idCliente = clientRepresentativeRequest.idCliente || this.client.idCliente;
 
     this.clientRepresentativeService.save(clientRepresentativeRequest)
       .pipe()
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El representativeo con ID: ${clientRepresentativeRequest.idRepresentativeo} fue guardada con éxito` },
+            data: { type: 'success', message: `El representativeo ${clientRepresentativeRequest.idRepresentante} fue guardada con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
               this.clientRepresentativeForm.reset();
+              this.loadAllClientRepresentatives(this.client.idCliente);
             });
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el representativeo con ID: ${clientRepresentativeRequest.idRepresentativeo}` },
+            data: { type: 'error', message: `Error al guardar el representativeo ${clientRepresentativeRequest.idRepresentante}` },
           });
           console.error('Error trying to save clientRepresentative');
         }
