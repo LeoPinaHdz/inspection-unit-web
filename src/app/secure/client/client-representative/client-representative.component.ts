@@ -48,7 +48,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
       notario: new FormControl(''),
       fNotaria: new FormControl(''),
       lugar: new FormControl(''),
-      idIdentificacion: new FormControl(''),
+      idIdentificacion: new FormControl('', [Validators.required]),
       noIdentificacion: new FormControl(''),
       active: new FormControl(false, [Validators.required])
     });
@@ -92,9 +92,6 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
     if (!this.clientRepresentativeForm.valid) return;
 
     const clientRepresentativeRequest = this.clientRepresentativeForm.getRawValue();
-    console.log(clientRepresentativeRequest);
-    console.log(this.clientRepresentativeForm.get('idIdentificacion')!.value);
-    console.log(this.clientRepresentativeForm);
     clientRepresentativeRequest.idEstatus = clientRepresentativeRequest.active ? 1 : 3;
     clientRepresentativeRequest.idCliente = clientRepresentativeRequest.idCliente || this.client.idCliente;
 

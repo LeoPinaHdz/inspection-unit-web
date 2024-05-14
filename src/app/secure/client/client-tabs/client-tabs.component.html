@@ -13,7 +13,7 @@
                 <client-detail [client]="client" [isEdit]="isEdit" [countries]="countries" [states]="states"></client-detail>
             </mat-tab>
             <mat-tab label="Notariales" *ngIf="isEdit">
-                <client-list></client-list>
+                <client-notarial-data [client]="client"></client-notarial-data>
             </mat-tab>
             <mat-tab label="Dom. Verificación" *ngIf="isEdit">
                 <client-address [client]="client" [countries]="countries" [states]="states"></client-address>

@@ -17,8 +17,6 @@ export class ClientRepresentativeService {
   }
 
   save(clientRepresentative: ClientRepresentative): Observable<any> {
-    console.log(clientRepresentative);
-    console.log(clientRepresentative.idIdentificacion);
     if (!clientRepresentative.idRepresentante || clientRepresentative.idRepresentante === 0)
       return this.http.post<any>(`${environment.url}ClienteRepresentante/Create`, clientRepresentative);
     return this.http.put<any>(`${environment.url}ClienteRepresentante/Update`, clientRepresentative);

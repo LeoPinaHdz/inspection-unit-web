@@ -23,6 +23,8 @@ import { PromoterService } from './services/promoter.service';
 import { ClientRepresentativeService } from './services/client-representative.service';
 import { ClientAddressService } from './services/client-address.service';
 import { CatIdService } from './services/type-id.service';
+import { ClientNotarialDataService } from './services/client-notarial-data';
+import { ExecutiveService } from './services/executive.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -51,7 +53,9 @@ import { CatIdService } from './services/type-id.service';
     PromoterService,
     ClientRepresentativeService,
     ClientAddressService,
-    CatIdService
+    CatIdService,
+    ClientNotarialDataService,
+    ExecutiveService
   ],
 })
 export class SharedModule { }
