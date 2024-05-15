@@ -1,4 +1,4 @@
-<h1 [ngClass]="data.type === 'error' ? 'error-dialog-header' : 'success-dialog-header'"  mat-dialog-title>{{data.type === 'error' ? 'Error' : 'Operación exitosa'}}</h1>
+<h1 [ngClass]="data.type + '-dialog-header'"  mat-dialog-title>{{getTitle()}}</h1>
 <div mat-dialog-content>
     <p>{{data.message}}</p>
 </div>

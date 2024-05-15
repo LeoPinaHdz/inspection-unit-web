@@ -9,17 +9,21 @@ export class ExecutiveService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Executive[]> {
-    return this.http.get<Executive[]>(`${environment.url}Ejecutivo/GetAll`);
+    return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetAll`);
+  }
+  
+  getActive(): Observable<Executive[]> {
+    return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetAll`);
   }
 
   getById(id: number): Observable<Executive> {
-    return this.http.get<Executive>(`${environment.url}Ejecutivo/Get?id=${id}`);
+    return this.http.get<Executive>(`${environment.url}Ejecutive/Get?id=${id}`);
   }
 
   save(executive: Executive): Observable<any> {
     if (!executive.idEjecutivo || executive.idEjecutivo === 0)
-      return this.http.post<any>(`${environment.url}Ejecutivo/Create`, executive);
-    return this.http.put<any>(`${environment.url}Ejecutivo/Update`, executive);
+      return this.http.post<any>(`${environment.url}Ejecutive/Create`, executive);
+    return this.http.put<any>(`${environment.url}Ejecutive/Update`, executive);
   }
 }
 

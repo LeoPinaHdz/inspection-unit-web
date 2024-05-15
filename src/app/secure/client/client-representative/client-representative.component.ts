@@ -105,7 +105,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientRepresentativeForm.reset();
+              this.clientRepresentativeForm.reset({active: false});
               this.loadAllClientRepresentatives(this.client.idCliente);
             });
         },
@@ -120,7 +120,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientRepresentativeForm.reset();
+    this.clientRepresentativeForm.reset({active: false});
   }
 
   onEditRepresentative(clientRepresentative: ClientRepresentative): void {

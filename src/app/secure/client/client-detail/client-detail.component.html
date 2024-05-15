@@ -149,7 +149,10 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Ejecutivo</mat-label>
-                        <input matInput formControlName="idEjecutivo" type="text" required />
+                        <mat-select formControlName="idEjecutivo" required>
+                            <mat-option *ngFor="let executive of executives"
+                                [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
+                        </mat-select>
                         <mat-error>
                             <error-message nomCampo="Ejecutivo"></error-message>
                         </mat-error>

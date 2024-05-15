@@ -9,6 +9,7 @@ import { CountryService } from 'src/app/_shared/services/country.service';
 import { Client } from 'src/app/_shared/models/client.model';
 import { StateService } from 'src/app/_shared/services/state.service';
 import { PromoterService } from 'src/app/_shared/services/promoter.service';
+import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 
 @Component({
   selector: 'client-detail',
@@ -21,6 +22,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   @Input() states: any[] = [];
   id: any;
   promoters: any[] = [];
+  executives: any[] = [];
   clientForm!: FormGroup;
   _onDestroy = new Subject<void>();
   allClientsSelected: boolean = false;
@@ -31,7 +33,8 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
     private router: Router,
     private clientService: ClientService,
     private promoterService: PromoterService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private executiveService: ExecutiveService
   ) {
     this.clientForm = new FormGroup({
       idCliente: new FormControl({ value: '', disabled: true }, []),
@@ -61,7 +64,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit() {
-    this.promoterService.getAll()
+    this.promoterService.getActive()
       .pipe()
       .subscribe({
         next: (response) => {
@@ -72,16 +75,28 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
           console.error('Error trying to get promoters');
         }
       });
+      
+    this.executiveService.getActive()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.executives = response;
+          if (!this.isEdit && response.length > 0) this.clientForm.get('idEjecutivo')!.setValue(this.executives[0].idEjecutivo);
+        },
+        error: () => {
+          console.error('Error trying to get executives');
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.client && this.client.idCliente !== 0) {
       this.updateForm(this.client);
     }
-    if (changes.countries && this.isEdit) {
+    if (changes.countries && this.isEdit && this.countries.length > 0) {
       this.clientForm.get('idPais')!.setValue(this.countries[0].idPais);
     }
-    if (changes.states && this.isEdit) {
+    if (changes.states && this.isEdit && this.states.length > 0) {
       this.clientForm.get('idEstado')!.setValue(this.states[0].idEstado);
     }
   }

@@ -10,7 +10,6 @@ import { Executive } from 'src/app/_shared/models/executive.model';
 @Component({
     selector: 'executives',
     templateUrl: './executive-detail.component.html',
-    styleUrls: ['./executive-detail.component.scss'],
   })
 export class ExecutiveDetailComponent implements OnInit, OnDestroy{
   id: any;
@@ -81,21 +80,8 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
     this.executiveForm.markAllAsTouched();
     if (!this.executiveForm.valid) return;
 
-    let executiveRequest: Executive;
-
-    if (this.isEdit) {
-      const executiveForm = this.executiveForm.getRawValue();
-
-      this.executive.nombre = executiveForm.nombre;
-      this.executive.telefono = executiveForm.telefono;
-      this.executive.email = executiveForm.email;
-
-      executiveRequest = this.executive;
-    } else {
-      executiveRequest = this.executiveForm.getRawValue();
-    }
-
-    executiveRequest.idEstatus = this.active ? 1 : 2;
+    const executiveRequest = this.executiveForm.getRawValue();;
+    executiveRequest.idEstatus = this.active ? 1 : 3;
 
     this.executiveService.save(executiveRequest)
     .pipe()

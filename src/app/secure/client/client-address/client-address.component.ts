@@ -62,10 +62,10 @@ export class ClientAddressComponent implements OnInit, OnChanges {
     if (changes.client && this.client.idCliente !== 0) {
       this.loadAllClientAddresss(this.client.idCliente);
     }
-    if (changes.countries && !this.clientAddressForm.get('idPais')!.value) {
+    if (changes.countries && this.countries.length > 0 && !this.clientAddressForm.get('idPais')!.value) {
       this.clientAddressForm.get('idPais')!.setValue(this.countries[0].idPais);
     }
-    if (changes.states && !this.clientAddressForm.get('idEstado')!.value) {
+    if (changes.states && this.states.length > 0 && !this.clientAddressForm.get('idEstado')!.value) {
       this.clientAddressForm.get('idEstado')!.setValue(this.states[0].idEstado);
     }
   }
@@ -105,7 +105,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientAddressForm.reset();
+              this.clientAddressForm.reset({active: false});
               this.loadAllClientAddresss(this.client.idCliente);
             });
         },
@@ -120,7 +120,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientAddressForm.reset();
+    this.clientAddressForm.reset({active: false});
   }
 
   onEditAddress(clientAddress: ClientAddress): void {

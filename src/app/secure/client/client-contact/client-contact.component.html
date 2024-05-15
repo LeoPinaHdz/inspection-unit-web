@@ -48,7 +48,7 @@
         </div>
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
-            <mat-label>Extensi&otilde;</mat-label>
+            <mat-label>Extensi&oacute;n</mat-label>
             <input matInput formControlName="extension" type="text" />
             <mat-error>
               <error-message nomCampo="Extensión"></error-message>
@@ -67,7 +67,9 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Tipo</mat-label>
-            <input matInput formControlName="idTipo" type="text" />
+            <mat-select formControlName="idTipo" required>
+                <mat-option *ngFor="let type of contactTypes" [value]="type.idTipo">{{type.nombre}}</mat-option>
+            </mat-select>
             <mat-error>
               <error-message nomCampo="Tipo"></error-message>
             </mat-error>

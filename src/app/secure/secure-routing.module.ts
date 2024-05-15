@@ -1,18 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { ReceiptsComponent } from './receipts/receipts.component';
-import { ReceiptDetailComponent } from './receipt-detail/receipt-detail.component';
-import { OutboundsComponent } from './outbounds/outbounds.component';
 import { ReportsComponent } from './reports/reports.component';
-import { OrderComponent } from './order/order.component';
 import { AuthGuard } from '../_shared/components/guards/auth.guard';
 import { UsersComponent } from './user/user-list/user-list.component';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
-import { InventoryComponent } from './inventory/intenvory.component';
 import { ClientListComponent } from './client/client-list/client-list.component';
 import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
-import { StandardsComponent } from './standards/standards.component';
+import { StandardsComponent } from './standards/standard-list/standards.component';
 import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
 import { ExecutivesComponent } from './executive/executive-list/executive-list.component';
 import { ExecutiveDetailComponent } from './executive/executive-detail/executive-detail.component';
@@ -38,6 +33,10 @@ const routes: Routes = [
   { path: 'conversions', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'} },
   { path: 'conversion/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
   { path: 'conversion/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
+  
+  { path: 'promoters', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'} },
+  { path: 'promoter/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'}},
+  { path: 'promoter/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'}},
   
   { path: 'contracts', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'} },
   { path: 'contract/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
@@ -74,16 +73,7 @@ const routes: Routes = [
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'USUARIOS'} },
   { path: 'user/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'USUARIOS'}},
   { path: 'user/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'USUARIOS'}},
-  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: {role: 'REPORTES'} },
-
-
-  // TODO: remove unused paths
-  { path: 'inventory', component: InventoryComponent, canActivate: [AuthGuard], data: {role: 'INVENTARIO'} },
-  { path: 'receipts', component: ReceiptsComponent, canActivate: [AuthGuard], data: {role: 'RECIBOS'} },
-  { path: 'receipt-new', component: ReceiptDetailComponent, canActivate: [AuthGuard], data: {role: 'RECIBOS'} },
-  { path: 'receipt-detail/:id', component: ReceiptDetailComponent, canActivate: [AuthGuard], data: {role: 'RECIBOS'} },
-  { path: 'outbounds', component: OutboundsComponent, canActivate: [AuthGuard], data: {role: 'SALIDAS'} },
-  { path: 'order', component: OrderComponent, canActivate: [AuthGuard], data: {role: 'PEDIDOS'} }
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: {role: 'REPORTES'} }
 ];
 
 @NgModule({

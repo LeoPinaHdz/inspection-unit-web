@@ -137,6 +137,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 0.75rem;
 }
 
+.warning-dialog-header {
+  background-color: #f1ee0a;
+  color: #fff !important;
+}
+
 .error-dialog-header {
   background-color: #eb1616;
   color: #fff !important;

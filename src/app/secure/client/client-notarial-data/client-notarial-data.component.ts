@@ -37,10 +37,6 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    const sampleData = [{ idNotarial: 1, acta: 'Acta 1'}] as ClientNotarialData[];
-    this.dataSource = new MatTableDataSource(sampleData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.clientNotarialDataForm = new FormGroup({
       idNotarial: new FormControl({ value: '', disabled: true }, []),
       acta: new FormControl(''),
@@ -93,7 +89,7 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientNotarialDataForm.reset();
+              this.clientNotarialDataForm.reset({active: false});
               this.loadAllClientNotarialDatas(this.client.idCliente);
             });
         },
@@ -108,7 +104,7 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientNotarialDataForm.reset();
+    this.clientNotarialDataForm.reset({active: false});
   }
 
   onEditNotarialData(clientNotarialData: ClientNotarialData): void {

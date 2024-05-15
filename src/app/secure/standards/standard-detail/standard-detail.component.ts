@@ -9,6 +9,7 @@ import { Standard } from 'src/app/_shared/models/standard.model';
 import { StandardSpec } from 'src/app/_shared/models/state.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/_shared/components/confirmation-dialog/confirmation-dialog.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'standards',
@@ -107,8 +108,8 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
 
   showConfirmDeleteDialog(spec: StandardSpec): void {
     this.dialog.open(ConfirmationDialogComponent, {
-        data: `¿Esta seguro que desea eliminar el punto ${spec.punto}?`,
-      })
+      data: `¿Esta seguro que desea eliminar el punto ${spec.punto}?`,
+    })
       .afterClosed()
       .subscribe((confirmado: Boolean) => {
         if (confirmado) {
@@ -122,7 +123,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
     if (this.selectedSpec) {
       this.standardSpecs.push(this.selectedSpec);
       this.initDetailsTable(this.standardSpecs);
-      this.standardSpecForm.reset();
+      this.standardSpecForm.reset({ active: false });
       this.selectedSpec = undefined;
     }
   }
@@ -144,7 +145,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
     }
     this.selectedSpec = undefined;
     this.initDetailsTable(this.standardSpecs, true);
-    this.standardSpecForm.reset();
+    this.standardSpecForm.reset({ active: false });
   }
 
   updateForm(standard: Standard): void {
@@ -155,7 +156,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
       puntos: standard.puntos,
       exceptos: standard.puntos,
       active: (standard.idEstatus && standard.idEstatus === 1) || false
-    });    
+    });
     this.standard = standard;
   }
 
@@ -185,6 +186,46 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
           console.error('Error trying to save standard');
         }
       });
+  }
+
+  loadFile(files: any) {
+    if (this.standardSpecs.length > 0) {
+      this.dialog.open(ConfirmationDialogComponent, {
+        data: 'Al cargar el archivo todas las especificaciones de norma seran reemplazadas por el contenido del archivo',
+      })
+        .afterClosed()
+        .subscribe((confirmed: Boolean) => {
+          if (confirmed) {
+            this.processFile(files);
+          }
+        });
+    } else {
+      this.processFile(files);
+    }
+  }
+
+  processFile(files: any) {
+    const file = files[0] as File;
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const specs = XLSX.utils.sheet_to_json(worksheet, { header: 1 }).map((row: any) => row[0]);
+      this.standardSpecs = [];
+
+      specs.filter(spec => spec && spec.trim() !== '').forEach(contenido => {
+        const idNormaPunto = 0;
+        const punto = this.standardSpecs.length + 1;
+
+        this.standardSpecs.push({ idNormaPunto, punto, contenido });
+      })
+      this.selectedSpec = undefined;
+      this.initDetailsTable(this.standardSpecs, true);
+      this.standardSpecForm.reset();
+    };
+    reader.readAsArrayBuffer(file);
   }
 
   get form() {

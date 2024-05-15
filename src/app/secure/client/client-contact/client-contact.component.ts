@@ -8,6 +8,7 @@ import { Client } from 'src/app/_shared/models/client.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
+import { ContactTypeService } from 'src/app/_shared/services/contact-type.service';
 
 @Component({
   selector: 'client-contact',
@@ -17,6 +18,7 @@ import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/
 export class ClientContactComponent implements OnInit, OnChanges {
   @Input() client: Client = { idCliente: 0 };
   isListMode = true;
+  contactTypes: any[] = [];
   displayedColumns: string[] = [
     'nombre',
     'idEstatus',
@@ -31,7 +33,8 @@ export class ClientContactComponent implements OnInit, OnChanges {
 
   constructor(
     private clientContactService: ClientContactService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private contactTypeService: ContactTypeService
   ) { }
 
   ngOnInit() {
@@ -45,6 +48,18 @@ export class ClientContactComponent implements OnInit, OnChanges {
       idTipo: new FormControl('', [Validators.required]),
       active: new FormControl(false, [Validators.required])
     });
+    
+    this.contactTypeService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.contactTypes = response;
+          if (response.length > 0) this.clientContactForm.get('idTipo')!.setValue(this.contactTypes[0].idTipo);
+        },
+        error: () => {
+          console.error('Error trying to get contact types');
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -88,7 +103,7 @@ export class ClientContactComponent implements OnInit, OnChanges {
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientContactForm.reset();
+              this.clientContactForm.reset({active: false});
               this.loadAllClientContacts(this.client.idCliente);
             });
         },
@@ -103,7 +118,7 @@ export class ClientContactComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientContactForm.reset();
+    this.clientContactForm.reset({active: false});
   }
 
   onEditContact(clientContact: ClientContact): void {
