@@ -68,7 +68,7 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
 
   updateForm(executive: Executive): void {
     this.executiveForm.patchValue({
-      idEjecutivo: executive.idUsuario,
+      idEjecutivo: executive.idEjecutivo,
       nombre: executive.nombre,
       telefono: executive.telefono,
       email: executive.email,

@@ -9,16 +9,16 @@ export class ClientAddressService {
   constructor(private http: HttpClient) { }
 
   getAll(idCliente: number): Observable<ClientAddress[]> {
-    return this.http.get<ClientAddress[]>(`${environment.url}Addresso/GetByCliente?id=${idCliente}`);
+    return this.http.get<ClientAddress[]>(`${environment.url}ClienteLugarInspeccion/GetByClienteLugar?id=${idCliente}`);
   }
 
   getById(id: number): Observable<ClientAddress> {
-    return this.http.get<ClientAddress>(`${environment.url}Addresso/Get?id=${id}`);
+    return this.http.get<ClientAddress>(`${environment.url}ClienteLugarInspeccion/Get?id=${id}`);
   }
 
   save(clientAddress: ClientAddress): Observable<any> {
     if (!clientAddress.idLugar || clientAddress.idLugar === 0)
-      return this.http.post<any>(`${environment.url}Addresso/Create`, clientAddress);
-    return this.http.put<any>(`${environment.url}Addresso/Update`, clientAddress);
+      return this.http.post<any>(`${environment.url}ClienteLugarInspeccion/Create`, clientAddress);
+    return this.http.put<any>(`${environment.url}ClienteLugarInspeccion/Update`, clientAddress);
   }
 }

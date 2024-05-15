@@ -39,10 +39,6 @@ export class ClientAddressComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    const sampleData = [{ idLugar: 1, nombre: 'Prueba', idEstatus: 1, calle: '123' }] as ClientAddress[];
-    this.dataSource = new MatTableDataSource(sampleData);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.clientAddressForm = new FormGroup({
       idLugar: new FormControl({ value: '', disabled: true }, []),
       nombre: new FormControl('', [Validators.required]),
@@ -93,6 +89,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
 
     const clientAddressRequest = this.clientAddressForm.getRawValue();
     clientAddressRequest.idEstatus = clientAddressRequest.active ? 1 : 3;
+    clientAddressRequest.prioridad = clientAddressRequest.prioridad ? 1 : 0;
     clientAddressRequest.idCliente = clientAddressRequest.idCliente || this.client.idCliente;
 
     this.clientAddressService.save(clientAddressRequest)
@@ -105,7 +102,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientAddressForm.reset({active: false});
+              this.clientAddressForm.reset({active: false, prioridad: false});
               this.loadAllClientAddresss(this.client.idCliente);
             });
         },
@@ -120,7 +117,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientAddressForm.reset({active: false});
+    this.clientAddressForm.reset({active: false, prioridad: false});
   }
 
   onEditAddress(clientAddress: ClientAddress): void {
@@ -140,7 +137,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
       idEstado: clientAddress.idEstado,
       idPais: clientAddress.idPais,
       cp: clientAddress.cp,
-      prioridad: clientAddress.prioridad,
+      prioridad: (clientAddress.prioridad && clientAddress.prioridad === 1) || false,
       active: (clientAddress.idEstatus && clientAddress.idEstatus === 1) || false
     });
   }
