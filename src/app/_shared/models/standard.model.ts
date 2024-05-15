@@ -8,4 +8,12 @@ export interface Standard {
     fModificacion?: string;
     idUsuario: Number;
     idEstatus: Number;
+    normaPuntos?: StandardSpec[];
+}
+
+export interface StandardSpec {
+    idNormaPunto: number,
+    idNorma?: number,
+    punto: number,
+    contenido?: string
 }

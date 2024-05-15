@@ -5,8 +5,7 @@ import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { StandardService } from 'src/app/_shared/services/standard.service';
-import { Standard } from 'src/app/_shared/models/standard.model';
-import { StandardSpec } from 'src/app/_shared/models/state.model';
+import { Standard, StandardSpec } from 'src/app/_shared/models/standard.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationDialogComponent } from 'src/app/_shared/components/confirmation-dialog/confirmation-dialog.component';
 import * as XLSX from 'xlsx';
@@ -71,6 +70,8 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (response) => {
             this.updateForm(response);
+            if (response.normaPuntos) this.standardSpecs = response.normaPuntos;
+            this.initDetailsTable(this.standardSpecs);
           },
           error: () => {
             this.dialog.open(SimpleDialogComponent, {
@@ -96,12 +97,13 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
 
     this.dataSource = new MatTableDataSource(sortedReceipts);
   }
+
   editDetail(spec: StandardSpec): void {
     this.selectedSpec = spec;
     this.standardSpecs = this.standardSpecs.filter(d => d.punto !== spec.punto);
     this.initDetailsTable(this.standardSpecs);
     this.standardSpecForm.patchValue({
-      idNormaPunto: spec.idNormaPunto,
+      punto: spec.punto,
       contenido: spec.contenido
     });
   }
@@ -123,7 +125,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
     if (this.selectedSpec) {
       this.standardSpecs.push(this.selectedSpec);
       this.initDetailsTable(this.standardSpecs);
-      this.standardSpecForm.reset({ active: false });
+      this.standardSpecForm.reset({ punto: 0 });
       this.selectedSpec = undefined;
     }
   }
@@ -136,16 +138,16 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
 
     if (this.isEdit && this.selectedSpec) {
       this.selectedSpec.punto = spec.punto;
-      this.selectedSpec.contenido = spec.cantidad;
+      this.selectedSpec.contenido = spec.contenido;
 
       this.standardSpecs.push(this.selectedSpec);
     } else {
-      spec.partida = spec.punto == 0 ? this.standardSpecs.length + 1 : spec.punto;
+      spec.punto = spec.punto == 0 ? this.standardSpecs.length + 1 : spec.punto;
       this.standardSpecs.push(spec);
     }
     this.selectedSpec = undefined;
     this.initDetailsTable(this.standardSpecs, true);
-    this.standardSpecForm.reset({ active: false });
+    this.standardSpecForm.reset({ punto: 0 });
   }
 
   updateForm(standard: Standard): void {
@@ -166,6 +168,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
 
     const standardRequest = this.standardForm.getRawValue();
     standardRequest.idEstatus = standardRequest.active ? 1 : 3;
+    standardRequest.normaPuntos = this.standardSpecs;
 
     this.standardService.save(standardRequest)
       .pipe()
@@ -223,7 +226,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
       })
       this.selectedSpec = undefined;
       this.initDetailsTable(this.standardSpecs, true);
-      this.standardSpecForm.reset();
+      this.standardSpecForm.reset({ punto: 0 });
     };
     reader.readAsArrayBuffer(file);
   }
