@@ -27,6 +27,7 @@ import { ClientNotarialDataService } from './services/client-notarial-data';
 import { ExecutiveService } from './services/executive.service';
 import { ContactTypeService } from './services/contact-type.service';
 import { ReportsService } from './services/reports.service';
+import { OfficialService } from './services/official.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -58,6 +59,7 @@ import { ReportsService } from './services/reports.service';
     CatIdService,
     ClientNotarialDataService,
     ExecutiveService,
+    OfficialService,
     ContactTypeService,
     ReportsService
   ],

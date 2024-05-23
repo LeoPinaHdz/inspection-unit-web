@@ -41,6 +41,10 @@ import { ClientAddressComponent } from './client/client-address/client-address.c
 import { ClientNotarialDataComponent } from './client/client-notarial-data/client-notarial-data.component';
 import { ExecutivesComponent } from './executive/executive-list/executive-list.component';
 import { ExecutiveDetailComponent } from './executive/executive-detail/executive-detail.component';
+import { PromotersComponent } from './promoter/promoter-list/promoter-list.component';
+import { PromoterDetailComponent } from './promoter/promoter-detail/promoter-detail.component';
+import { OfficialsComponent } from './official/official-list/official-list.component';
+import { OfficialDetailComponent } from './official/official-detail/official-detail.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +63,11 @@ import { ExecutiveDetailComponent } from './executive/executive-detail/executive
     ClientAddressComponent,
     ClientNotarialDataComponent,
     ExecutivesComponent,
-    ExecutiveDetailComponent
+    ExecutiveDetailComponent,
+    PromotersComponent,
+    PromoterDetailComponent,
+    OfficialsComponent,
+    OfficialDetailComponent
   ],
   imports: [
     SecureRoutingModule,

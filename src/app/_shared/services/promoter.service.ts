@@ -20,9 +20,9 @@ export class PromoterService {
     return this.http.get<Promoter>(`${environment.url}Promotores/Get?id=${id}`);
   }
 
-  save(executive: Promoter): Observable<any> {
-    if (!executive.idPromotor || executive.idPromotor === 0)
-      return this.http.post<any>(`${environment.url}Promotores/Create`, executive);
-    return this.http.put<any>(`${environment.url}Promotores/Update`, executive);
+  save(promoter: Promoter): Observable<any> {
+    if (!promoter.idPromotor || promoter.idPromotor === 0)
+      return this.http.post<any>(`${environment.url}Promotores/Create`, promoter);
+    return this.http.put<any>(`${environment.url}Promotores/Update`, promoter);
   }
 }

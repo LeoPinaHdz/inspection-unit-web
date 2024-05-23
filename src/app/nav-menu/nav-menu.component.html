@@ -33,7 +33,8 @@
               <a *ngIf="hasRole('CLIENTES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/clients']">Clientes</a>
               <a *ngIf="hasRole('NORMAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/standards']">Normas</a>
               <a *ngIf="hasRole('EJECUTIVOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/executives']">Ejecutivos</a>
-              <a *ngIf="hasRole('FUNCIONARIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/officers']">Funcionarios</a>
+              <a *ngIf="hasRole('PROMOTORES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/promoters']">Promotores</a>
+              <a *ngIf="hasRole('FUNCIONARIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/officials']">Funcionarios</a>
               <a *ngIf="hasRole('CONVERSION')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/conversions']">Conversi&oacute;n</a>
               <a *ngIf="hasRole('PROMOTORES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/promoters']">Promotores</a>
             </div>

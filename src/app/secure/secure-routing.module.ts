@@ -11,6 +11,10 @@ import { StandardsComponent } from './standards/standard-list/standards.componen
 import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
 import { ExecutivesComponent } from './executive/executive-list/executive-list.component';
 import { ExecutiveDetailComponent } from './executive/executive-detail/executive-detail.component';
+import { PromotersComponent } from './promoter/promoter-list/promoter-list.component';
+import { PromoterDetailComponent } from './promoter/promoter-detail/promoter-detail.component';
+import { OfficialsComponent } from './official/official-list/official-list.component';
+import { OfficialDetailComponent } from './official/official-detail/official-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -25,18 +29,18 @@ const routes: Routes = [
   { path: 'executives', component: ExecutivesComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'} },
   { path: 'executive/new', component: ExecutiveDetailComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},
   { path: 'executive/:id', component: ExecutiveDetailComponent, canActivate: [AuthGuard], data: {role: 'EJECUTIVOS'}},
-  
-  { path: 'officers', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'} },
-  { path: 'officer/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},
-  { path: 'officer/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},
+
+  { path: 'promoters', component: PromotersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'} },
+  { path: 'promoter/new', component: PromoterDetailComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'}},
+  { path: 'promoter/:id', component: PromoterDetailComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'}},
+
+  { path: 'officials', component: OfficialsComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'} },
+  { path: 'official/new', component: OfficialDetailComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},
+  { path: 'official/:id', component: OfficialDetailComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},
   
   { path: 'conversions', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'} },
   { path: 'conversion/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
   { path: 'conversion/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
-  
-  { path: 'promoters', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'} },
-  { path: 'promoter/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'}},
-  { path: 'promoter/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'PROMOTORES'}},
   
   { path: 'contracts', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'} },
   { path: 'contract/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
