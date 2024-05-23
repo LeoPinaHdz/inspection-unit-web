@@ -12,6 +12,10 @@ export class StandardService {
     return this.http.get<Standard[]>(`${environment.url}Normas/GetAll`);
   }
 
+  getAllActive(): Observable<Standard[]> {
+    return this.http.get<Standard[]>(`${environment.url}Normas/GetAllActive`);
+  }
+
   getById(id: number): Observable<Standard> {
     return this.http.get<Standard>(`${environment.url}Normas/Get?id=${id}`);
   }

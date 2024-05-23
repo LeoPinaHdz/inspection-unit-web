@@ -46,14 +46,14 @@
             </form>
             <div class="form-container">
                 <div class="form-cell-3">
-                    <span class="example-list-section">
-                        <mat-checkbox class="example-margin" [checked]="allScreensSelected" color="primary"
+                    <span class="multiselect-list-section">
+                        <mat-checkbox class="multiselect-margin" [checked]="allScreensSelected" color="primary"
                                     [indeterminate]="someScreensSelected()" (change)="selectAllScreens($event.checked)">
                         Pantallas
                         </mat-checkbox>
                     </span>
-                    <span class="example-list-section">
-                        <ul>
+                    <span class="multiselect-list-section">
+                        <ul class="multiselect-list-ul">
                             <li *ngFor="let screen of screens">
                             <mat-checkbox [(ngModel)]="screen.selected" color="primary" (ngModelChange)="selectScreen()">
                                 {{screen.pantalla}}

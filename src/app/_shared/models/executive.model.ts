@@ -9,4 +9,11 @@ export interface Executive {
     fModificacion?: string;
     idUsuario?: Number;
     idEstatus?: Number;
+    normaEjecutivo?: ExecutiveStandards[];
+}
+
+export interface ExecutiveStandards {
+    idNormaEjecutivo?: Number;
+    idNorma: Number;
+    idEjecutivo?: Number;
 }

@@ -12,13 +12,13 @@
             <form [formGroup]="executiveForm">
                 <div class="form-container">
                     <div class="form-cell-3"><mat-form-field appearance="outline">
-                      <mat-label>ID</mat-label>
-                      <input matInput formControlName="idEjecutivo" appCurrencyMask type="text" />
-                    </mat-form-field></div>
-                    <div class="form-cell-3">
+                            <mat-label>ID</mat-label>
+                            <input matInput formControlName="idEjecutivo" appCurrencyMask type="text" />
+                        </mat-form-field></div>
+                    <div class="form-cell-6">
                         <mat-form-field appearance="outline">
                             <mat-label>Nombre</mat-label>
-                            <input matInput formControlName="nombre" type="text" required/>
+                            <input matInput formControlName="nombre" type="text" required />
                             <mat-error>
                                 <error-message nomCampo="Nombre"></error-message>
                             </mat-error>
@@ -27,7 +27,7 @@
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Teléfono</mat-label>
-                            <input matInput formControlName="telefono" type="text" required/>
+                            <input matInput formControlName="telefono" type="text" required />
                             <mat-error>
                                 <error-message nomCampo="Teléfono"></error-message>
                             </mat-error>
@@ -36,24 +36,45 @@
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Email</mat-label>
-                            <input matInput formControlName="email" type="text" required/>
+                            <input matInput formControlName="email" type="text" required />
                             <mat-error>
                                 <error-message nomCampo="Email"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
+                    <div class="form-cell-3">
+                        <mat-label>Tipo de Empleado</mat-label><br/>
+                        <mat-checkbox formControlName="signatario" color="primary">Signatario</mat-checkbox><br/>
+                        <mat-checkbox formControlName="inspector" color="primary">Verificador</mat-checkbox>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
+                    </div>
                 </div>
             </form>
+
             <div class="form-container">
                 <div class="form-cell-3">
-                </div>
-                <div class="form-cell-3">
-                    <mat-checkbox [(ngModel)]="active" color="primary">Activo</mat-checkbox>
+                    <span class="multiselect-list-section">
+                        <mat-checkbox class="multiselect-margin" [checked]="allStandardsSelected" color="primary"
+                            [indeterminate]="someStandardsSelected()" (change)="selectAllStandards($event.checked)">
+                            Normas
+                        </mat-checkbox>
+                    </span>
+                    <span class="multiselect-list-section">
+                        <ul class="multiselect-list-ul">
+                            <li *ngFor="let standard of standards">
+                                <mat-checkbox [(ngModel)]="standard.selected" color="primary"
+                                    (ngModelChange)="selectStandard()">
+                                    {{standard.nombre}}
+                                </mat-checkbox>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
             </div>
         </mat-card-content>
         <mat-card-footer>
-            <button class="form-button" [routerLink]="['/secure/executives']" color="warn" mat-fab extended>Cancelar</button>
             <button class="form-button" (click)="onSubmit()" mat-fab extended>Guardar</button>
         </mat-card-footer>
     </mat-card>
