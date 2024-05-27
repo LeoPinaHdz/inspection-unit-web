@@ -52,8 +52,8 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
       idNorma: new FormControl({ value: '', disabled: true }, []),
       nombre: new FormControl('', [Validators.required]),
       descripcion: new FormControl('', [Validators.required]),
-      puntos: new FormControl('', [Validators.required]),
-      exceptos: new FormControl('', [Validators.required]),
+      puntos: new FormControl(''),
+      exceptos: new FormControl(''),
       active: new FormControl(false, [Validators.required])
     });
 

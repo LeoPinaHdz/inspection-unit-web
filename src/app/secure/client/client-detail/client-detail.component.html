@@ -43,7 +43,7 @@
                 <div class="form-cell-2">
                     <mat-form-field appearance="outline">
                         <mat-label>No. Exterior</mat-label>
-                        <input matInput formControlName="exterior" type="text" required />
+                        <input matInput formControlName="exterior" type="text" />
                         <mat-error>
                             <error-message nomCampo="No. Exterior"></error-message>
                         </mat-error>
@@ -52,7 +52,7 @@
                 <div class="form-cell-2">
                     <mat-form-field appearance="outline">
                         <mat-label>No. Interior</mat-label>
-                        <input matInput formControlName="interior" type="text" required />
+                        <input matInput formControlName="interior" type="text" />
                         <mat-error>
                             <error-message nomCampo="No. Interior"></error-message>
                         </mat-error>
@@ -61,7 +61,7 @@
                 <div class="form-cell-2">
                     <mat-form-field appearance="outline">
                         <mat-label>C.P.</mat-label>
-                        <input matInput formControlName="cp" type="text" required />
+                        <input matInput formControlName="cp" type="text" />
                         <mat-error>
                             <error-message nomCampo="C.P."></error-message>
                         </mat-error>
@@ -70,7 +70,7 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Colonia</mat-label>
-                        <input matInput formControlName="colonia" type="text" required />
+                        <input matInput formControlName="colonia" type="text" />
                         <mat-error>
                             <error-message nomCampo="Colonia"></error-message>
                         </mat-error>
@@ -79,7 +79,7 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Municipio</mat-label>
-                        <input matInput formControlName="municipio" type="text" required />
+                        <input matInput formControlName="municipio" type="text" />
                         <mat-error>
                             <error-message nomCampo="Municipio"></error-message>
                         </mat-error>
@@ -119,7 +119,7 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Telefono</mat-label>
-                        <input matInput formControlName="telefono" type="text" required />
+                        <input matInput formControlName="telefono" type="text" />
                         <mat-error>
                             <error-message nomCampo="Telefono"></error-message>
                         </mat-error>
@@ -128,7 +128,7 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>E-mail</mat-label>
-                        <input matInput formControlName="email" type="email" required />
+                        <input matInput formControlName="email" type="email" />
                         <mat-error>
                             <error-message nomCampo="E-mail"></error-message>
                         </mat-error>
@@ -149,7 +149,7 @@
                 <div class="form-cell-3">
                     <mat-form-field appearance="outline">
                         <mat-label>Ejecutivo</mat-label>
-                        <mat-select formControlName="idEjecutivo" required>
+                        <mat-select formControlName="idEjecutivo" >
                             <mat-option *ngFor="let executive of executives"
                                 [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
                         </mat-select>

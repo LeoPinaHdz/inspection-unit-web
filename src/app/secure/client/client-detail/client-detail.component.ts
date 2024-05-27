@@ -5,9 +5,7 @@ import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ClientService } from 'src/app/_shared/services/client.service';
-import { CountryService } from 'src/app/_shared/services/country.service';
 import { Client } from 'src/app/_shared/models/client.model';
-import { StateService } from 'src/app/_shared/services/state.service';
 import { PromoterService } from 'src/app/_shared/services/promoter.service';
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 
@@ -41,19 +39,19 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
       nombre: new FormControl('', [Validators.required]),
       rfc: new FormControl('', [Validators.required]),
       calle: new FormControl('', [Validators.required]),
-      exterior: new FormControl('', [Validators.required]),
-      interior: new FormControl('', [Validators.required]),
-      colonia: new FormControl('', [Validators.required]),
-      cp: new FormControl('', [Validators.required]),
-      municipio: new FormControl('', [Validators.required]),
+      exterior: new FormControl(''),
+      interior: new FormControl(''),
+      colonia: new FormControl(''),
+      cp: new FormControl(''),
+      municipio: new FormControl(''),
       idEstado: new FormControl('', [Validators.required]),
       idPais: new FormControl('', [Validators.required]),
-      telefono: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      telefono: new FormControl(''),
+      email: new FormControl(''),
       persona: new FormControl('', [Validators.required]),
       tipoMunicipio: new FormControl('', [Validators.required]),
       idPromotor: new FormControl('', [Validators.required]),
-      idEjecutivo: new FormControl('', [Validators.required]),
+      idEjecutivo: new FormControl(''),
       active: new FormControl(false, [Validators.required])
     });
   }
@@ -75,7 +73,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
           console.error('Error trying to get promoters');
         }
       });
-      
+
     this.executiveService.getActive()
       .pipe()
       .subscribe({

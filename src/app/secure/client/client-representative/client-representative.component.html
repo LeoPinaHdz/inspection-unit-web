@@ -31,7 +31,7 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Testimonio / Acta</mat-label>
-            <input matInput formControlName="acta" type="text" />
+            <input matInput formControlName="acta" type="text" required />
             <mat-error>
               <error-message nomCampo="Testimonio / Acta"></error-message>
             </mat-error>
@@ -40,7 +40,7 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>No. Notaria</mat-label>
-            <input matInput formControlName="notaria" type="text" />
+            <input matInput formControlName="notaria" type="text" required />
             <mat-error>
               <error-message nomCampo="No. Notaria"></error-message>
             </mat-error>
@@ -49,7 +49,7 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Notario</mat-label>
-            <input matInput formControlName="notario" type="text" />
+            <input matInput formControlName="notario" type="text" required />
             <mat-error>
               <error-message nomCampo="Notario"></error-message>
             </mat-error>
@@ -58,7 +58,7 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Lugar Notaria</mat-label>
-            <input matInput formControlName="lugar" type="text" />
+            <input matInput formControlName="lugar" type="text" required />
             <mat-error>
               <error-message nomCampo="Lugar Notaria"></error-message>
             </mat-error>
@@ -79,7 +79,7 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Identificaci&oacute;n</mat-label>
-            <mat-select formControlName="idIdentificacion" required>
+            <mat-select formControlName="idIdentificacion">
                 <mat-option *ngFor="let type of typesId" [value]="type.idTipo">{{type.nombre}}</mat-option>
             </mat-select>
             <mat-error>
@@ -121,8 +121,8 @@
     </form>
   </mat-card-content>
   <mat-card-footer *ngIf="!isListMode">
-      <button (click)="onCancel()" color="warn" mat-fab extended>Cancelar</button>
-      <button (click)="onSubmit()" mat-fab extended>Guardar</button>
+      <button class="form-button" (click)="onCancel()" color="warn" mat-fab extended>Cancelar</button>
+      <button class="form-button" (click)="onSubmit()" mat-fab extended>Guardar</button>
   </mat-card-footer>
 </mat-card>
 

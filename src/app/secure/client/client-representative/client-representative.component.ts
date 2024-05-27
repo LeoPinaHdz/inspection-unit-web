@@ -41,14 +41,14 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
     this.clientRepresentativeForm = new FormGroup({
       idRepresentante: new FormControl({ value: '', disabled: true }, []),
       nombre: new FormControl('', [Validators.required]),
-      acta: new FormControl(''),
+      acta: new FormControl('', [Validators.required]),
       telefono: new FormControl(''),
-      notaria: new FormControl(''),
+      notaria: new FormControl('', [Validators.required]),
       email: new FormControl(''),
-      notario: new FormControl(''),
-      fNotaria: new FormControl(''),
-      lugar: new FormControl(''),
-      idIdentificacion: new FormControl('', [Validators.required]),
+      notario: new FormControl('', [Validators.required]),
+      fNotaria: new FormControl('', [Validators.required]),
+      lugar: new FormControl('', [Validators.required]),
+      idIdentificacion: new FormControl(''),
       noIdentificacion: new FormControl(''),
       active: new FormControl(false, [Validators.required])
     });
