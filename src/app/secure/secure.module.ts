@@ -45,6 +45,8 @@ import { PromotersComponent } from './promoter/promoter-list/promoter-list.compo
 import { PromoterDetailComponent } from './promoter/promoter-detail/promoter-detail.component';
 import { OfficialsComponent } from './official/official-list/official-list.component';
 import { OfficialDetailComponent } from './official/official-detail/official-detail.component';
+import { ContractsComponent } from './contract/contract-list/contract-list.component';
+import { ContractDetailComponent } from './contract/contract-detail/contract-detail.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { OfficialDetailComponent } from './official/official-detail/official-det
     PromotersComponent,
     PromoterDetailComponent,
     OfficialsComponent,
-    OfficialDetailComponent
+    OfficialDetailComponent,
+    ContractsComponent,
+    ContractDetailComponent
   ],
   imports: [
     SecureRoutingModule,

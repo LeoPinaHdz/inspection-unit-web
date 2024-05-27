@@ -17,7 +17,6 @@ export class UserDetailComponent implements OnInit, OnDestroy{
   id: any;
   isEdit = false;
   active = false;
-  currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
   user: User = {idUsuario: 0};
   screens: any[] = [];
   userForm!: FormGroup;
@@ -115,7 +114,6 @@ export class UserDetailComponent implements OnInit, OnDestroy{
       userRequest = this.user;
     } else {
       userRequest = this.userForm.getRawValue();
-      userRequest.idUsuarioCreacion = this.currentUser.idUsuario;
     }
 
     userRequest.idEstatus = this.active ? 1 : 3;

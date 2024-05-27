@@ -12,6 +12,10 @@ export class ClientRepresentativeService {
     return this.http.get<ClientRepresentative[]>(`${environment.url}ClienteRepresentante/GetByCliente?id=${idCliente}`);
   }
 
+  getAllActive(idCliente: number): Observable<ClientRepresentative[]> {
+    return this.http.get<ClientRepresentative[]>(`${environment.url}ClienteRepresentante/GetActiveByCliente?id=${idCliente}`);
+  }
+
   getById(id: number): Observable<ClientRepresentative> {
     return this.http.get<ClientRepresentative>(`${environment.url}ClienteRepresentante/Get?id=${id}`);
   }

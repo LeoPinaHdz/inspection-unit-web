@@ -16,6 +16,10 @@ export class ClientService {
     return this.http.get<Client[]>(`${environment.url}Clientes/GetAll`);
   }
 
+  getAllActive(): Observable<Client[]> {
+    return this.http.get<Client[]>(`${environment.url}Clientes/GetAllActive`);
+  }
+
   getById(id: number): Observable<Client> {
     return this.http.get<Client>(`${environment.url}Clientes/Get?id=${id}`);
   }

@@ -15,6 +15,8 @@ import { PromotersComponent } from './promoter/promoter-list/promoter-list.compo
 import { PromoterDetailComponent } from './promoter/promoter-detail/promoter-detail.component';
 import { OfficialsComponent } from './official/official-list/official-list.component';
 import { OfficialDetailComponent } from './official/official-detail/official-detail.component';
+import { ContractsComponent } from './contract/contract-list/contract-list.component';
+import { ContractDetailComponent } from './contract/contract-detail/contract-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -42,9 +44,9 @@ const routes: Routes = [
   { path: 'conversion/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
   { path: 'conversion/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
   
-  { path: 'contracts', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'} },
-  { path: 'contract/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
-  { path: 'contract/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
+  { path: 'contracts', component: ContractsComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'} },
+  { path: 'contract/new', component: ContractDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
+  { path: 'contract/:id', component: ContractDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
   
   { path: 'references', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'} },
   { path: 'reference/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'}},

@@ -7,7 +7,6 @@ import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 import { Executive } from 'src/app/_shared/models/executive.model';
 import { StandardService } from 'src/app/_shared/services/standard.service';
-import { Standard } from 'src/app/_shared/models/standard.model';
 
 @Component({
     selector: 'executives',
@@ -16,7 +15,6 @@ import { Standard } from 'src/app/_shared/models/standard.model';
 export class ExecutiveDetailComponent implements OnInit, OnDestroy{
   id: any;
   isEdit = false;
-  currentUser = JSON.parse(sessionStorage.getItem('currentExecutive') || '{}');
   executive: Executive = {idEjecutivo: 0};
   standards: any[] = [];
   executiveForm!: FormGroup;

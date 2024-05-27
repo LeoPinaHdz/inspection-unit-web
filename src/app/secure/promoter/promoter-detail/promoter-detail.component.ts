@@ -14,7 +14,6 @@ import { Promoter } from 'src/app/_shared/models/promoter.model';
 export class PromoterDetailComponent implements OnInit, OnDestroy {
   id: any;
   isEdit = false;
-  currentUser = JSON.parse(sessionStorage.getItem('currentPromoter') || '{}');
   promoter: Promoter = { idPromotor: 0 };
   promoterForm!: FormGroup;
   _onDestroy = new Subject<void>();

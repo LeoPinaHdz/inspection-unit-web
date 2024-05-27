@@ -14,7 +14,6 @@ import { Official } from 'src/app/_shared/models/official.model';
 export class OfficialDetailComponent implements OnInit, OnDestroy {
   id: any;
   isEdit = false;
-  currentUser = JSON.parse(sessionStorage.getItem('currentOfficial') || '{}');
   official: Official = { idFuncionario: 0 };
   officialForm!: FormGroup;
   _onDestroy = new Subject<void>();
