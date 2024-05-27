@@ -42,10 +42,10 @@ export class ClientAddressComponent implements OnInit, OnChanges {
     this.clientAddressForm = new FormGroup({
       idLugar: new FormControl({ value: '', disabled: true }, []),
       nombre: new FormControl('', [Validators.required]),
-      calle: new FormControl(''),
+      calle: new FormControl('', [Validators.required]),
       numero: new FormControl(''),
       colonia: new FormControl(''),
-      municipio: new FormControl(''),
+      municipio: new FormControl('', [Validators.required]),
       idEstado: new FormControl('', [Validators.required]),
       idPais: new FormControl('', [Validators.required]),
       cp: new FormControl('', [Validators.required]),
