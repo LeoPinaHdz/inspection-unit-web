@@ -47,6 +47,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 0 15px;
 }
 
+.export-word {
+  background-color: #000080 !important;
+}
+
+.export-pdf {
+  background-color: #FF0000 !important;
+}
+
 .form-login-container .mat-mdc-form-field {
   width: 300px !important;
 }

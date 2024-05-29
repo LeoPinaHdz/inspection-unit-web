@@ -10,6 +10,7 @@ import { ClientService } from 'src/app/_shared/services/client.service';
 import { ClientRepresentativeService } from 'src/app/_shared/services/client-representative.service';
 import { OfficialService } from 'src/app/_shared/services/official.service';
 import { addMonths } from 'src/app/_shared/utils/date.utils';
+import { saveFile } from 'src/app/_shared/utils/file.utils';
 
 @Component({
   selector: 'contracts',
@@ -137,6 +138,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       active: (contract.idEstatus && contract.idEstatus === 1) || false
     });
 
+    this.contract = contract;
     this.loadRepresentatives();
   }
 
@@ -166,6 +168,20 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
           console.error('Error trying to save contract');
         }
       });
+  }
+
+  downloadPdf(): void {
+    this.contractService.download(this.id, 2).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.pdf`,
+        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
+    });
+  }
+
+  downloadWord(): void {
+    this.contractService.download(this.id, 1).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.doc`,
+        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    });
   }
 
   get form() {
