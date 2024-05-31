@@ -16,10 +16,10 @@ export class ContractService {
     return this.http.get<Contract>(`${environment.url}Contratos/Get?id=${id}`);
   }
 
-  save(promoter: Contract): Observable<any> {
-    if (!promoter.idContrato || promoter.idContrato === 0)
-      return this.http.post<any>(`${environment.url}Contratos/Create`, promoter);
-    return this.http.put<any>(`${environment.url}Contratos/Update`, promoter);
+  save(contract: Contract): Observable<any> {
+    if (!contract.idContrato || contract.idContrato === 0)
+      return this.http.post<any>(`${environment.url}Contratos/Create`, contract);
+    return this.http.put<any>(`${environment.url}Contratos/Update`, contract);
   }
 
   download(id: number, type: number): Observable<HttpResponse<any>> {

@@ -7,7 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -16,11 +16,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { HomeComponent } from './home/home.component';
 import { SecureRoutingModule } from './secure-routing.module';
-import {MatSelectModule} from '@angular/material/select';
-import {MatNativeDateModule} from '@angular/material/core';
-import {NativeDateAdapter} from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NativeDateAdapter } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ReportsComponent } from './reports/reports.component';
 import { UsersComponent } from './user/user-list/user-list.component';
@@ -30,7 +30,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { NgChartsModule } from 'ng2-charts';
 import { ClientListComponent } from './client/client-list/client-list.component';
 import { ClientDetailComponent } from './client/client-detail/client-detail.component';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ClientTabsComponent } from './client/client-tabs/client-tabs.component';
 import { StandardsComponent } from './standards/standard-list/standards.component';
 import { StandardDetailComponent } from './standards/standard-detail/standard-detail.component';
@@ -47,6 +47,10 @@ import { OfficialsComponent } from './official/official-list/official-list.compo
 import { OfficialDetailComponent } from './official/official-detail/official-detail.component';
 import { ContractsComponent } from './contract/contract-list/contract-list.component';
 import { ContractDetailComponent } from './contract/contract-detail/contract-detail.component';
+import { LettersComponent } from './letter/letter-list/letter-list.component';
+import { LetterDetailComponent } from './letter/letter-detail/letter-detail.component';
+import { RequestsComponent } from './request/request-list/request-list.component';
+import { RequestDetailComponent } from './request/request-detail/request-detail.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +75,11 @@ import { ContractDetailComponent } from './contract/contract-detail/contract-det
     OfficialsComponent,
     OfficialDetailComponent,
     ContractsComponent,
-    ContractDetailComponent
+    ContractDetailComponent,
+    LettersComponent,
+    LetterDetailComponent,
+    RequestsComponent,
+    RequestDetailComponent
   ],
   imports: [
     SecureRoutingModule,

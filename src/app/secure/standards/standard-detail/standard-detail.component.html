@@ -3,8 +3,8 @@
         <mat-card-title>
             <a [routerLink]="['/secure/standards']" class="button-back" color="accent" mat-mini-fab>
                 <mat-icon>arrow_circle_left</mat-icon>
-            </a>
-            Nueva norma
+            </a>            
+            {{ isEdit ? 'Detalle de norma' : 'Nueva norma' }} 
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
