@@ -11,6 +11,7 @@ import { ClientRepresentativeService } from 'src/app/_shared/services/client-rep
 import { OfficialService } from 'src/app/_shared/services/official.service';
 import { addMonths } from 'src/app/_shared/utils/date.utils';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
+import { UtilitiesService } from 'src/app/_shared/services/utilities.service';
 
 @Component({
   selector: 'contracts',
@@ -24,6 +25,9 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
   clients: any[] = [];
   representatives: any[] = [];
   officials: any[] = [];
+  baseKey = '';
+  defaultKey = '';
+  defaultNumber = 0;
   _onDestroy = new Subject<void>();
 
   constructor(
@@ -33,7 +37,8 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private clientRepresentativeService: ClientRepresentativeService,
     private officialService: OfficialService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private utilitiesService: UtilitiesService
   ) { }
 
   ngOnDestroy() {
@@ -46,14 +51,16 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
 
     this.contractForm = new FormGroup({
       idContrato: new FormControl({ value: '', disabled: true }, []),
-      folio: new FormControl('', [Validators.required]),
+      folio: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.min(1), Validators.max(999999)]),
+      clave: new FormControl({ value: '', disabled: true }, [Validators.required]),
       idCliente: new FormControl('', [Validators.required]),
       fContrato: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
       fVigencia: new FormControl({ value: addMonths(new Date(), 1), disabled: true }, [Validators.required]),
       idRepresentante: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       observaciones: new FormControl(''),
-      active: new FormControl(false)
+      active: new FormControl(false),
+      assign: new FormControl(false)
     });
 
     this.clientService.getAllActive()
@@ -74,6 +81,12 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.loadRepresentatives();
+      });
+
+    this.contractForm.get('folio')!.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.setKey();
       });
 
     this.officialService.getAll()
@@ -108,7 +121,35 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
             console.error('Error trying to get contract detail');
           }
         });
+    } else {
+      this.utilitiesService.getFolio('CONTRATOS').pipe().subscribe({
+        next: (response) => {
+          this.defaultKey = response[0].FOLIO;
+          this.baseKey = response[0].PREFIJO;
+          this.defaultNumber = response[0].CONSECUTIVO;
+          this.contractForm.get('folio')!.setValue(this.defaultNumber);
+          this.contractForm.get('clave')!.setValue(this.defaultKey);
+        },
+        error: () => {
+          console.error('Error trying to get contract detail');
+        }
+      });
     }
+  }
+
+  assignNumber(): void {
+    if (this.contractForm.get('assign')!.value) {
+      this.contractForm.get('folio')!.enable();
+    } else {
+      this.contractForm.get('folio')!.disable();
+      this.contractForm.get('clave')!.setValue(this.defaultKey);
+      this.contractForm.get('folio')!.setValue(this.defaultNumber);
+    }
+  }
+
+  setKey(): void {
+    const folio = this.contractForm.get('folio')!.value;
+    this.contractForm.get('clave')!.setValue(`${this.baseKey}${folio.toString().padStart(6, '0')}`);
   }
 
   loadRepresentatives() {
@@ -129,6 +170,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     this.contractForm.patchValue({
       idContrato: contract.idContrato,
       folio: contract.folio,
+      clave: contract.clave,
       idCliente: contract.idCliente,
       fContrato: contract.fContrato,
       fVigencia: contract.fVigencia,
@@ -179,7 +221,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
 
   downloadWord(): void {
     this.contractService.download(this.id, 1).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.doc`,
+      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.docx`,
         response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
     });
   }

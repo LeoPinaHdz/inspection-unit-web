@@ -1,6 +1,7 @@
 export interface Contract {
     idContrato: number;
     folio?: string;
+    clave?: string;
     observaciones?: string;
     fContrato?: string;
     fVigencia?: string;

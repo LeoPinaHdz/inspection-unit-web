@@ -18,9 +18,21 @@
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Folio</mat-label>
-                            <input matInput formControlName="folio" type="text" required />
+                            <input matInput formControlName="folio" type="number" maxlength="6" max="999999" required />
                             <mat-error>
                                 <error-message nomCampo="Folio"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3" *ngIf="!isEdit">
+                        <mat-checkbox formControlName="assign" color="primary" (click)="assignNumber()">Asignar</mat-checkbox>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Clave</mat-label>
+                            <input matInput formControlName="clave" type="text" required />
+                            <mat-error>
+                                <error-message nomCampo="Clave"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
