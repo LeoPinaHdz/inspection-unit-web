@@ -17,6 +17,10 @@ import { OfficialsComponent } from './official/official-list/official-list.compo
 import { OfficialDetailComponent } from './official/official-detail/official-detail.component';
 import { ContractsComponent } from './contract/contract-list/contract-list.component';
 import { ContractDetailComponent } from './contract/contract-detail/contract-detail.component';
+import { LettersComponent } from './letter/letter-list/letter-list.component';
+import { LetterDetailComponent } from './letter/letter-detail/letter-detail.component';
+import { RequestsComponent } from './request/request-list/request-list.component';
+import { RequestDetailComponent } from './request/request-detail/request-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -52,13 +56,13 @@ const routes: Routes = [
   { path: 'reference/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'}},
   { path: 'reference/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'}},
   
-  { path: 'requests', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'} },
-  { path: 'request/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'}},
-  { path: 'request/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'}},
+  { path: 'requests', component: RequestsComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'} },
+  { path: 'request/new', component: RequestDetailComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'}},
+  { path: 'request/:id', component: RequestDetailComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'}},
   
-  { path: 'letters', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'} },
-  { path: 'letter/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'}},
-  { path: 'letter/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'}},
+  { path: 'letters', component: LettersComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'} },
+  { path: 'letter/new', component: LetterDetailComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'}},
+  { path: 'letter/:id', component: LetterDetailComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'}},
   
   { path: 'minutes', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'} },
   { path: 'minute/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},

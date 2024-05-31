@@ -100,7 +100,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El representativeo ${clientRepresentativeRequest.idRepresentante} fue guardada con éxito` },
+            data: { type: 'success', message: `El representante ${clientRepresentativeRequest.idRepresentante} fue guardado con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
@@ -111,7 +111,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el representativeo ${clientRepresentativeRequest.idRepresentante}` },
+            data: { type: 'error', message: `Error al guardar el representante ${clientRepresentativeRequest.idRepresentante}` },
           });
           console.error('Error trying to save clientRepresentative');
         }
