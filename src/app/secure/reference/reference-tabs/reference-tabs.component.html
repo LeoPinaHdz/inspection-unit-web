@@ -1,0 +1,29 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <a [routerLink]="['/secure/references']" class="button-back" color="accent" mat-mini-fab>
+                <mat-icon>arrow_circle_left</mat-icon>
+            </a>
+            Folios
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-tab-group>
+            <mat-tab label="Busqueda">
+                Busqueda
+            </mat-tab>
+            <mat-tab label="Generación Manual">
+                Generacion Manual
+            </mat-tab>
+            <mat-tab label="Generación Archivo M">
+                <reference-file-m></reference-file-m>
+            </mat-tab>
+            <mat-tab label="Generación CSV">
+                Generacion CSV
+            </mat-tab>
+            <mat-tab label="Validación">
+                Validacion
+            </mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

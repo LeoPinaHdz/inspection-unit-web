@@ -51,6 +51,8 @@ import { LettersComponent } from './letter/letter-list/letter-list.component';
 import { LetterDetailComponent } from './letter/letter-detail/letter-detail.component';
 import { RequestsComponent } from './request/request-list/request-list.component';
 import { RequestDetailComponent } from './request/request-detail/request-detail.component';
+import { ReferenceTabsComponent } from './reference/reference-tabs/reference-tabs.component';
+import { ReferenceFileMComponent } from './reference/reference-file-m/reference-file-m.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { RequestDetailComponent } from './request/request-detail/request-detail.
     LettersComponent,
     LetterDetailComponent,
     RequestsComponent,
-    RequestDetailComponent
+    RequestDetailComponent,
+    ReferenceTabsComponent,
+    ReferenceFileMComponent
   ],
   imports: [
     SecureRoutingModule,

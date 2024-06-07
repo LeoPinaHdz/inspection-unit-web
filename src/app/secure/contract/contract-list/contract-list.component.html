@@ -1,37 +1,84 @@
 <div>
   <mat-card>
     <mat-card-header>
-      <mat-card-title>Gestión de contratos</mat-card-title>
+      <mat-card-title>
+        Gestión de contratos
+      </mat-card-title>
+      <a [routerLink]="['/secure/contract/new']" class="button-new-header" color="primary" mat-stroked-button>
+        Nuevo Contrato
+      </a>
     </mat-card-header>
     <mat-card-content>
-      <a [routerLink]="['/secure/contract/new']" class="float-left" color="primary" mat-fab extended>
-        Agregar
-      </a>
-      <div class="float-right">
-        <mat-form-field class="table-filter" appearance="outline">
-
-          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
+      <form [formGroup]="searchForm" class="form-container">
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Contrato</mat-label>
+            <input matInput formControlName="contrato" type="text" />
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3"><mat-form-field appearance="outline">
+            <mat-label>Fecha Contrato</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input formControlName="fechaInicio" matStartDate placeholder="Fecha Inicio">
+              <input formControlName="fechaFin" matEndDate placeholder="Fecha Fin">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="idCliente" placeholder="Cliente" #clientSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                  noEntriesFoundLabel="No se encontraron resultados"
+                  formControlName="clientFilter"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                {{client.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3 list-form-section">
+          <button class="form-button no-left-margin" color="primary" (click)="onSearch()" mat-fab extended>
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+          <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+            Limpia filtros
+          </button>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
 
   <div class="table-container mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
-      <ng-container matColumnDef="idContrato">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idContrato }} </mat-cell>
+      <ng-container matColumnDef="clave">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> No. Contrato </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.clave }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="folio">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.folio }} </mat-cell>
+      <ng-container matColumnDef="nombreCliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.nombreCliente }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="idEstatus">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fContratoFmt">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Contrato </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.fContratoFmt }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fVigenciaFmt">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Vigencia </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.fVigenciaFmt }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">

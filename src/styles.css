@@ -15,8 +15,15 @@ code {
   border-color: #1861ac;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .logistics-dropdown-menu {
   display: block;
@@ -26,7 +33,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #008000;
 }
 
-.float-right{
+.float-right {
   float: right;
 }
 
@@ -47,6 +54,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 0 15px;
 }
 
+.button-new-header {
+  margin-left: auto;
+  order: 2;
+  top: -7px;
+  background-color: #fdfbff !important;
+}
+
+.list-form-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.list-form-section button {
+  margin: 0;
+}
+
+.no-left-margin {
+  margin-left: 0 !important;
+}
+
 .export-word {
   background-color: #000080 !important;
 }
@@ -59,7 +87,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 300px !important;
 }
 
-.mat-mdc-form-field, .mat-mdc-form-field-small, .mat-mdc-form-field-large {
+.mat-mdc-form-field,
+.mat-mdc-form-field-small,
+.mat-mdc-form-field-large {
   width: 100%;
   padding-right: 25px;
 }
@@ -113,12 +143,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-top: 5px;
 }
 
-.mat-column-idRecibo, .mat-column-idOrden {
+.mat-column-idRecibo,
+.mat-column-idOrden {
   width: 50px;
   flex: none;
 }
 
-.mat-column-idBodega, .mat-column-idEstatus, .mat-column-pedimento, .mat-column-fCaptura {
+.mat-column-idBodega,
+.mat-column-idEstatus,
+.mat-column-pedimento,
+.mat-column-fCaptura {
   width: 130px;
   flex: none;
 }
@@ -160,7 +194,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #fff !important;
 }
 
-.mat-mdc-fab:hover, .button-back:hover {
+.mat-mdc-fab:hover,
+.button-back:hover {
   color: #fff;
 }
 

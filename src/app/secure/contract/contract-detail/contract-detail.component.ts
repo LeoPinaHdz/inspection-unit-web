@@ -9,7 +9,7 @@ import { Contract } from 'src/app/_shared/models/contract.model';
 import { ClientService } from 'src/app/_shared/services/client.service';
 import { ClientRepresentativeService } from 'src/app/_shared/services/client-representative.service';
 import { OfficialService } from 'src/app/_shared/services/official.service';
-import { addMonths } from 'src/app/_shared/utils/date.utils';
+import { addYears } from 'src/app/_shared/utils/date.utils';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
 import { UtilitiesService } from 'src/app/_shared/services/utilities.service';
 
@@ -54,8 +54,8 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       folio: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.min(1), Validators.max(999999)]),
       clave: new FormControl({ value: '', disabled: true }, [Validators.required]),
       idCliente: new FormControl('', [Validators.required]),
-      fContrato: new FormControl({ value: new Date(), disabled: true }, [Validators.required]),
-      fVigencia: new FormControl({ value: addMonths(new Date(), 1), disabled: true }, [Validators.required]),
+      fContrato: new FormControl(new Date(), [Validators.required]),
+      fVigencia: new FormControl(addYears(new Date(), 1), [Validators.required]),
       idRepresentante: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       observaciones: new FormControl(''),

@@ -11,10 +11,12 @@
         <mat-card-content>
             <form [formGroup]="contractForm">
                 <div class="form-container">
-                    <div class="form-cell-3"><mat-form-field appearance="outline">
-                            <mat-label>ID</mat-label>
-                            <input matInput formControlName="idContrato" appCurrencyMask type="text" />
-                        </mat-form-field></div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Clave</mat-label>
+                            <input matInput formControlName="clave" type="text" required />
+                        </mat-form-field>
+                    </div>
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Folio</mat-label>
@@ -26,15 +28,6 @@
                     </div>
                     <div class="form-cell-3" *ngIf="!isEdit">
                         <mat-checkbox formControlName="assign" color="primary" (click)="assignNumber()">Asignar</mat-checkbox>
-                    </div>
-                    <div class="form-cell-3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Clave</mat-label>
-                            <input matInput formControlName="clave" type="text" required />
-                            <mat-error>
-                                <error-message nomCampo="Clave"></error-message>
-                            </mat-error>
-                        </mat-form-field>
                     </div>
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">

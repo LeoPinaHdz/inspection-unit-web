@@ -21,6 +21,7 @@ import { LettersComponent } from './letter/letter-list/letter-list.component';
 import { LetterDetailComponent } from './letter/letter-detail/letter-detail.component';
 import { RequestsComponent } from './request/request-list/request-list.component';
 import { RequestDetailComponent } from './request/request-detail/request-detail.component';
+import { ReferenceTabsComponent } from './reference/reference-tabs/reference-tabs.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -52,9 +53,7 @@ const routes: Routes = [
   { path: 'contract/new', component: ContractDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
   { path: 'contract/:id', component: ContractDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},
   
-  { path: 'references', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'} },
-  { path: 'reference/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'}},
-  { path: 'reference/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'}},
+  { path: 'references', component: ReferenceTabsComponent, canActivate: [AuthGuard], data: {role: 'FOLIOS'} },
   
   { path: 'requests', component: RequestsComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'} },
   { path: 'request/new', component: RequestDetailComponent, canActivate: [AuthGuard], data: {role: 'SOLICITUDES'}},

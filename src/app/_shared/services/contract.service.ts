@@ -12,6 +12,10 @@ export class ContractService {
     return this.http.get<Contract[]>(`${environment.url}Contratos/GetAll`);
   }
 
+  search(request: any): Observable<Contract[]> {
+    return this.http.post<Contract[]>(`${environment.url}Contratos/Search`, request);
+  }
+
   getById(id: number): Observable<Contract> {
     return this.http.get<Contract>(`${environment.url}Contratos/Get?id=${id}`);
   }
@@ -23,7 +27,7 @@ export class ContractService {
   }
 
   download(id: number, type: number): Observable<HttpResponse<any>> {
-    return this.http.get(`${environment.url}Document/GetActa?id=${id}&type=${type}`, {
+    return this.http.get(`${environment.url}Contratos/GetActa?id=${id}&type=${type}`, {
       observe: 'response',
       responseType: 'blob' as 'json',
     });
