@@ -49,7 +49,7 @@ export class ContractsComponent implements OnInit, OnDestroy {
       clientFilter: new FormControl('', []),
       contrato: new FormControl('', []),
       fechaInicio: new FormControl('', []),
-      fechFin: new FormControl('', [])
+      fechaFin: new FormControl('', [])
     });
 
     this.clientService.getAllActive()

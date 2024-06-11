@@ -83,12 +83,6 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
         this.loadRepresentatives();
       });
 
-    this.contractForm.get('folio')!.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.setKey();
-      });
-
     this.officialService.getAll()
       .pipe()
       .subscribe({
@@ -124,9 +118,9 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     } else {
       this.utilitiesService.getFolio('CONTRATOS').pipe().subscribe({
         next: (response) => {
-          this.defaultKey = response[0].FOLIO;
-          this.baseKey = response[0].PREFIJO;
-          this.defaultNumber = response[0].CONSECUTIVO;
+          this.defaultKey = response.clave;
+          this.baseKey = response.prefijo;
+          this.defaultNumber = response.folio;
           this.contractForm.get('folio')!.setValue(this.defaultNumber);
           this.contractForm.get('clave')!.setValue(this.defaultKey);
         },
@@ -139,17 +133,12 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
 
   assignNumber(): void {
     if (this.contractForm.get('assign')!.value) {
-      this.contractForm.get('folio')!.enable();
+      this.contractForm.get('clave')!.enable();
     } else {
       this.contractForm.get('folio')!.disable();
       this.contractForm.get('clave')!.setValue(this.defaultKey);
       this.contractForm.get('folio')!.setValue(this.defaultNumber);
     }
-  }
-
-  setKey(): void {
-    const folio = this.contractForm.get('folio')!.value;
-    this.contractForm.get('clave')!.setValue(`${this.baseKey}${folio.toString().padStart(6, '0')}`);
   }
 
   loadRepresentatives() {
@@ -203,9 +192,11 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
               this.router.navigate([`/secure/contracts`]);
             });
         },
-        error: () => {
+        error: (err) => {
+          console.log(err);
+          const errMessage = err.error && err.error.Message ? err.error.Message : `Error al guardar el contrato ${contractRequest.idContrato}`;
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el contrato ${contractRequest.idContrato}` },
+            data: { type: 'error', message: errMessage },
           });
           console.error('Error trying to save contract');
         }

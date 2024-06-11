@@ -9,17 +9,17 @@ export class ReferenceService {
   constructor(private http: HttpClient) { }
 
   getAll(idCliente: number): Observable<Reference[]> {
-    return this.http.get<Reference[]>(`${environment.url}ClienteLugarInspeccion/GetByClienteLugar?id=${idCliente}`);
+    return this.http.get<Reference[]>(`${environment.url}Folio/GetByClienteLugar?id=${idCliente}`);
   }
 
   getById(id: number): Observable<Reference> {
-    return this.http.get<Reference>(`${environment.url}ClienteLugarInspeccion/Get?id=${id}`);
+    return this.http.get<Reference>(`${environment.url}Folio/Get?id=${id}`);
   }
 
   save(clientAddress: Reference): Observable<any> {
     if (!clientAddress.idFolio || clientAddress.idFolio === 0)
-      return this.http.post<any>(`${environment.url}ClienteLugarInspeccion/Create`, clientAddress);
-    return this.http.put<any>(`${environment.url}ClienteLugarInspeccion/Update`, clientAddress);
+      return this.http.post<any>(`${environment.url}Folio/Create`, clientAddress);
+    return this.http.put<any>(`${environment.url}Folio/Update`, clientAddress);
   }
   
   uploadFileM(form: FormData): Observable<any> {

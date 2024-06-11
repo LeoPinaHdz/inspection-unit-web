@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Logistics.WebUI:build:production"
+              "browserTarget": "InspectionUnit:build:production"
             },
             "development": {
-              "browserTarget": "Logistics.WebUI:build:development",
+              "browserTarget": "InspectionUnit:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -86,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Logistics.WebUI:build"
+            "browserTarget": "InspectionUnit:build"
           }
         },
         "test": {
@@ -135,7 +135,7 @@
       }
     }
   },
-  "defaultProject": "Logistics.WebUI",
+  "defaultProject": "InspectionUnit",
   "cli": {
     "analytics": false
   }

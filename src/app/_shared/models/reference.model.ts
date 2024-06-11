@@ -16,6 +16,28 @@ export interface Reference {
     fModificacion?: string;
     idUsuario?: Number;
     idEstatus?: Number;
+    foliosDetalle?: ReferenceDetail[];
+}
+
+export interface ReferenceDetail {
+    idFolioDetalle: Number;
+    idFolio?: Number;
+    partida?: Number;
+    idCliente?: Number;
+    subfolio?: string;
+    fraccion?: string;
+    marca?: string;
+    producto?: string;
+    modelo?: string;
+    idUnidad?: Number;
+    cantidad?: Number;
+    etiquetas?: Number;
+    idPais?: string;
+    fCaptura?: string;
+    fModificacion?: string;
+    idUsuario?: Number;
+    idEstatus?: Number;
+    saldo?: Number;
 }
 
 export interface ReferenceHeaderFileM {

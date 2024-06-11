@@ -3,3 +3,8 @@ export interface Country {
     nombre?: string;
     abrev?: string;
 }
+
+export interface CountrySE {
+    idPais: string;
+    nombre?: string;
+}

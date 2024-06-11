@@ -33,6 +33,7 @@ import { UtilitiesService } from './services/utilities.service';
 import { RequestService } from './services/request.service';
 import { LetterService } from './services/letter.service';
 import { ReferenceService } from './services/reference.service';
+import { UnitService } from './services/unit.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -71,7 +72,8 @@ import { ReferenceService } from './services/reference.service';
     UtilitiesService,
     RequestService,
     LetterService,
-    ReferenceService
+    ReferenceService,
+    UnitService
   ],
 })
 export class SharedModule { }
