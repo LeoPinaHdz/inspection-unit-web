@@ -60,4 +60,12 @@ export interface ReferenceDetailFileM {
     umc?: string;
 }
 
+export interface ReferenceCsvFile {
+    FolioMadre?: string;
+    FolioHijo?: string;
+    Modelo?: string;
+    Fraccion?: string;
+    Resultado?: string;
+}
+
   

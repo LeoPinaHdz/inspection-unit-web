@@ -1,14 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
-import { StandardService } from 'src/app/_shared/services/standard.service';
-import { Standard, StandardSpec } from 'src/app/_shared/models/standard.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { ConfirmationDialogComponent } from 'src/app/_shared/components/confirmation-dialog/confirmation-dialog.component';
-import * as XLSX from 'xlsx';
 import { ReferenceDetailFileM, ReferenceHeaderFileM } from 'src/app/_shared/models/reference.model';
 import { ReferenceService } from 'src/app/_shared/services/reference.service';
 
@@ -24,8 +19,6 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
   details: ReferenceDetailFileM[] = [];
   dataSource: MatTableDataSource<ReferenceDetailFileM> = new MatTableDataSource();
 
-  standardForm!: FormGroup;
-  standardSpecForm!: FormGroup;
   _onDestroy = new Subject<void>();
 
   constructor(
@@ -50,12 +43,12 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: {type: 'success', message: `Folios generados con éxito`},
+            data: { type: 'success', message: `Folios generados con éxito` },
           })
-          .afterClosed()
-          .subscribe(() => {
-            this.ngOnInit();
-          });
+            .afterClosed()
+            .subscribe(() => {
+              this.ngOnInit();
+            });
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {

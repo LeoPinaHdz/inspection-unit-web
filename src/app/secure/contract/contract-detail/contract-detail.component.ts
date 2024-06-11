@@ -59,7 +59,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       idRepresentante: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       observaciones: new FormControl(''),
-      active: new FormControl(false),
+      active: new FormControl({value: true, disabled: true}),
       assign: new FormControl(false)
     });
 
@@ -178,7 +178,10 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     if (!this.contractForm.valid) return;
 
     const contractRequest = this.contractForm.getRawValue();
-    contractRequest.idEstatus = contractRequest.active ? 1 : 3;
+
+    if (!this.isEdit) {
+      contractRequest.idEstatus = contractRequest.active ? 1 : 3;
+    }
 
     this.contractService.save(contractRequest)
       .pipe()
@@ -193,7 +196,6 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
             });
         },
         error: (err) => {
-          console.log(err);
           const errMessage = err.error && err.error.Message ? err.error.Message : `Error al guardar el contrato ${contractRequest.idContrato}`;
           this.dialog.open(SimpleDialogComponent, {
             data: { type: 'error', message: errMessage },

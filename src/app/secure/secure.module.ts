@@ -54,6 +54,7 @@ import { RequestDetailComponent } from './request/request-detail/request-detail.
 import { ReferenceTabsComponent } from './reference/reference-tabs/reference-tabs.component';
 import { ReferenceFileMComponent } from './reference/reference-file-m/reference-file-m.component';
 import { ReferenceCreateComponent } from './reference/reference-create/reference-create.component';
+import { ReferenceFileCsvComponent } from './reference/reference-file-csv/reference-file-csv.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { ReferenceCreateComponent } from './reference/reference-create/reference
     RequestDetailComponent,
     ReferenceTabsComponent,
     ReferenceFileMComponent,
-    ReferenceCreateComponent
+    ReferenceCreateComponent,
+    ReferenceFileCsvComponent
   ],
   imports: [
     SecureRoutingModule,

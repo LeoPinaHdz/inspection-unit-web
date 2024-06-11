@@ -33,4 +33,8 @@ export class ReferenceService {
   generate(header: ReferenceHeaderFileM): Observable<any> {
     return this.http.post<any>(`${environment.url}Folio/ProcessFolioFraccion`, header);
   }
+  
+  uploadFileCsv(form: FormData): Observable<any> {
+    return this.http.post<any>(`${environment.url}Folio/UploadExcel`, form);
+  }
 }

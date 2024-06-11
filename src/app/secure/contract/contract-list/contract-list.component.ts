@@ -9,10 +9,14 @@ import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { ClientService } from 'src/app/_shared/services/client.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { removeEmptyAttributes } from 'src/app/_shared/utils/object.utils';
+import { ConfirmationDialogComponent } from 'src/app/_shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 
 @Component({
   selector: 'contracts',
-  templateUrl: './contract-list.component.html'
+  templateUrl: './contract-list.component.html',
+  styleUrls: ['./contract-list.component.scss']
 })
 
 export class ContractsComponent implements OnInit, OnDestroy {
@@ -35,7 +39,8 @@ export class ContractsComponent implements OnInit, OnDestroy {
 
   constructor(
     private contractService: ContractService,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private dialog: MatDialog
   ) { }
 
   ngOnDestroy() {
@@ -68,6 +73,42 @@ export class ContractsComponent implements OnInit, OnDestroy {
           console.error('Error trying to get clients');
         }
       });
+  }
+  
+  showConfirmDialog(idContrato: number, idEstatus: number): void {
+    this.dialog.open(ConfirmationDialogComponent, {
+      data: `¿Esta seguro que desea ${idEstatus === 3 ? 'eliminar' : 'autorizar'} el contrato ${idContrato}?`,
+    })
+    .afterClosed()
+    .subscribe((confirmado: Boolean) => {
+      if (confirmado) {
+        this.updateContract(idContrato, idEstatus);        
+      }
+    });
+  }
+
+  updateContract(idContrato: number, idEstatus: number): void {
+    const contract = {idContrato, idEstatus};
+
+    this.contractService.update(contract)
+        .pipe()
+        .subscribe({
+          next: (response) => {
+            this.dialog.open(SimpleDialogComponent, {
+              data: {type: 'success', message: `El contrato ${idContrato} fue actualizado con éxito`},
+            })
+            .afterClosed()
+            .subscribe(() => {
+              this.onSearch();
+            });
+          },
+          error: () => {
+            this.dialog.open(SimpleDialogComponent, {
+              data: {type: 'error', message: `Ocurrio un error al actualizar el contrato ${idContrato}`},
+            });
+            console.error('Error trying to update receipt');
+          }
+        });
   }
 
   onSearch() {

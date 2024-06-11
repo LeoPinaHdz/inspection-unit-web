@@ -26,6 +26,10 @@ export class ContractService {
     return this.http.put<any>(`${environment.url}Contratos/Update`, contract);
   }
 
+  update(receipt: Contract): Observable<any> {
+    return this.http.put<any>(`${environment.url}Contratos/UpdateEstatus`, receipt);
+  }
+
   download(id: number, type: number): Observable<HttpResponse<any>> {
     return this.http.get(`${environment.url}Contratos/GetActa?id=${id}&type=${type}`, {
       observe: 'response',

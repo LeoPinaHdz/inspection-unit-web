@@ -84,7 +84,7 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `Los datos notariales ${clientNotarialDataRequest.idNotarial || ''} fueron guardados con éxito` },
+            data: { type: 'success', message: `Los datos notariales ${clientNotarialDataRequest.idNotarial} fueron guardados con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
@@ -93,9 +93,10 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
               this.loadAllClientNotarialDatas(this.client.idCliente);
             });
         },
-        error: () => {
+        error: (err) => {
+          const errMessage = err.error && err.error.Message ? err.error.Message : `Error al guardar los datos notariales ${clientNotarialDataRequest.idNotarial}`;
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar los datos notariales ${clientNotarialDataRequest.idNotarial || ''}` },
+            data: { type: 'error', message: errMessage },
           });
           console.error('Error trying to save clientNotarialData');
         }
