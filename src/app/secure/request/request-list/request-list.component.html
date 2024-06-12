@@ -24,9 +24,34 @@
         <mat-cell *matCellDef="let row"> {{ row.idSolicitud }} </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="folio">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.folio }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idCliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.idCliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fSolicitud">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de solicitud </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.fSolicitud }} </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="pedimento">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Pedimento </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.pedimento }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idNorma">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> NOM </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.idNorma }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tipoServicio">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.tipoServicio }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="idEstatus">

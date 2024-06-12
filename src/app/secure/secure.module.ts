@@ -48,13 +48,13 @@ import { OfficialDetailComponent } from './official/official-detail/official-det
 import { ContractsComponent } from './contract/contract-list/contract-list.component';
 import { ContractDetailComponent } from './contract/contract-detail/contract-detail.component';
 import { LettersComponent } from './letter/letter-list/letter-list.component';
-import { LetterDetailComponent } from './letter/letter-detail/letter-detail.component';
 import { RequestsComponent } from './request/request-list/request-list.component';
-import { RequestDetailComponent } from './request/request-detail/request-detail.component';
 import { ReferenceTabsComponent } from './reference/reference-tabs/reference-tabs.component';
 import { ReferenceFileMComponent } from './reference/reference-file-m/reference-file-m.component';
 import { ReferenceCreateComponent } from './reference/reference-create/reference-create.component';
 import { ReferenceFileCsvComponent } from './reference/reference-file-csv/reference-file-csv.component';
+import { CreateLetterComponent } from './letter/create-letter/create-letter.component';
+import { CreateRequestComponent } from './request/create-request/create-request.component';
 
 @NgModule({
   declarations: [
@@ -81,9 +81,9 @@ import { ReferenceFileCsvComponent } from './reference/reference-file-csv/refere
     ContractsComponent,
     ContractDetailComponent,
     LettersComponent,
-    LetterDetailComponent,
+    CreateLetterComponent,
     RequestsComponent,
-    RequestDetailComponent,
+    CreateRequestComponent,
     ReferenceTabsComponent,
     ReferenceFileMComponent,
     ReferenceCreateComponent,

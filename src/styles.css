@@ -98,10 +98,23 @@ body {
   display: flex;
   flex-wrap: wrap;
 }
+.form-cell-12 {
+  margin-top: 10px;
+  width: 100%;
+}
 
 .form-cell-10 {
   margin-top: 10px;
   width: 83.333%;
+}
+.form-cell-9 {
+  margin-top: 10px;
+  width: 75%;
+}
+
+.form-cell-8 {
+  margin-top: 10px;
+  width: 66.666%;
 }
 
 .form-cell-6 {
@@ -132,11 +145,6 @@ body {
 .form-cell-1 {
   margin-top: 10px;
   width: 8.333%;
-}
-
-.form-cell-8 {
-  margin-top: 10px;
-  width: 66.666%;
 }
 
 .table-container {

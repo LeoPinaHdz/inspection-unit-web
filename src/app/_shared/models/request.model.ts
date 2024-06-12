@@ -2,6 +2,7 @@ export interface Request {
     idSolicitud: number;
     idContrato?: number;
     idCliente?: number;
+    folio?: number;
     idNorma?: number;
     pedimento?: string;
     tipoServicio?: boolean;
@@ -17,4 +18,17 @@ export interface Request {
     fModificacion?: string;
     idUsuario?: number;
     idEstatus?: number;
+    clave?: string;
+}
+
+export interface RequestDetail {
+    idSolicitudDetalle: Number;
+    idSolicitud?: Number;
+    partida?: number;
+    modelo?: Number;
+    producto?: Number;
+    cantidad?: Number;
+    idUnidad?: Number;
+    marca?: string;
+    idPais?: string;
 }

@@ -29,9 +29,19 @@
         <mat-cell *matCellDef="let row"> {{ row.folio }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="idEstatus">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }}</mat-cell>
+      <ng-container matColumnDef="idCliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.idCliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idNorma">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Norma </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.idNorma }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fOficio">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Oficio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.fOficio }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">

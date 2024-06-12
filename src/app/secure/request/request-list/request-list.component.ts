@@ -13,7 +13,12 @@ import { RequestService } from 'src/app/_shared/services/request.service';
 export class RequestsComponent implements OnInit {
   displayedColumns: string[] = [
     'idSolicitud',
+    'folio',
+    'idCliente',
+    'fSolicitud',
     'pedimento',
+    'idNorma',
+    'tipoServicio',
     'idEstatus',
     'action'
   ];

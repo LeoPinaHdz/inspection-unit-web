@@ -14,7 +14,9 @@ export class LettersComponent implements OnInit {
   displayedColumns: string[] = [
     'idOficio',
     'folio',
-    'idEstatus',
+    'idCliente',
+    'idNorma',
+    'fOficio',
     'action'
   ];
   dataSource: MatTableDataSource<Letter> = new MatTableDataSource();

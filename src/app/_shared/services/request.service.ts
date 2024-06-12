@@ -9,17 +9,17 @@ export class RequestService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Request[]> {
-    return this.http.get<Request[]>(`${environment.url}Solicitudes/GetAll`);
+    return this.http.get<Request[]>(`${environment.url}Requests/GetAll`);
   }
 
   getById(id: number): Observable<Request> {
-    return this.http.get<Request>(`${environment.url}Solicitudes/Get?id=${id}`);
+    return this.http.get<Request>(`${environment.url}Requests/Get?id=${id}`);
   }
 
   save(request: Request): Observable<any> {
     if (!request.idSolicitud || request.idSolicitud === 0)
-      return this.http.post<any>(`${environment.url}Solicitudes/Create`, request);
-    return this.http.put<any>(`${environment.url}Solicitudes/Update`, request);
+      return this.http.post<any>(`${environment.url}Requests/Create`, request);
+    return this.http.put<any>(`${environment.url}Requests/Update`, request);
   }
 
   download(id: number, type: number): Observable<HttpResponse<any>> {
