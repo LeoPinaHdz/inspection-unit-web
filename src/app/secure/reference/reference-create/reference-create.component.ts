@@ -32,13 +32,12 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   referenceDetails: ReferenceDetail[] = [];
   clients: Client[] = [];
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
-  countries: CountrySE[] = [{idPais: 'MX', nombre: 'MEXICO'}, {idPais: 'USA', nombre: 'ESTADOS UNIDOS'}];
+  countries: CountrySE[] = [];
   filteredCountries: ReplaySubject<CountrySE[]> = new ReplaySubject<CountrySE[]>(1);
   standards: any[] = [];
   displayedColumns: string[] = ['folio', 'marca', 'producto', 'modelo', 'cantidad', 'idUnidad', 'idPais', 'etiquetas', 'fraccion', 'idEstatus', 'actions'];
   dataSource: MatTableDataSource<ReferenceDetail> = new MatTableDataSource();
-  units: Unit[] = [{idUnidad: 1, nombre: 'Uno'}, {idUnidad: 2, nombre: 'Dos'}];
-  countr: Unit[] = [{idUnidad: 1, nombre: 'Uno'}, {idUnidad: 2, nombre: 'Dos'}];
+  units: Unit[] = [];
   _onDestroy = new Subject<void>();
 
   constructor(
@@ -60,34 +59,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
 
-    this.formReference = new FormGroup({
-      idFolio: new FormControl({value: '', disabled: true}, [Validators.required]),
-      folio: new FormControl({value: '', disabled: true}, [Validators.required]),
-      pedimento: new FormControl('', []),
-      idCliente: new FormControl('', [Validators.required]),
-      clientFilter: new FormControl('', []),
-      idNorma: new FormControl('', [Validators.required]),
-      factura: new FormControl('', []),
-      fFolio: new FormControl({value: new Date(), disabled: true}, [Validators.required]),
-      fVigencia: new FormControl({value: addYears(new Date(), 1), disabled: true}, [Validators.required]),
-      persona: new FormControl('2', []),
-      modalidad: new FormControl('2', []),
-    });
-
-    this.formReferenceDetail = new FormGroup({
-      idFolioDetalle: new FormControl(0, []),
-      fraccion: new FormControl('', [Validators.required]),
-      marca: new FormControl('', [Validators.required]),
-      modelo: new FormControl('', [Validators.required]),
-      producto: new FormControl('', [Validators.required]),
-      cantidad: new FormControl('', [Validators.required]),
-      partida: new FormControl('0', [Validators.required]),
-      subfolio: new FormControl('0', []),
-      etiquetas: new FormControl('', [Validators.required]),
-      idUnidad: new FormControl('', [Validators.required]),
-      countryFilter: new FormControl('', []),
-      idPais: new FormControl('', [Validators.required])
-    });
+    this.initComponent();
 
     this.clientService.getAllActive()
       .pipe()
@@ -106,7 +78,6 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.formReferenceDetail.get('idUnidad')!.setValue(this.units[0]);
     this.unitService.getAll()
     .pipe()
     .subscribe({
@@ -119,13 +90,6 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.formReferenceDetail.get('idPais')!.setValue(this.countries[0]);
-    this.filteredCountries.next(this.countries.slice());
-    this.formReferenceDetail.get('countryFilter')!.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterCountries();
-      });
     this.countryService.getAllSE()
     .pipe()
     .subscribe({
@@ -160,6 +124,41 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       this.isEdit = true;
       //TODO: get detail
     }
+  }
+
+  initComponent() {
+    this.formReference = new FormGroup({
+      idFolio: new FormControl({value: '', disabled: true}, [Validators.required]),
+      folio: new FormControl({value: '', disabled: true}, [Validators.required]),
+      pedimento: new FormControl('', []),
+      idCliente: new FormControl('', [Validators.required]),
+      clientFilter: new FormControl('', []),
+      idNorma: new FormControl('', [Validators.required]),
+      factura: new FormControl('', []),
+      fFolio: new FormControl({value: new Date(), disabled: true}, [Validators.required]),
+      fVigencia: new FormControl({value: addYears(new Date(), 1), disabled: true}, [Validators.required]),
+      persona: new FormControl('2', []),
+      modalidad: new FormControl('2', []),
+    });
+
+    this.formReferenceDetail = new FormGroup({
+      idFolioDetalle: new FormControl(0, []),
+      fraccion: new FormControl('', [Validators.required]),
+      marca: new FormControl('', [Validators.required]),
+      modelo: new FormControl('', [Validators.required]),
+      producto: new FormControl('', [Validators.required]),
+      cantidad: new FormControl('', [Validators.required]),
+      partida: new FormControl('0', [Validators.required]),
+      subfolio: new FormControl('0', []),
+      etiquetas: new FormControl('', [Validators.required]),
+      idUnidad: new FormControl('', [Validators.required]),
+      countryFilter: new FormControl('', []),
+      idPais: new FormControl('', [Validators.required])
+    });
+
+    this.referenceDetails = [];
+    this.selectedDetail = undefined;
+    this.initDetailsTable(this.referenceDetails, true);
   }
 
   resetDetatilForm() {

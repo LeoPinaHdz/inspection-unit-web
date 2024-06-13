@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, lastValueFrom, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ContractService } from 'src/app/_shared/services/contract.service';
@@ -46,7 +46,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
 
     this.contractForm = new FormGroup({
@@ -59,62 +59,48 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       idRepresentante: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       observaciones: new FormControl(''),
-      active: new FormControl({value: true, disabled: true}),
+      active: new FormControl({ value: true, disabled: true }),
       assign: new FormControl(false)
     });
 
-    this.clientService.getAllActive()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.clients = response;
-          if (response.length > 0) this.contractForm.get('idCliente')!.setValue(this.clients[0].idCliente);
 
+    try {
+      this.clients = await lastValueFrom(this.clientService.getAllActive());
+      if (this.clients.length > 0) this.contractForm.get('idCliente')!.setValue(this.clients[0].idCliente);
+
+      this.contractForm.get('idCliente')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
           this.loadRepresentatives();
-        },
-        error: () => {
-          console.error('Error trying to get clients');
-        }
-      });
+        });
+      this.loadRepresentatives();
+    } catch (error) {
+      console.error('Error trying to get clients');
+    }
 
-    this.contractForm.get('idCliente')!.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.loadRepresentatives();
-      });
-
-    this.officialService.getAll()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.officials = response;
-          if (response.length > 0) this.contractForm.get('idFuncionario')!.setValue(this.officials[0].idFuncionario);
-        },
-        error: () => {
-          console.error('Error trying to get officialss');
-        }
-      });
+    try {
+      this.officials = await lastValueFrom(this.officialService.getAll());
+      if (this.officials.length > 0) this.contractForm.get('idFuncionario')!.setValue(this.officials[0].idFuncionario);
+    } catch (error) {
+      console.error('Error trying to get officials');
+    }
 
     if (this.id) {
       this.isEdit = true;
 
-      this.contractService.getById(this.id)
-        .pipe()
-        .subscribe({
-          next: (response) => {
-            this.updateForm(response);
-          },
-          error: () => {
-            this.dialog.open(SimpleDialogComponent, {
-              data: { type: 'error', message: `Error al obtener los datos del contrato ${this.id}` },
-            })
-              .afterClosed()
-              .subscribe(() => {
-                this.router.navigate([`/secure/contracts`]);
-              });
-            console.error('Error trying to get contract detail');
-          }
-        });
+      try {
+        const response = await lastValueFrom(this.contractService.getById(this.id));
+        this.updateForm(response);
+      } catch (error) {
+        this.dialog.open(SimpleDialogComponent, {
+          data: { type: 'error', message: `Error al obtener los datos del contrato ${this.id}` },
+        })
+          .afterClosed()
+          .subscribe(() => {
+            this.router.navigate([`/secure/contracts`]);
+          });
+        console.error('Error trying to get contract detail');
+      }
     } else {
       this.utilitiesService.getFolio('CONTRATOS').pipe().subscribe({
         next: (response) => {

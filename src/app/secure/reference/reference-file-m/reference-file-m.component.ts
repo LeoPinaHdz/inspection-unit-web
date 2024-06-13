@@ -50,11 +50,12 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
               this.ngOnInit();
             });
         },
-        error: () => {
+        error: (err) => {
+          const errMessage = err.error && err.error.Message ? err.error.Message : 'Ocurrio un error al crear los folios';
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Ocurrio un error al crear los folios` },
+            data: { type: 'error', message: errMessage },
           });
-          console.error('Error trying to create reference');
+          console.log('Error trying to create reference');
         }
       });
   }
@@ -80,22 +81,24 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
 
                 this.dataSource = new MatTableDataSource(this.details);
               },
-              error: () => {
+              error: (err) => {
+                const errMessage = err.error && err.error.Message ? err.error.Message : 'Ocurrio un error al consultar el detalle de folio';
                 this.dialog.open(SimpleDialogComponent, {
-                  data: { type: 'error', message: `Ocurrio un error al consultar el detalle de folio` },
+                  data: { type: 'error', message: errMessage },
                 });
-                console.error('Error trying to create reference');
+                console.log('Error trying to create reference');
               }
             });
           this.dialog.open(SimpleDialogComponent, {
             data: { type: 'success', message: `Archivo cargado con éxito` },
           });
         },
-        error: () => {
+        error: (err) => {
+          const errMessage = err.error && err.error.Message ? err.error.Message : 'Ocurrio un error al crear los folios';
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Ocurrio un error al crear los folios` },
+            data: { type: 'error', message: errMessage },
           });
-          console.error('Error trying to create reference');
+          console.log('Error trying to create reference');
         }
       });
   }

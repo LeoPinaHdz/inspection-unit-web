@@ -9,6 +9,6 @@ export class UnitService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Unit[]> {
-    return this.http.get<Unit[]>(`${environment.url}Unidad/GetAll`);
+    return this.http.get<Unit[]>(`${environment.url}CatUnidades/GetAll`);
   }
 }
