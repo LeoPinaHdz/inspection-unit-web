@@ -2,10 +2,8 @@
     <mat-card-content>
         <div class="form-container">
             <upload-button accept=".csv" buttonTitle="Adjuntar" (fileChange)="submitFile($event)"></upload-button>
-
-            <button *ngIf="references.length > 0" class="form-button no-left-margin" color="primary" 
-                mat-fab extended>
-                Generar Folios
+            <button *ngIf="references.length > 0" class="form-button no-left-margin" color="primary" (click)="clear()" mat-fab extended>
+                Limpiar
             </button>
         </div>
     </mat-card-content>
@@ -37,7 +35,4 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </mat-card-content>
-    <!--mat-card-footer>
-        <button (click)="onSubmit()" mat-fab extended>Guardar</button>
-    </mat-card-footer-->
 </mat-card>

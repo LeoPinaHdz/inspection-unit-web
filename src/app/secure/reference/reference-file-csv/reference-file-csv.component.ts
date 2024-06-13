@@ -55,4 +55,8 @@ export class ReferenceFileCsvComponent implements OnInit, OnDestroy {
       });
   }
 
+  clear() {
+    this.ngOnInit();
+  }
+
 }
