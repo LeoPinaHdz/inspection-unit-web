@@ -87,6 +87,11 @@ body {
   width: 300px !important;
 }
 
+.mat-column-select {
+  width: 60px;
+  flex: none;
+}
+
 .mat-mdc-form-field,
 .mat-mdc-form-field-small,
 .mat-mdc-form-field-large {

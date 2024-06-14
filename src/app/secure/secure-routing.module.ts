@@ -22,6 +22,7 @@ import { RequestsComponent } from './request/request-list/request-list.component
 import { ReferenceTabsComponent } from './reference/reference-tabs/reference-tabs.component';
 import { CreateRequestComponent } from './request/create-request/create-request.component';
 import { CreateLetterComponent } from './letter/create-letter/create-letter.component';
+import { ConversionComponent } from './conversion/conversion.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -45,9 +46,7 @@ const routes: Routes = [
   { path: 'official/new', component: OfficialDetailComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},
   { path: 'official/:id', component: OfficialDetailComponent, canActivate: [AuthGuard], data: {role: 'FUNCIONARIOS'}},
   
-  { path: 'conversions', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'} },
-  { path: 'conversion/new', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
-  { path: 'conversion/:id', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'}},
+  { path: 'conversions', component: ConversionComponent, canActivate: [AuthGuard], data: {role: 'CONVERSION'} },
   
   { path: 'contracts', component: ContractsComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'} },
   { path: 'contract/new', component: ContractDetailComponent, canActivate: [AuthGuard], data: {role: 'CONTRATOS'}},

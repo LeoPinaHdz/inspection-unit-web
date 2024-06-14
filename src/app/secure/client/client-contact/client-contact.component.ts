@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ContactTypeService } from 'src/app/_shared/services/contact-type.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'client-contact',
@@ -37,7 +38,7 @@ export class ClientContactComponent implements OnInit, OnChanges {
     private contactTypeService: ContactTypeService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.clientContactForm = new FormGroup({
       idContacto: new FormControl({ value: '', disabled: true }, []),
       nombre: new FormControl('', [Validators.required]),
@@ -48,18 +49,13 @@ export class ClientContactComponent implements OnInit, OnChanges {
       idTipo: new FormControl('', [Validators.required]),
       active: new FormControl(false, [Validators.required])
     });
-    
-    this.contactTypeService.getAll()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.contactTypes = response;
-          if (response.length > 0) this.clientContactForm.get('idTipo')!.setValue(this.contactTypes[0].idTipo);
-        },
-        error: () => {
-          console.error('Error trying to get contact types');
-        }
-      });
+
+    try {
+      this.contactTypes = await lastValueFrom(this.contactTypeService.getAll());
+      if (this.contactTypes.length > 0) this.clientContactForm.get('idTipo')!.setValue(this.contactTypes[0].idTipo);
+    } catch (error) {
+      console.error('Error trying to get contact types');
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -98,18 +94,18 @@ export class ClientContactComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El contacto ${clientContactRequest.idContacto || ''} fue guardada con éxito` },
+            data: { type: 'success', message: `El contacto ${clientContactRequest.idContacto} fue guardada con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientContactForm.reset({active: false});
+              this.clientContactForm.reset({ active: false });
               this.loadAllClientContacts(this.client.idCliente);
             });
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el contacto ${clientContactRequest.idContacto || ''}` },
+            data: { type: 'error', message: `Error al guardar el contacto ${clientContactRequest.idContacto}` },
           });
           console.error('Error trying to save clientContact');
         }
@@ -118,7 +114,7 @@ export class ClientContactComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientContactForm.reset({active: false});
+    this.clientContactForm.reset({ active: false });
   }
 
   onEditContact(clientContact: ClientContact): void {

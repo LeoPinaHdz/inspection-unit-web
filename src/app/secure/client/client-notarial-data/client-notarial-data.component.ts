@@ -7,7 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ClientNotarialData } from 'src/app/_shared/models/client-notarial-data';
-import { ClientNotarialDataService } from 'src/app/_shared/services/client-notarial-data';
+import { ClientNotarialDataService } from 'src/app/_shared/services/client-notarial-data.service';
 
 @Component({
   selector: 'client-notarial-data',
@@ -71,8 +71,6 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
 
   onSubmit(): void {
     this.clientNotarialDataForm.markAllAsTouched();
-    console.log(this.clientNotarialDataForm);
-    console.log(this.clientNotarialDataForm.valid);
     if (!this.clientNotarialDataForm.valid) return;
 
     const clientNotarialDataRequest = this.clientNotarialDataForm.getRawValue();

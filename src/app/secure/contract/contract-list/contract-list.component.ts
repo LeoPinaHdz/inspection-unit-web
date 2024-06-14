@@ -77,7 +77,7 @@ export class ContractsComponent implements OnInit, OnDestroy {
   
   showConfirmDialog(idContrato: number, idEstatus: number): void {
     this.dialog.open(ConfirmationDialogComponent, {
-      data: `¿Esta seguro que desea ${idEstatus === 3 ? 'eliminar' : 'autorizar'} el contrato ${idContrato}?`,
+      data: `¿Esta seguro que desea ${idEstatus === 3 ? 'cancelar' : 'concluir'} el contrato ${idContrato}?`,
     })
     .afterClosed()
     .subscribe((confirmado: Boolean) => {
