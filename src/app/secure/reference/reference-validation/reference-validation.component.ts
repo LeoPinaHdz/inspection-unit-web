@@ -44,49 +44,60 @@ export class ReferenceValidationComponent implements OnInit, OnDestroy {
     });
 
     this.searchForm.get('idEstatus')!.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.setStatus();
-    });
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.setStatus();
+      });
   }
- 
+
   showConfirmDialog(newStatus: number): void {
     this.dialog.open(ConfirmationDialogComponent, {
       data: `¿Esta seguro que desea ${newStatus === 3 ? 'cancelar' : 'validar'} los folios seleccionados?`,
     })
-    .afterClosed()
-    .subscribe((confirmado: Boolean) => {
-      if (confirmado) {
-        this.updateReferences();  
-      }
-    });
+      .afterClosed()
+      .subscribe((confirmado: Boolean) => {
+        if (confirmado) {
+          this.updateReferences(newStatus);
+        }
+      });
   }
 
-  updateReferences() {
+  updateReferences(newStatus: number) {
     const request = this.searchForm.getRawValue();
-    this.referenceService.updateStatus(request.tipo, this.selection.selected)
-    .pipe()
-    .subscribe({
-      next: (response) => {
-        this.dialog.open(SimpleDialogComponent, {
-          data: { type: 'success', message: 'Los folios fueron actualizados con éxito' },
-        });
+    let details: any[] = [];
 
-        this.clear();
-      },
-      error: (err) => {
-        const errMessage = 'Ocurrio un error al actualizar los folios';
-        this.dialog.open(SimpleDialogComponent, {
-          data: { type: 'error', message: errMessage },
-        });
-        console.log('Error trying to get references');
-      }
-    });
+    if (request.tipo == 1) {
+      this.selection.selected.forEach(r => r.idEstatus = newStatus);
+      details = this.selection.selected;
+    } else {
+      details = this.selection.selected.map(r => {
+        return { idFolioDetalle: r.idFolio, idEstatus: newStatus };
+      });
+    }
+
+    this.referenceService.updateStatus(request.tipo, details)
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.dialog.open(SimpleDialogComponent, {
+            data: { type: 'success', message: 'Los folios fueron actualizados con éxito' },
+          });
+
+          this.clear();
+        },
+        error: (err) => {
+          const errMessage = 'Ocurrio un error al actualizar los folios';
+          this.dialog.open(SimpleDialogComponent, {
+            data: { type: 'error', message: errMessage },
+          });
+          console.log('Error trying to get references');
+        }
+      });
   }
 
   onSearch() {
     const request = this.searchForm.getRawValue();
-    request.folio = request.folio === '' ? 0: request.folio;
+    request.folio = request.folio === '' ? 0 : request.folio;
 
     this.referenceService.getValidation(request)
       .pipe()

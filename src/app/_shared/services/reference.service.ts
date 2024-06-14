@@ -50,9 +50,9 @@ export class ReferenceService {
     return this.http.put<any>(`${environment.url}Folio/UpdateStatus`, references);
   }
 
-  updateStatus(type: number, references: Reference[]): Observable<any> {
+  updateStatus(type: number, references: any[]): Observable<any> {
     if (type == 1)
-      return this.http.post<any>(`${environment.url}Folio/UpdateStatus`, references);
-    return this.http.put<any>(`${environment.url}Folio/UpdateStatusDetail`, references);
+      return this.http.post<any>(`${environment.url}Folio/UpdateEstatus`, references);
+    return this.http.post<any>(`${environment.url}Folio/UpdateDetalleEstatus`, references);
   }
 }
