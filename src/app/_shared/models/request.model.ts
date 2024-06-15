@@ -19,6 +19,7 @@ export interface Request {
     idUsuario?: number;
     idEstatus?: number;
     clave?: string;
+    detalles?: RequestDetail[];
 }
 
 export interface RequestDetail {
@@ -30,5 +31,5 @@ export interface RequestDetail {
     cantidad?: Number;
     idUnidad?: Number;
     marca?: string;
-    idPais?: string;
+    pais?: string;
 }

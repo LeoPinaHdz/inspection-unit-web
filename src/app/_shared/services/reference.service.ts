@@ -8,6 +8,14 @@ import { Reference, ReferenceDetail, ReferenceDetailFileM, ReferenceHeaderFileM 
 export class ReferenceService {
   constructor(private http: HttpClient) { }
 
+  getReferences(): Observable<any> {
+    return this.http.get<any>(`${environment.url}Folio/GetReferences`);
+  }
+  
+  search(): Observable<any> {
+    return this.http.get<any>(`${environment.url}Folio/GetListado`);
+  }
+
   getById(id: number): Observable<Reference> {
     return this.http.get<Reference>(`${environment.url}Folio/Get?id=${id}`);
   }

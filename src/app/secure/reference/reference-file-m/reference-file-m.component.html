@@ -1,18 +1,21 @@
 <mat-card>
     <mat-card-content>
         <div class="form-container">
-            <upload-button accept="M*.*,P*.*" buttonTitle="Adjuntar" (fileChange)="submitFile($event)"></upload-button>
+            <upload-button accept="M*.*,P*.*" buttonTitle="Adjuntar" (fileChange)="submitFile($event)"></upload-button>&nbsp;
 
-            <button *ngIf="header.length > 0" class="form-button no-left-margin" color="primary" (click)="generate()"
+            <button class="no-left-margin" color="accent" (click)="getReferences()" mat-fab extended>
+                Refrescar Pedimentos
+            </button>&nbsp;
+            <button *ngIf="details.length > 0" class="form-button no-left-margin" color="primary" (click)="generate()"
                 mat-fab extended>
                 Generar Folios
             </button>
         </div>
     </mat-card-content>
 </mat-card>
-<mat-card *ngIf="header.length > 0">
+<mat-card>
     <mat-card-content>
-        <table mat-table [dataSource]="headerDataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="headerDataSource" class="mat-elevation-z8" *ngIf="header.length > 0">
             <ng-container matColumnDef="cons">
                 <th mat-header-cell *matHeaderCellDef>Cons</th>
                 <td mat-cell *matCellDef="let element"> {{element.cons}} </td>
@@ -33,6 +36,13 @@
                 <th mat-header-cell *matHeaderCellDef>Archivo</th>
                 <td mat-cell *matCellDef="let element"> {{element.nombreArchivo}} </td>
             </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-raised-button color="accent" class="view-edit"
+                        (click)="loadDetail(element)">Ver</button>
+                </td>
+            </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedHeaderColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedHeaderColumns;"></tr>
         </table>
@@ -40,7 +50,7 @@
         <br />
         <br />
 
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="details.length > 0">
             <ng-container matColumnDef="uva">
                 <th mat-header-cell *matHeaderCellDef>UI</th>
                 <td mat-cell *matCellDef="let element"> {{element.uva}} </td>

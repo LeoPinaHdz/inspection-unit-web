@@ -44,6 +44,9 @@ export class ReferenceFileCsvComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.references = response;
           this.dataSource = new MatTableDataSource(this.references);
+          this.dialog.open(SimpleDialogComponent, {
+            data: { type: 'success', message: 'Folios procesados correctamente' },
+          });
         },
         error: (err) => {
           const errMessage = err.error && err.error.Message ? err.error.Message : 'Ocurrio un error al crear los folios';

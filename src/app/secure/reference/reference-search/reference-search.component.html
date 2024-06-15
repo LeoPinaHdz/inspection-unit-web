@@ -1,0 +1,37 @@
+<div>
+  WORK IN PROGRESS
+  <div class="table-container mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+      <ng-container matColumnDef="FolioFormato">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.FolioFormato }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="NomCliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NomCliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Estatus">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Estatus }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="NombreArchivo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Archivo </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NombreArchivo }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="['/secure/contract/', row.idFolio]" mat-raised-button color="accent" class="view-edit">Ver</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

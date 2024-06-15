@@ -36,8 +36,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
   filteredCountries: ReplaySubject<CountrySE[]> = new ReplaySubject<CountrySE[]>(1);
   standards: any[] = [];
   representatives: any[] = [];
-  places: any[] = [{idLugar: 1, nombre:'Sonora'}];
-  displayedColumns: string[] = ['modelo', 'producto', 'cantidad', 'idUnidad', 'marca', 'idPais', 'actions'];
+  places: any[] = [{ idLugar: 1, nombre: 'Sonora' }];
+  displayedColumns: string[] = ['modelo', 'producto', 'cantidad', 'idUnidad', 'marca', 'pais', 'actions'];
   dataSource: MatTableDataSource<RequestDetail> = new MatTableDataSource();
   units: Unit[] = [];
   _onDestroy = new Subject<void>();
@@ -70,14 +70,11 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       idNorma: new FormControl('', [Validators.required]),
       pedimento: new FormControl({ value: '', disabled: true }),
       tipoServicio: new FormControl({ value: '0', disabled: true }, [Validators.required]),
-      tipoRegimen: new FormControl('', [Validators.required]),
+      tipoRegimen: new FormControl('0', [Validators.required]),
       fSolicitud: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       fPrograma: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
-      idRepresentante: new FormControl(''),
       idLugar: new FormControl('', [Validators.required]),
-      idFuncionario: new FormControl(''),
-      idEjecutivo: new FormControl(''),
-      clave: new FormControl(''),
+      clave: new FormControl({value: '', disabled: true}),
       active: new FormControl({ value: true, disabled: true })
     });
 
@@ -88,7 +85,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       cantidad: new FormControl(''),
       idUnidad: new FormControl(''),
       marca: new FormControl(''),
-      country: new FormControl('')
+      pais: new FormControl('')
     });
 
     try {
@@ -111,6 +108,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Error trying to get clients');
     }
+
     try {
       this.standards = await lastValueFrom(this.standardService.getAllActive());
       if (this.standards.length > 0) this.requestForm.get('idNorma')!.setValue(this.standards[0].idNorma);
@@ -141,13 +139,13 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     const sortedRequests = requests.sort((a, b) => (a.partida || 0) > (b.partida || 0) ? 1 : -1);
     if (setPartida) {
       sortedRequests.forEach((item, i) => {
-        item.producto = i + 1;
+        item.partida = i + 1;
       });
     }
 
     this.dataSource = new MatTableDataSource(sortedRequests);
   }
-  
+
   resetDetatilForm() {
     this.requestDetailForm.reset({ idSolicitudDetalle: 0, partida: 0 });
   }
@@ -160,7 +158,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       idSolicitudDetalle: detail.idSolicitudDetalle,
       cantidad: detail.cantidad,
       idUnidad: detail.idUnidad,
-      idPais: detail.idPais,
+      pais: detail.pais,
       modelo: detail.modelo,
       producto: detail.producto,
       marca: detail.marca,
@@ -196,14 +194,10 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     const requestDetail = this.requestDetailForm.getRawValue();
 
     if (this.selectedDetail) {
-      requestDetail.producto = this.selectedDetail.producto;
-
+      requestDetail.partida = this.selectedDetail.partida;
     } else {
-      requestDetail.producto = requestDetail.producto == 0 ? this.requestDetails.length + 1 : requestDetail.producto;
+      requestDetail.partida = requestDetail.partida == 0 ? this.requestDetails.length + 1 : requestDetail.partida;
     }
-
-    const subsolicitud: string = requestDetail.producto && requestDetail.producto === 1 ? '' : (requestDetail.producto - 1).toString();
-    requestDetail.subsolicitud = subsolicitud;
 
     this.requestDetails.push(requestDetail);
     this.selectedDetail = undefined;
@@ -213,26 +207,26 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.requestForm.markAllAsTouched();
-    if (!this.requestForm.valid) return;
+    if (!this.requestForm.valid || this.requestDetails.length === 0) return;
 
     let request = this.requestForm.getRawValue();
     request.idEstatus = request.active ? 1 : 3;
     request.tipoServicio = request.tipoServicio == 1;
     request.tipoRegimen = request.tipoRegimen == 1;
 
-    request.solicitud = 0;
-    request.solicitudsDetalle = this.requestDetails;
+    if (!this.isEdit) request.folio = 0;
+    request.detalles = this.requestDetails;
 
     this.requestService.save(request)
       .pipe()
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `La solicitud ${request.idSolicitud} fue guardado con éxito` },
+            data: { type: 'success', message: `La solicitud ${request.idSolicitud} fue guardada con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
-              this.ngOnInit();
+              this.router.navigate([`/secure/requests`]);
             });
         },
         error: () => {
@@ -265,19 +259,17 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       folio: request.folio,
       idNorma: request.idNorma,
       pedimento: request.pedimento,
-      tipoServicio: request.tipoServicio,
-      tipoRegimen: request.tipoRegimen,
+      tipoServicio: request.tipoServicio ? '1' : '0',
+      tipoRegimen: request.tipoRegimen ? '1' : '0',
       fSolicitud: request.fSolicitud,
       fPrograma: request.fPrograma,
-      idRepresentante: request.idRepresentante,
       idLugar: request.idLugar,
-      idFuncionario: request.idFuncionario,
-      idEjecutivo: request.idEjecutivo,
       clave: request.clave,
       active: (request.idEstatus && request.idEstatus === 1) || false
     });
 
-    //this.dataSource = new MatTableDataSource(sortedRequests);
+    this.requestDetails = request.detalles || [];
+    this.dataSource = new MatTableDataSource(this.requestDetails);
   }
 
   get form() {
