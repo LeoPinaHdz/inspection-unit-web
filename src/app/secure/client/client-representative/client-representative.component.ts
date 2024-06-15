@@ -48,7 +48,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
       notario: new FormControl('', [Validators.required]),
       fNotaria: new FormControl('', [Validators.required]),
       lugar: new FormControl('', [Validators.required]),
-      idIdentificacion: new FormControl(''),
+      idIdentificacion: new FormControl(undefined),
       noIdentificacion: new FormControl(''),
       active: new FormControl(false, [Validators.required])
     });
@@ -58,7 +58,6 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.typesId = response;
-          if (response.length > 0) this.clientRepresentativeForm.get('idIdentificacion')!.setValue(this.typesId[0].idTipo);
         },
         error: () => {
           console.error('Error trying to get types id');
@@ -100,18 +99,18 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El representante ${clientRepresentativeRequest.idRepresentante} fue guardado con éxito` },
+            data: { type: 'success', message: `El representante ${response.idRepresentante} fue guardado con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.isListMode = !this.isListMode;
-              this.clientRepresentativeForm.reset({active: false});
+              this.clientRepresentativeForm.reset({active: false, idIdentificacion: undefined});
               this.loadAllClientRepresentatives(this.client.idCliente);
             });
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el representante ${clientRepresentativeRequest.idRepresentante}` },
+            data: { type: 'error', message: `Error al guardar el representante` },
           });
           console.error('Error trying to save clientRepresentative');
         }
@@ -120,7 +119,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
 
   onCancel(): void {
     this.isListMode = true;
-    this.clientRepresentativeForm.reset({active: false});
+    this.clientRepresentativeForm.reset({active: false, idIdentificacion: undefined});
   }
 
   onEditRepresentative(clientRepresentative: ClientRepresentative): void {

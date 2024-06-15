@@ -35,7 +35,7 @@ export class PromoterDetailComponent implements OnInit, OnDestroy {
 
     this.promoterForm = new FormGroup({
       idPromotor: new FormControl({ value: '', disabled: true }, []),
-      nombre: new FormControl('', [Validators.required]),
+      nombre: new FormControl('', [Validators.required, Validators.maxLength(50)]),
       active: new FormControl(false)
     });
 
@@ -96,5 +96,9 @@ export class PromoterDetailComponent implements OnInit, OnDestroy {
           console.error('Error trying to save promoter');
         }
       });
+  }
+
+  get form() {
+    return this.promoterForm.controls;
   }
 }

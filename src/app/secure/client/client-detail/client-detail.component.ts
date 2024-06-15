@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, lastValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ClientService } from 'src/app/_shared/services/client.service';
@@ -61,30 +61,22 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
     this._onDestroy.complete();
   }
 
-  ngOnInit() {
-    this.promoterService.getActive()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.promoters = response;
-          if (!this.isEdit && response.length > 0) this.clientForm.get('idPromotor')!.setValue(this.promoters[0].idPromotor);
-        },
-        error: () => {
-          console.error('Error trying to get promoters');
-        }
-      });
+  async ngOnInit() {
 
-    this.executiveService.getActive()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.executives = response;
-          if (!this.isEdit && response.length > 0) this.clientForm.get('idEjecutivo')!.setValue(this.executives[0].idEjecutivo);
-        },
-        error: () => {
-          console.error('Error trying to get executives');
-        }
-      });
+
+    try {
+      this.promoters = await lastValueFrom(this.promoterService.getActive());
+      if (!this.isEdit && this.promoters.length > 0) this.clientForm.get('idPromotor')!.setValue(this.promoters[0].idPromotor);
+    } catch (error) {
+      console.error('Error trying to get promoters');
+    }
+
+    try {
+      this.executives = await lastValueFrom(this.executiveService.getActive());
+      if (!this.isEdit && this.executives.length > 0) this.clientForm.get('idEjecutivo')!.setValue(this.executives[0].idEjecutivo);
+    } catch (error) {
+      console.error('Error trying to get executives');
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

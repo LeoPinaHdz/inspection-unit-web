@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, lastValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
@@ -34,29 +34,23 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
     this._onDestroy.complete();
   }  
 
-  ngOnInit() {
+  async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     
-    this.standardService.getAllActive().
-    pipe()
-    .subscribe({
-      next: (response) => {
-        this.standards = response;
-
-        if (this.executive.idEjecutivo !== 0) {
-          this.standards.forEach(p => p.selected = this.isStandardAssigned(p.idNorma));
-        }
-      },
-      error: () => {
-        console.error('Error trying to get standard list');
-      }      
-    });
+    try {
+      this.standards = await lastValueFrom(this.standardService.getAllActive());
+      if (this.executive.idEjecutivo !== 0) {
+        this.standards.forEach(p => p.selected = this.isStandardAssigned(p.idNorma));
+      }
+    } catch (error) {
+      console.error('Error trying to get standard list');
+    }
 
     this.executiveForm = new FormGroup({
       idEjecutivo: new FormControl({value: '', disabled: true}, []),
-      nombre: new FormControl('', [Validators.required]),
-      telefono: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      telefono: new FormControl('', [Validators.required, Validators.maxLength(50)]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(50)]),
       active: new FormControl(false, [Validators.required]),
       signatario: new FormControl(false, [Validators.required]),
       inspector: new FormControl(false, [Validators.required])
@@ -146,5 +140,9 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
   selectAllStandards(selected: boolean) {
     this.allStandardsSelected = selected;
     this.standards.forEach(t => (t.selected = selected));
+  }
+
+  get form() {
+    return this.executiveForm.controls;
   }
 }

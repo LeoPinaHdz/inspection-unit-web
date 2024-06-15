@@ -20,7 +20,7 @@
                             <mat-label>Nombre</mat-label>
                             <input matInput formControlName="nombre" type="text" required/>
                             <mat-error>
-                                <error-message nomCampo="Nombre"></error-message>
+                                <error-message [control]="form.nombre" nomCampo="Nombre"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -29,7 +29,7 @@
                             <mat-label>Cargo</mat-label>
                             <input matInput formControlName="cargo" type="text" required/>
                             <mat-error>
-                                <error-message nomCampo="Cargo"></error-message>
+                                <error-message [control]="form.cargo" nomCampo="Cargo"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>

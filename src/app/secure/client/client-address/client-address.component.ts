@@ -49,7 +49,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
       idEstado: new FormControl('', [Validators.required]),
       idPais: new FormControl('', [Validators.required]),
       cp: new FormControl('', [Validators.required]),
-      prioridad: new FormControl('', [Validators.required]),
+      prioridad: new FormControl(false, [Validators.required]),
       active: new FormControl(false, [Validators.required])
     });
   }

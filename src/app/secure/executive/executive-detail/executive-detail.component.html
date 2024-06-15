@@ -20,7 +20,7 @@
                             <mat-label>Nombre</mat-label>
                             <input matInput formControlName="nombre" type="text" required />
                             <mat-error>
-                                <error-message nomCampo="Nombre"></error-message>
+                                <error-message [control]="form.nombre" nomCampo="Nombre"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -29,7 +29,7 @@
                             <mat-label>Teléfono</mat-label>
                             <input matInput formControlName="telefono" type="text" required />
                             <mat-error>
-                                <error-message nomCampo="Teléfono"></error-message>
+                                <error-message [control]="form.telefono" nomCampo="Teléfono"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -38,7 +38,7 @@
                             <mat-label>Email</mat-label>
                             <input matInput formControlName="email" type="text" required />
                             <mat-error>
-                                <error-message nomCampo="Email"></error-message>
+                                <error-message [control]="form.email" nomCampo="Email"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>

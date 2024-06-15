@@ -35,8 +35,8 @@ export class OfficialDetailComponent implements OnInit, OnDestroy {
 
     this.officialForm = new FormGroup({
       idFuncionario: new FormControl({ value: '', disabled: true }, []),
-      nombre: new FormControl('', [Validators.required]),
-      cargo: new FormControl('', [Validators.required]),
+      nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      cargo: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       active: new FormControl(false)
     });
 
@@ -98,5 +98,9 @@ export class OfficialDetailComponent implements OnInit, OnDestroy {
           console.error('Error trying to save official');
         }
       });
+  }
+  
+  get form() {
+    return this.officialForm.controls;
   }
 }
