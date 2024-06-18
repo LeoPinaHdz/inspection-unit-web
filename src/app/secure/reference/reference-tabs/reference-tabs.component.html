@@ -13,7 +13,7 @@
                 <reference-search></reference-search>
             </mat-tab>
             <mat-tab label="Generación Manual">
-                <reference-create></reference-create>
+                <reference-create [clients]="clients"></reference-create>
             </mat-tab>
             <mat-tab label="Generación Archivo M">
                 <reference-file-m></reference-file-m>
@@ -23,6 +23,9 @@
             </mat-tab>
             <mat-tab label="Validación">
                 <reference-validation></reference-validation>
+            </mat-tab>
+            <mat-tab label="Archivo S.E.">
+                <reference-file-se [clients]="clients"></reference-file-se>
             </mat-tab>
         </mat-tab-group>
     </mat-card-content>

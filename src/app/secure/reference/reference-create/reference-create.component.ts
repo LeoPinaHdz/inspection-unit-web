@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
@@ -30,7 +30,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   reference: Reference = {idFolio: 0, idEstatus: 1};
   selectedDetail?: ReferenceDetail;
   referenceDetails: ReferenceDetail[] = [];
-  clients: Client[] = [];
+  @Input() clients: Client[] = [];
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   countries: CountrySE[] = [];
   filteredCountries: ReplaySubject<CountrySE[]> = new ReplaySubject<CountrySE[]>(1);
@@ -57,26 +57,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-
     this.initComponent();
-
-    this.clientService.getAllActive()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.clients = response;
-          this.filteredClients.next(this.clients.slice());
-          this.formReference.get('clientFilter')!.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-              this.filterClients();
-            });
-        },
-        error: () => {
-          console.error('Error trying to get clients');
-        }
-      });
 
     this.unitService.getAll()
     .pipe()
@@ -118,11 +99,16 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
         console.error('Error trying to get standard list');
       }      
     });
+  }
 
-    
-    if (this.id) {
-      this.isEdit = true;
-      //TODO: get detail
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.clients && this.clients.length > 0) {
+      this.filteredClients.next(this.clients.slice());
+      this.formReference.get('clientFilter')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterClients();
+        });
     }
   }
 

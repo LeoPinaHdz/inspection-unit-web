@@ -1,0 +1,55 @@
+<div>
+    <mat-card>
+        <mat-card-content>
+            <form [formGroup]="searchForm" class="form-container">
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>De No. Folio</mat-label>
+                        <input matInput formControlName="folioIni" type="text" />
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>A No. Folio</mat-label>
+                        <input matInput formControlName="folioFin" type="text" />
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3"><mat-form-field appearance="outline">
+                        <mat-label>Fecha Contrato</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input formControlName="fechaIni" matStartDate placeholder="Fecha Inicio">
+                            <input formControlName="fechaFin" matEndDate placeholder="Fecha Fin">
+                        </mat-date-range-input>
+                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-3">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Cliente</mat-label>
+                        <mat-select formControlName="cliente" placeholder="Cliente" #clientSelect>
+                            <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                                    noEntriesFoundLabel="No se encontraron resultados"
+                                    formControlName="clientFilter"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                                {{client.nombre}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="form-cell-5 list-form-section">
+                    <mat-checkbox formControlName="cancelar" color="primary">Cancelar</mat-checkbox>&nbsp;
+                    <button class="form-button no-left-margin" color="primary" (click)="onSubmit()" mat-fab extended>
+                        Generar Archivo
+                    </button>
+                    <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+                      Limpia filtros
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

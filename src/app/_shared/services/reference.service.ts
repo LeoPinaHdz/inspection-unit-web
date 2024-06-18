@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -62,5 +62,12 @@ export class ReferenceService {
     if (type == 1)
       return this.http.post<any>(`${environment.url}Folio/UpdateEstatus`, references);
     return this.http.post<any>(`${environment.url}Folio/UpdateDetalleEstatus`, references);
+  }
+  
+  download(request: any): Observable<HttpResponse<any>> {
+    return this.http.post<HttpResponse<any>>(`${environment.url}Folio/GetReporteExcel`, request, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
   }
 }

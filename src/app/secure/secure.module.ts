@@ -58,6 +58,7 @@ import { CreateRequestComponent } from './request/create-request/create-request.
 import { ReferenceValidationComponent } from './reference/reference-validation/reference-validation.component';
 import { ConversionComponent } from './conversion/conversion.component';
 import { ReferenceSearchComponent } from './reference/reference-search/reference-search.component';
+import { ReferenceFileSEComponent } from './reference/reference-file-se/reference-file-se.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { ReferenceSearchComponent } from './reference/reference-search/reference
     ReferenceFileCsvComponent,
     ReferenceValidationComponent,
     ConversionComponent,
-    ReferenceSearchComponent
+    ReferenceSearchComponent,
+    ReferenceFileSEComponent
   ],
   imports: [
     SecureRoutingModule,
