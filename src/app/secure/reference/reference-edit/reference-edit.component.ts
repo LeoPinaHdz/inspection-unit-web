@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output, SimpleChanges, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,14 +16,15 @@ import { CountrySE } from 'src/app/_shared/models/country.model';
 import { StandardService } from 'src/app/_shared/services/standard.service';
 
 @Component({
-  selector: 'reference-create',
-  templateUrl: './reference-create.component.html',
+  selector: 'reference-edit',
+  templateUrl: './reference-edit.component.html',
 })
-export class ReferenceCreateComponent implements OnInit, OnDestroy {
+export class ReferenceEditComponent implements OnInit, OnDestroy {
   formReference!: FormGroup;
   formReferenceDetail!: FormGroup;
   isEdit = false;
-  id: any;
+  @Input() id: any;
+  @Input() isListMode = true;
   reference: Reference = { idFolio: 0, idEstatus: 1 };
   selectedDetail?: ReferenceDetail;
   referenceDetails: ReferenceDetail[] = [];
@@ -36,6 +37,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<ReferenceDetail> = new MatTableDataSource();
   units: Unit[] = [];
   _onDestroy = new Subject<void>();
+  @Output() refresh: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private referenceService: ReferenceService,
@@ -50,42 +52,6 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initComponent();
-
-    this.unitService.getAll()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.units = response;
-          this.formReferenceDetail.get('idUnidad')!.setValue(this.units[0]);
-        },
-        error: () => {
-          console.error('Error trying to get units');
-        }
-      });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.clients && this.clients.length > 0) {
-      this.filteredClients.next(this.clients.slice());
-      this.formReference.get('clientFilter')!.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterClients();
-        });
-    }
-    if (changes.countries && this.countries.length > 0) {
-      this.filteredCountries.next(this.countries.slice());
-      this.formReferenceDetail.get('idPais')!.setValue(this.countries[0]);
-      this.formReferenceDetail.get('countryFilter')!.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterCountries();
-        });
-    }
-  }
-
-  initComponent() {
     this.formReference = new FormGroup({
       idFolio: new FormControl({ value: '', disabled: true }, [Validators.required]),
       folio: new FormControl({ value: '', disabled: true }, [Validators.required]),
@@ -115,6 +81,55 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       idPais: new FormControl('', [Validators.required])
     });
 
+    this.initComponent();
+
+    this.unitService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.units = response;
+          this.formReferenceDetail.get('idUnidad')!.setValue(this.units[0]);
+        },
+        error: () => {
+          console.error('Error trying to get units');
+        }
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.clients && this.clients.length > 0) {
+      this.filteredClients.next(this.clients.slice());
+      this.formReference.get('clientFilter')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterClients();
+        });
+    }
+    if (changes.id && this.id && this.id != 0) {
+      this.referenceService.getById(this.id)
+        .pipe()
+        .subscribe({
+          next: (response) => {
+            this.updateForm(response);
+          },
+          error: () => {
+            console.error('Error trying to get units');
+          }
+        });
+    }
+
+    if (changes.countries && this.countries.length > 0) {
+      this.filteredCountries.next(this.countries.slice());
+      this.formReferenceDetail.get('idPais')!.setValue(this.countries[0]);
+      this.formReferenceDetail.get('countryFilter')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterCountries();
+        });
+    }
+  }
+
+  initComponent() {
     this.referenceDetails = [];
     this.selectedDetail = undefined;
     this.initDetailsTable(this.referenceDetails, true);
@@ -140,6 +155,26 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       producto: detail.producto,
       marca: detail.marca,
     });
+  }
+
+  updateForm(reference: Reference) {
+    this.formReference.patchValue({
+      idFolio: reference.idFolio,
+      folio: reference.folio,
+      pedimento: reference.pedimento,
+      idCliente: reference.idCliente,
+      idNorma: reference.idNorma,
+      factura: reference.factura,
+      fFolio: reference.fFolio,
+      fVigencia: reference.fVigencia,
+      persona: `${reference.persona}`,
+      modalidad: `${reference.modalidad}`,
+    });
+    
+    this.reference = reference;
+
+    this.referenceDetails = reference.foliosDetalle || [];
+    this.initDetailsTable(this.referenceDetails);
   }
 
   showConfirmDeleteDialog(detail: ReferenceDetail): void {
@@ -168,14 +203,10 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
     this.formReferenceDetail.markAllAsTouched();
     if (!this.formReferenceDetail.valid) return;
 
-    const referenceDetail = this.formReferenceDetail.getRawValue();
+    const form = this.formReferenceDetail.getRawValue();
+    const referenceDetail = {...this.selectedDetail, ...form}
 
-    if (this.selectedDetail) {
-      referenceDetail.partida = this.selectedDetail.partida;
-
-    } else {
-      referenceDetail.partida = referenceDetail.partida == 0 ? this.referenceDetails.length + 1 : referenceDetail.partida;
-    }
+    referenceDetail.partida = referenceDetail.partida == 0 ? this.referenceDetails.length + 1 : referenceDetail.partida;
 
     const subfolio: string = referenceDetail.partida && referenceDetail.partida === 1 ? '' : (referenceDetail.partida - 1).toString();
     referenceDetail.subfolio = subfolio;
@@ -186,16 +217,21 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
     this.resetDetatilForm();
   }
 
+  onCancel(): void {
+    this.initComponent();
+    this.refresh.emit(true);
+  }
+
   onSubmit(): void {
     this.formReference.markAllAsTouched();
     if (!this.formReference.valid || this.referenceDetails.length === 0) return;
 
-    let reference = this.formReference.getRawValue();
+    const reference = this.formReference.getRawValue();
+    const request = {...this.reference, ...reference}
 
-    reference.folio = 0;
-    reference.foliosDetalle = this.referenceDetails;
+    request.foliosDetalle = this.referenceDetails;
 
-    this.referenceService.save(reference)
+    this.referenceService.save(request)
       .pipe()
       .subscribe({
         next: (response) => {
@@ -204,7 +240,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
-              this.ngOnInit();
+              this.onCancel();
             });
         },
         error: () => {

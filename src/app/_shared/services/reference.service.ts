@@ -12,8 +12,8 @@ export class ReferenceService {
     return this.http.get<any>(`${environment.url}Folio/GetReferences`);
   }
   
-  search(): Observable<any> {
-    return this.http.get<any>(`${environment.url}Folio/GetListado`);
+  search(request: any): Observable<any> {
+    return this.http.post<any>(`${environment.url}Folio/Listado`, request);
   }
 
   getById(id: number): Observable<Reference> {

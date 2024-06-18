@@ -1,37 +1,115 @@
 <div>
-  WORK IN PROGRESS
-  <div class="table-container mat-elevation-z8">
-    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
-      <ng-container matColumnDef="FolioFormato">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.FolioFormato }} </mat-cell>
-      </ng-container>
+  <form [formGroup]="searchForm" class="form-container" *ngIf="isListMode">
+    <div class="form-cell-3"><mat-form-field appearance="outline">
+        <mat-label>Fecha de Envio</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input formControlName="fechaDel" matStartDate placeholder="Fecha Inicio">
+          <input formControlName="fechaAl" matEndDate placeholder="Fecha Fin">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-cell-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Norma</mat-label>
+        <mat-select formControlName="norma">
+          <mat-option *ngFor="let standard of standards"
+            [value]="standard.idNorma">{{standard.nombre}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-      <ng-container matColumnDef="NomCliente">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Cliente </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.NomCliente }} </mat-cell>
-      </ng-container>
+    <div class="form-cell-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="cliente" placeholder="Cliente" #clientSelect>
+          <mat-option>
+            <ngx-mat-select-search placeholderLabel="Busca cliente" noEntriesFoundLabel="No se encontraron resultados"
+              formControlName="clientFilter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+            {{client.nombre}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-      <ng-container matColumnDef="Estatus">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.Estatus }}</mat-cell>
-      </ng-container>
+    <div class="form-cell-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Pedimento</mat-label>
+        <input matInput formControlName="pedimento" type="text" />
+      </mat-form-field>
+    </div>
 
-      <ng-container matColumnDef="NombreArchivo">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Archivo </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.NombreArchivo }} </mat-cell>
-      </ng-container>
+    <div class="form-cell-2">
+      <mat-form-field appearance="outline">
+        <mat-label>De Folio</mat-label>
+        <input matInput formControlName="folioIni" type="text" />
+      </mat-form-field>
+    </div>
 
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="['/secure/contract/', row.idFolio]" mat-raised-button color="accent" class="view-edit">Ver</a>
-        </mat-cell>
-      </ng-container>
+    <div class="form-cell-2">
+      <mat-form-field appearance="outline">
+        <mat-label>A Folio</mat-label>
+        <input matInput formControlName="folioFin" type="text" />
+      </mat-form-field>
+    </div>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
-  </div>
+    <div class="form-cell-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Estatus</mat-label>
+        <input matInput formControlName="idEstatus" type="text" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-cell-3 list-form-section">
+      <button class="form-button no-left-margin" color="primary" (click)="onSearch()" mat-fab extended>
+        <mat-icon>search</mat-icon> Buscar
+      </button>
+      <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+        Limpia filtros
+      </button>
+    </div>
+  </form>
+</div>
+<div class="table-container mat-elevation-z8" *ngIf="isListMode">
+  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+    <ng-container matColumnDef="FolioFormato">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.FolioFormato }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="NomCliente">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Cliente </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.NomCliente }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Estatus">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.Estatus }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="NombreArchivo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Archivo </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.NombreArchivo }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-raised-button color="accent" (click)="onReferenceSelect(row.IdFolio)" class="view-edit">Ver</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+</div>
+<div>
+  <reference-edit [isListMode]="isListMode" (refresh)="onRefresh()" [id]="selectedReference" [standards]="standards"
+   [clients]="clients" [countries]="countries"></reference-edit>
 </div>

@@ -59,6 +59,7 @@ import { ReferenceValidationComponent } from './reference/reference-validation/r
 import { ConversionComponent } from './conversion/conversion.component';
 import { ReferenceSearchComponent } from './reference/reference-search/reference-search.component';
 import { ReferenceFileSEComponent } from './reference/reference-file-se/reference-file-se.component';
+import { ReferenceEditComponent } from './reference/reference-edit/reference-edit.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { ReferenceFileSEComponent } from './reference/reference-file-se/referenc
     ReferenceValidationComponent,
     ConversionComponent,
     ReferenceSearchComponent,
-    ReferenceFileSEComponent
+    ReferenceFileSEComponent,
+    ReferenceEditComponent
   ],
   imports: [
     SecureRoutingModule,

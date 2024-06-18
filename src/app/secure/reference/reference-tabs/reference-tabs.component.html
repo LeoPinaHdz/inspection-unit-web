@@ -10,10 +10,10 @@
     <mat-card-content>
         <mat-tab-group>
             <mat-tab label="Busqueda">
-                <reference-search></reference-search>
+                <reference-search [clients]="clients" [countries]="countries" [standards]="standards"></reference-search>
             </mat-tab>
             <mat-tab label="Generación Manual">
-                <reference-create [clients]="clients"></reference-create>
+                <reference-create [clients]="clients" [countries]="countries" [standards]="standards"></reference-create>
             </mat-tab>
             <mat-tab label="Generación Archivo M">
                 <reference-file-m></reference-file-m>
