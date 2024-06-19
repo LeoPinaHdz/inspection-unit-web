@@ -36,15 +36,6 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
 
   async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    
-    try {
-      this.standards = await lastValueFrom(this.standardService.getAllActive());
-      if (this.executive.idEjecutivo !== 0) {
-        this.standards.forEach(p => p.selected = this.isStandardAssigned(p.idNorma));
-      }
-    } catch (error) {
-      console.error('Error trying to get standard list');
-    }
 
     this.executiveForm = new FormGroup({
       idEjecutivo: new FormControl({value: '', disabled: true}, []),
@@ -55,6 +46,15 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
       signatario: new FormControl(false, [Validators.required]),
       inspector: new FormControl(false, [Validators.required])
     });
+
+    try {
+      this.standards = await lastValueFrom(this.standardService.getAllActive());
+      if (this.executive.idEjecutivo !== 0) {
+        this.standards.forEach(p => p.selected = this.isStandardAssigned(p.idNorma));
+      }
+    } catch (error) {
+      console.error('Error trying to get standard list');
+    }
 
     if (this.id) {
       this.isEdit = true;

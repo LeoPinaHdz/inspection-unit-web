@@ -62,7 +62,7 @@
                 </mat-option>
               </mat-select>
               <mat-error>
-                <error-message  [control]="form.idCliente" nomCampo="Cliente"></error-message>
+                <error-message [control]="form.idCliente" nomCampo="Cliente"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
@@ -89,7 +89,7 @@
                   [value]="standard.idNorma">{{standard.nombre}}</mat-option>
               </mat-select>
               <mat-error>
-                <error-message  [control]="form.idNorma" nomCampo="Norma"></error-message>
+                <error-message [control]="form.idNorma" nomCampo="Norma"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
@@ -99,7 +99,7 @@
               <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255" cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="9" required></textarea>
               <mat-error>
-                <error-message  [control]="form.observaciones" nomCampo="Observaciones"></error-message>
+                <error-message [control]="form.observaciones" nomCampo="Observaciones"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
