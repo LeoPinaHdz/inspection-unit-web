@@ -17,6 +17,7 @@ import { ClientRepresentativeService } from 'src/app/_shared/services/client-rep
 import { Letter, LetterDetail } from 'src/app/_shared/models/letter.model';
 import { LetterService } from 'src/app/_shared/services/letter.service';
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
+import { RequestService } from 'src/app/_shared/services/request.service';
 
 @Component({
   selector: 'create-letter',
@@ -28,17 +29,13 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
   id: any;
   letter: Letter = { idOficio: 0, idEstatus: 1 };
   selectedDetail?: LetterDetail;
-  letterDetails: LetterDetail[] = [];
+  letterDetails: any[] = [];
   clients: Client[] = [];
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   standards: any[] = [];
-  representatives: any[] = [];
-  places: any[] = [];
   executives: any[] = [];
-  displayedColumns: string[] = ['solicitud', 'fInspeccion'];
-  dataSource: MatTableDataSource<LetterDetail> = new MatTableDataSource();
-  units: Unit[] = [];
-  countr: Unit[] = [];
+  displayedColumns: string[] = ['clave', 'fSolicitudFmt'];
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
   _onDestroy = new Subject<void>();
 
   constructor(
@@ -48,14 +45,14 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private executiveService: ExecutiveService,
     private standardService: StandardService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private requestService: RequestService
   ) { }
 
   ngOnDestroy() {
     this._onDestroy.next();
     this._onDestroy.complete();
   }
-
 
   async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -80,6 +77,15 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       if (this.clients.length > 0) this.letterForm.get('idCliente')!.setValue(this.clients[0].idCliente);
       this.filteredClients.next(this.clients.slice());
 
+
+      this.letterForm.get('idCliente')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.loadRequests();
+        });
+
+      this.loadRequests();
+      
       this.letterForm.get('clientFilter')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
@@ -124,6 +130,20 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  loadRequests() {
+    this.requestService.getByClient(this.letterForm.get('idCliente')!.value)
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.letterDetails = response;
+          this.dataSource = new MatTableDataSource(this.letterDetails);
+        },
+        error: () => {
+          console.error('Error trying to get addresses');
+        }
+      });
   }
 
   onSubmit(): void {

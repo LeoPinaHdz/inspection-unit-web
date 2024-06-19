@@ -12,6 +12,10 @@ export class RequestService {
     return this.http.get<Request[]>(`${environment.url}Requests/GetAll`);
   }
 
+  getByClient(id: number): Observable<Request[]> {
+    return this.http.get<Request[]>(`${environment.url}Requests/GetByClient?id=${id}`);
+  }
+
   getById(id: number): Observable<Request> {
     return this.http.get<Request>(`${environment.url}Requests/Get?id=${id}`);
   }

@@ -20,10 +20,7 @@ export interface Letter {
 export interface LetterDetail {
     idOficioDetalle: Number;
     idOficio?: Number;
-    modelo?: Number;
-    producto?: Number;
-    cantidad?: Number;
-    idUnidad?: Number;
-    marca?: string;
-    idPais?: string;
+    clave?: Number;
+    fSolicitudFmt?: string;
+    idSolicitud?: Number;
 }
