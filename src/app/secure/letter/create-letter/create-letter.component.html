@@ -22,9 +22,6 @@
             <mat-form-field appearance="outline">
               <mat-label>Folio</mat-label>
               <input matInput formControlName="folio" type="text" />
-              <mat-error>
-                <error-message nomCampo="Folio"></error-message>
-              </mat-error>
             </mat-form-field>
           </div>
           <div class="form-cell-3">
@@ -35,15 +32,21 @@
               <mat-datepicker-toggle matIconSuffix [for]="fOficioPicker"></mat-datepicker-toggle>
               <mat-datepicker #fOficioPicker></mat-datepicker>
             </mat-form-field>
+            <mat-error>
+              <error-message [control]="form.fOficio" nomCampo="Fecha del oficio"></error-message>
+            </mat-error>
           </div>
           <div class="form-cell-3">
             <mat-form-field>
-              <mat-label>Fecha de presentación</mat-label>
+              <mat-label>Fecha de presentaci&oacute;n</mat-label>
               <input matInput formControlName="fPresentacion" [matDatepicker]="fPresentacionPicker" required>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="fPresentacionPicker"></mat-datepicker-toggle>
               <mat-datepicker #fPresentacionPicker></mat-datepicker>
             </mat-form-field>
+            <mat-error>
+              <error-message [control]="form.fOficio" nomCampo="Fecha de presentación"></error-message>
+            </mat-error>
           </div>
           <div class="form-cell-6">
             <mat-form-field appearance="outline">
@@ -59,7 +62,7 @@
                 </mat-option>
               </mat-select>
               <mat-error>
-                <error-message nomCampo="Cliente"></error-message>
+                <error-message  [control]="form.idCliente" nomCampo="Cliente"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
@@ -71,7 +74,7 @@
                   [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
               </mat-select>
               <mat-error>
-                <error-message nomCampo="Ejecutivo"></error-message>
+                <error-message [control]="form.idEjecutivo" nomCampo="Ejecutivo"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
@@ -86,7 +89,7 @@
                   [value]="standard.idNorma">{{standard.nombre}}</mat-option>
               </mat-select>
               <mat-error>
-                <error-message nomCampo="Norma"></error-message>
+                <error-message  [control]="form.idNorma" nomCampo="Norma"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
@@ -96,7 +99,7 @@
               <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255" cdkTextareaAutosize
                 #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="9" required></textarea>
               <mat-error>
-                <error-message nomCampo="Observaciones"></error-message>
+                <error-message  [control]="form.observaciones" nomCampo="Observaciones"></error-message>
               </mat-error>
             </mat-form-field>
           </div>
@@ -112,10 +115,23 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div *ngIf="letterDetails.length === 0" class="error-message">
+      <div *ngIf="selection.isEmpty()" class="error-message">
         *El oficio debe contener al menos una solicitud
       </div>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
         <ng-container matColumnDef="clave">
           <th mat-header-cell *matHeaderCellDef>Solicitud</th>
           <td mat-cell *matCellDef="let element"> {{element.clave}} </td>
@@ -129,7 +145,7 @@
       </table>
     </mat-card-content>
     <mat-card-footer>
-      <button *ngIf="letter.idEstatus === 1" (click)="onSubmit()" mat-fab extended>Generar Oficios</button>
+      <button *ngIf="letter.idEstatus === 1" (click)="onSubmit()" mat-fab extended>Guardar</button>
     </mat-card-footer>
   </mat-card>
 </div>

@@ -9,15 +9,12 @@ import { takeUntil } from 'rxjs/operators';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ClientService } from 'src/app/_shared/services/client.service';
 import { Client } from 'src/app/_shared/models/client.model';
-import { Unit } from 'src/app/_shared/models/unit.model';
-import { CountrySE } from 'src/app/_shared/models/country.model';
-import { CountryService } from 'src/app/_shared/services/country.service';
 import { StandardService } from 'src/app/_shared/services/standard.service';
-import { ClientRepresentativeService } from 'src/app/_shared/services/client-representative.service';
 import { Letter, LetterDetail } from 'src/app/_shared/models/letter.model';
 import { LetterService } from 'src/app/_shared/services/letter.service';
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'create-letter',
@@ -34,9 +31,10 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   standards: any[] = [];
   executives: any[] = [];
-  displayedColumns: string[] = ['clave', 'fSolicitudFmt'];
+  displayedColumns: string[] = ['select', 'clave', 'fSolicitudFmt'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   _onDestroy = new Subject<void>();
+  selection = new SelectionModel<any>(true, []);
 
   constructor(
     private router: Router,
@@ -65,10 +63,10 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       folio: new FormControl({ value: '', disabled: true }),
       fOficio: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       fPresentacion: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
-      hPresentacion: new FormControl('', [Validators.required]),
-      observaciones: new FormControl('', [Validators.required]),
+      hPresentacion: new FormControl('', []),
+      observaciones: new FormControl('', [Validators.required, Validators.maxLength(250)]),
       idEjecutivo: new FormControl('', [Validators.required]),
-      clave: new FormControl('', [Validators.required]),
+      clave: new FormControl('', []),
       active: new FormControl(false)
     });
 
@@ -85,7 +83,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
         });
 
       this.loadRequests();
-      
+
       this.letterForm.get('clientFilter')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
@@ -139,6 +137,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.letterDetails = response;
           this.dataSource = new MatTableDataSource(this.letterDetails);
+          this.updateSelection();
         },
         error: () => {
           console.error('Error trying to get addresses');
@@ -148,28 +147,32 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.letterForm.markAllAsTouched();
-    if (!this.letterForm.valid) return;
+    if (!this.letterForm.valid || this.selection.isEmpty()) return;
 
     let request = this.letterForm.getRawValue();
 
-    request.oficio = 0;
-    request.oficiosDetalle = this.letterDetails;
+    request.oficio = request.oficio && request.oficio > 0 ? request.oficio : 0;
+    request.folio = request.folio && request.folio > 0 ? request.folio : 0;
+    request.idEstatus = request.active ? 1 : 3;
+    request.detalles = this.selection.selected.map(r => {
+      return { idSolicitud: r.idSolicitud };
+    });
 
     this.letterService.save(request)
       .pipe()
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `La oficio ${request.idOficio} fue guardado con éxito` },
+            data: { type: 'success', message: `El oficio ${request.idOficio} fue guardado con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
-              this.ngOnInit();
+              this.router.navigate([`/secure/letters`]);
             });
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar la oficio ${request.idOficio}` },
+            data: { type: 'error', message: `Error al guardar el oficio ${request.idOficio}` },
           });
           console.error('Error trying to save letters');
         }
@@ -185,10 +188,44 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       fOficio: letter.fOficio,
       idEjecutivo: letter.idEjecutivo,
       clave: letter.clave,
-      active: (letter.idEstatus && letter.idEstatus === 1) || false
+      observaciones: letter.observaciones,
+      active: letter.idEstatus && letter.idEstatus === 1
     });
 
-    //this.dataSource = new MatTableDataSource(sortedLetters);
+    this.letter = letter;
+
+    this.updateSelection();
+  }
+
+  updateSelection() {
+    if (this.letter.detalles) {
+      const selected = this.letterDetails.filter(ld =>
+        this.letter.detalles!.some(d => d.idSolicitud === ld.idSolicitud)
+      );
+      this.selection.select(...selected);
+    }
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  checkboxLabel(row?: any): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'Deselecciona' : 'Selecciona'} todos`;
+    }
+    return `${this.selection.isSelected(row) ? 'Deselecciona' : 'Selecciona'} row ${row.folio}`;
   }
 
   private filterClients() {
