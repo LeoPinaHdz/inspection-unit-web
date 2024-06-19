@@ -35,6 +35,8 @@ import { LetterService } from './services/letter.service';
 import { ReferenceService } from './services/reference.service';
 import { UnitService } from './services/unit.service';
 import { ConversionService } from './services/conversion.service';
+import { CertificateService } from './services/certificate.service';
+import { RulingService } from './services/ruling.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -75,7 +77,9 @@ import { ConversionService } from './services/conversion.service';
     LetterService,
     ReferenceService,
     UnitService,
-    ConversionService
+    ConversionService,
+    CertificateService,
+    RulingService
   ],
 })
 export class SharedModule { }
