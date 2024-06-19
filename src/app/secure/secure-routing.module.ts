@@ -23,6 +23,10 @@ import { ReferenceTabsComponent } from './reference/reference-tabs/reference-tab
 import { CreateRequestComponent } from './request/create-request/create-request.component';
 import { CreateLetterComponent } from './letter/create-letter/create-letter.component';
 import { ConversionComponent } from './conversion/conversion.component';
+import { CertificatesComponent } from './certificate/certificate-list/certificate-list.component';
+import { CertificateDetailComponent } from './certificate/certificate-detail/certificate-detail.component';
+import { RulingsComponent } from './ruling/ruling-list/ruling-list.component';
+import { RulingDetailComponent } from './ruling/ruling-detail/ruling-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -62,17 +66,17 @@ const routes: Routes = [
   { path: 'letter/new', component: CreateLetterComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'}},
   { path: 'letter/:id', component: CreateLetterComponent, canActivate: [AuthGuard], data: {role: 'OFICIOS'}},
   
-  { path: 'minutes', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'} },
-  { path: 'minute/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},
-  { path: 'minute/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},
+  { path: 'certificates', component: CertificatesComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'} },
+  { path: 'certificate/new', component: CertificateDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},
+  { path: 'certificate/:id', component: CertificateDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},
   
   { path: 'lists', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'} },
   { path: 'list/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'}},
   { path: 'list/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'}},
   
-  { path: 'decisions', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'} },
-  { path: 'decision/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'}},
-  { path: 'decision/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'}},
+  { path: 'rulings', component: RulingsComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'} },
+  { path: 'ruling/new', component: RulingDetailComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'}},
+  { path: 'ruling/:id', component: RulingDetailComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'}},
   
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'USUARIOS'} },
   { path: 'user/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'USUARIOS'}},

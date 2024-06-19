@@ -60,6 +60,10 @@ import { ConversionComponent } from './conversion/conversion.component';
 import { ReferenceSearchComponent } from './reference/reference-search/reference-search.component';
 import { ReferenceFileSEComponent } from './reference/reference-file-se/reference-file-se.component';
 import { ReferenceEditComponent } from './reference/reference-edit/reference-edit.component';
+import { CertificatesComponent } from './certificate/certificate-list/certificate-list.component';
+import { CertificateDetailComponent } from './certificate/certificate-detail/certificate-detail.component';
+import { RulingsComponent } from './ruling/ruling-list/ruling-list.component';
+import { RulingDetailComponent } from './ruling/ruling-detail/ruling-detail.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +101,11 @@ import { ReferenceEditComponent } from './reference/reference-edit/reference-edi
     ConversionComponent,
     ReferenceSearchComponent,
     ReferenceFileSEComponent,
-    ReferenceEditComponent
+    ReferenceEditComponent,
+    CertificatesComponent,
+    CertificateDetailComponent,
+    RulingsComponent,
+    RulingDetailComponent
   ],
   imports: [
     SecureRoutingModule,

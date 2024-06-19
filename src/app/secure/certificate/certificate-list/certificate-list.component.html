@@ -1,0 +1,59 @@
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Gestión de actas</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <a [routerLink]="['/secure/certificate/new']" class="float-left" color="primary" mat-fab extended>
+        Agregar
+      </a>
+      <div class="float-right">
+        <mat-form-field class="table-filter" appearance="outline">
+
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="table-container mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+      <ng-container matColumnDef="folio">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.folio }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="cliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.cliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="solicitud">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.solicitud }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="oficio">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> No. Oficio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.oficio }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fActa">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Acta </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.fActa }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="['/secure/certificate/', row.idActa]" mat-raised-button color="primary">Editar</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

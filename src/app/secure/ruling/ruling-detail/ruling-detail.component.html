@@ -1,0 +1,104 @@
+<div>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <a [routerLink]="['/secure/rulings']" class="button-back" color="accent" mat-mini-fab>
+                    <mat-icon>arrow_circle_left</mat-icon>
+                </a>
+                Gestión de dictamenes
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="rulingForm">
+                <div class="form-container">
+                    <div class="form-cell-3"><mat-form-field appearance="outline">
+                            <mat-label>ID</mat-label>
+                            <input matInput formControlName="idDictamen" appCurrencyMask type="text" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cliente</mat-label>
+                            <input matInput formControlName="idCliente" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.idCliente" nomCampo="Cliente"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Folio</mat-label>
+                            <input matInput formControlName="folio" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.folio" nomCampo="Folio"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Dictaminacion</mat-label>
+                            <input matInput formControlName="dictaminacion" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.dictaminacion" nomCampo="Dictaminacion"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field>
+                            <mat-label>Fecha de dictamen</mat-label>
+                            <input matInput formControlName="fDictamen" [matDatepicker]="fDictamenPicker" required>
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="fDictamenPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fDictamenPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Presentación</mat-label>
+                            <input matInput formControlName="idPresentacion" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.idPresentacion"
+                                    nomCampo="Presentación"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Funcionario</mat-label>
+                            <input matInput formControlName="idFuncionario" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.idFuncionario" nomCampo="Funcionario"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Ejecutivo</mat-label>
+                            <input matInput formControlName="idEjecutivo" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.idEjecutivo" nomCampo="Ejecutivo"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Observaciones</mat-label>
+                            <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255"
+                                cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="9" required></textarea>
+                            <mat-error>
+                                <error-message nomCampo="Observaciones"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-footer>
+            <button class="form-button" (click)="onSubmit()" mat-fab extended>Guardar</button>
+        </mat-card-footer>
+    </mat-card>
+</div>

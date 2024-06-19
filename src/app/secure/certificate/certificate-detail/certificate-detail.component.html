@@ -1,0 +1,170 @@
+<div>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                <a [routerLink]="['/secure/certificates']" class="button-back" color="accent" mat-mini-fab>
+                    <mat-icon>arrow_circle_left</mat-icon>
+                </a>
+                Gestión de actas
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="certificateForm">
+                <div class="form-container">
+                    <div class="form-cell-3"><mat-form-field appearance="outline">
+                            <mat-label>ID</mat-label>
+                            <input matInput formControlName="idActa" appCurrencyMask type="text" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Folio</mat-label>
+                            <input matInput formControlName="folio" type="text" />
+                            <mat-error>
+                                <error-message [control]="form.folio" nomCampo="Folio"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cliente</mat-label>
+                            <mat-select formControlName="idCliente" required>
+                                <mat-option *ngFor="let client of clients"
+                                    [value]="client.idCliente">{{client.nombre}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <error-message nomCampo="Cliente"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field>
+                            <mat-label>Fecha inicio de la visita</mat-label>
+                            <input matInput formControlName="fIniActa" [matDatepicker]="fIniActaPicker" required>
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="fIniActaPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fIniActaPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Hora inicio de la visita</mat-label>
+                            <input matInput formControlName="hIniActa" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.hIniActa"
+                                    nomCampo="Hora inicio de la visita"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>No. del oficio de comisión</mat-label>
+                            <input matInput formControlName="idOficio" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.idOficio"
+                                    nomCampo="No. del oficio de comisión"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field>
+                            <mat-label>Fecha fin de la visita</mat-label>
+                            <input matInput formControlName="fFinActa" [matDatepicker]="fFinActaPicker" required>
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="fFinActaPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fFinActaPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Hora fin de la visita</mat-label>
+                            <input matInput formControlName="hFinActa" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.hFinActa"
+                                    nomCampo="Hora fin de la visita"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Solicitud de servicio</mat-label>
+                            <input matInput formControlName="idSolicitud" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.idSolicitud"
+                                    nomCampo="Solicitud de servicio"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-label>Verificación del lote</mat-label>
+                        <br>
+                        <mat-radio-group formControlName="tipoLote">
+                            <mat-radio-button value="0">Total</mat-radio-button>
+                            <mat-radio-button value="1">Parcial</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-checkbox formControlName="otroServicio" color="primary">¿Se subcontrató algún
+                            servicio?</mat-checkbox>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>¿Cuál?</mat-label>
+                            <input matInput formControlName="cual" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.cual" nomCampo="¿Cuál?"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cantidad inspeccionada</mat-label>
+                            <input matInput formControlName="cantidad" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.cantidad"
+                                    nomCampo="Cantidad inspeccionada"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Instrumento de medición</mat-label>
+                            <input matInput formControlName="instrumento" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.instrumento"
+                                    nomCampo="Instrumento de medición"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Estado del instrumento de medición</mat-label>
+                            <input matInput formControlName="estadoInstrumento" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.estadoInstrumento"
+                                    nomCampo="Estado del instrumento de medición"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
+                    </div>
+                    <div class="form-cell-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Observaciones</mat-label>
+                            <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255"
+                                cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="4" required></textarea>
+                            <mat-error>
+                                <error-message nomCampo="Observaciones"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-footer>
+            <button class="form-button" (click)="onSubmit()" mat-fab extended>Guardar</button>
+        </mat-card-footer>
+    </mat-card>
+</div>

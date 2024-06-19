@@ -51,9 +51,9 @@
               <a *ngIf="hasRole('FOLIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/references']">Folios</a>
               <a *ngIf="hasRole('SOLICITUDES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/requests']">Solicitudes</a>
               <a *ngIf="hasRole('OFICIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/letters']">Oficios</a>
-              <a *ngIf="hasRole('ACTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/minutes']">Actas</a>
+              <a *ngIf="hasRole('ACTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/certificates']">Actas</a>
               <a *ngIf="hasRole('LISTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/lists']">Listas</a>
-              <a *ngIf="hasRole('DICTAMENES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/decisions']">Dictamenes</a>
+              <a *ngIf="hasRole('DICTAMENES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/rulings']">Dictamenes</a>
             </div>
           </li>
           <li *ngIf="hasRole('REPORTES')" class="nav-item" [routerLinkActive]="['link-active']">

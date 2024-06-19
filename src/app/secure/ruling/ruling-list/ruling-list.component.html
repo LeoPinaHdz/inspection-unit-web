@@ -1,0 +1,69 @@
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Gestión de dictamenes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <a [routerLink]="['/secure/ruling/new']" class="float-left" color="primary" mat-fab extended>
+        Agregar
+      </a>
+      <div class="float-right">
+        <mat-form-field class="table-filter" appearance="outline">
+
+          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="table-container mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+      <ng-container matColumnDef="cliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.cliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="dictamen">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Dictamen </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.dictamen }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="solicitud">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.solicitud }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="pedimento">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Pedimento </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.pedimento }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="estatus">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.estatus }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fDictamen">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de dictamen </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.fDictamen }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tipo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.tipo }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="['/secure/ruling/', row.idActa]" mat-raised-button color="primary">Editar</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
