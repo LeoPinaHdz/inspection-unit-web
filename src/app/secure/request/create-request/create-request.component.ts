@@ -10,14 +10,11 @@ import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/
 import { ClientService } from 'src/app/_shared/services/client.service';
 import { Client } from 'src/app/_shared/models/client.model';
 import { RequestService } from 'src/app/_shared/services/request.service';
-import { addYears } from 'src/app/_shared/utils/date.utils';
 import { Unit } from 'src/app/_shared/models/unit.model';
 import { UnitService } from 'src/app/_shared/services/unit.service';
-import { CountrySE } from 'src/app/_shared/models/country.model';
-import { CountryService } from 'src/app/_shared/services/country.service';
 import { StandardService } from 'src/app/_shared/services/standard.service';
 import { Request, RequestDetail } from 'src/app/_shared/models/request.model';
-import { ClientRepresentativeService } from 'src/app/_shared/services/client-representative.service';
+import { ClientAddressService } from 'src/app/_shared/services/client-address.service';
 
 @Component({
   selector: 'create-request',
@@ -28,15 +25,14 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
   requestDetailForm!: FormGroup;
   isEdit = false;
   id: any;
+  isNational = true;
   request: Request = { idSolicitud: 0, idEstatus: 1 };
   selectedDetail?: RequestDetail;
   requestDetails: RequestDetail[] = [];
   clients: Client[] = [];
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
-  filteredCountries: ReplaySubject<CountrySE[]> = new ReplaySubject<CountrySE[]>(1);
   standards: any[] = [];
-  representatives: any[] = [];
-  places: any[] = [{ idLugar: 1, nombre: 'Sonora' }];
+  addresses: any[] = [];
   displayedColumns: string[] = ['modelo', 'producto', 'cantidad', 'idUnidad', 'marca', 'pais', 'actions'];
   dataSource: MatTableDataSource<RequestDetail> = new MatTableDataSource();
   units: Unit[] = [];
@@ -47,9 +43,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private requestService: RequestService,
     private clientService: ClientService,
-    private countryService: CountryService,
     private standardService: StandardService,
-    private clientRepresentativeService: ClientRepresentativeService,
+    private clientAddressService: ClientAddressService,
     private unitService: UnitService,
     private dialog: MatDialog
   ) { }
@@ -59,13 +54,13 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-
   async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
 
     this.requestForm = new FormGroup({
       idSolicitud: new FormControl({ value: '', disabled: true }, []),
       idCliente: new FormControl('', [Validators.required]),
+      clientFilter: new FormControl('', []),
       folio: new FormControl({ value: '', disabled: true }),
       idNorma: new FormControl('', [Validators.required]),
       pedimento: new FormControl({ value: '', disabled: true }),
@@ -74,7 +69,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       fSolicitud: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       fPrograma: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       idLugar: new FormControl('', [Validators.required]),
-      clave: new FormControl({value: '', disabled: true}),
+      clave: new FormControl({ value: '', disabled: true }),
       active: new FormControl({ value: true, disabled: true })
     });
 
@@ -98,13 +93,20 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
       if (this.clients.length > 0) this.requestForm.get('idCliente')!.setValue(this.clients[0].idCliente);
+      this.filteredClients.next(this.clients.slice());
 
       this.requestForm.get('idCliente')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
-          this.loadRepresentatives();
+          this.loadAddresses();
         });
-      this.loadRepresentatives();
+
+      this.requestForm.get('clientFilter')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterClients();
+        });
+      this.loadAddresses();
     } catch (error) {
       console.error('Error trying to get clients');
     }
@@ -238,16 +240,16 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       });
   }
 
-  loadRepresentatives() {
-    this.clientRepresentativeService.getAllActive(this.requestForm.get('idCliente')!.value)
+  loadAddresses() {
+    this.clientAddressService.getAllActive(this.requestForm.get('idCliente')!.value)
       .pipe()
       .subscribe({
         next: (response) => {
-          this.representatives = response;
-          if (response.length > 0) this.requestForm.get('idRepresentante')!.setValue(this.representatives[0].idRepresentante);
+          this.addresses = response;
+          if (response.length > 0) this.requestForm.get('idLugar')!.setValue(this.addresses[0].idLugar);
         },
         error: () => {
-          console.error('Error trying to get representatives');
+          console.error('Error trying to get addresses');
         }
       });
   }
@@ -270,6 +272,22 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
 
     this.requestDetails = request.detalles || [];
     this.dataSource = new MatTableDataSource(this.requestDetails);
+  }
+
+  private filterClients() {
+    if (!this.clients) {
+      return;
+    }
+    let search = this.requestForm.get('clientFilter')!.value;
+    if (!search) {
+      this.filteredClients.next(this.clients.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredClients.next(
+      this.clients.filter(client => client.nombre!.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   get form() {

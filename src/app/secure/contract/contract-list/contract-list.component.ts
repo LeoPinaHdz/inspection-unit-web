@@ -66,7 +66,7 @@ export class ContractsComponent implements OnInit, OnDestroy {
           this.searchForm.get('clientFilter')!.valueChanges
             .pipe(takeUntil(this._onDestroy))
             .subscribe(() => {
-              this.filterArticles();
+              this.filterClients();
             });
         },
         error: () => {
@@ -135,7 +135,7 @@ export class ContractsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private filterArticles() {
+  private filterClients() {
     if (!this.clients) {
       return;
     }

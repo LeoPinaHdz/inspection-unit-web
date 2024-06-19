@@ -12,6 +12,10 @@ export class ClientAddressService {
     return this.http.get<ClientAddress[]>(`${environment.url}ClienteLugarInspeccion/GetByClienteLugar?id=${idCliente}`);
   }
 
+  getAllActive(idCliente: number): Observable<ClientAddress[]> {
+    return this.http.get<ClientAddress[]>(`${environment.url}ClienteLugarInspeccion/GetByClienteLugarActive?id=${idCliente}`);
+  }
+
   getById(id: number): Observable<ClientAddress> {
     return this.http.get<ClientAddress>(`${environment.url}ClienteLugarInspeccion/Get?id=${id}`);
   }

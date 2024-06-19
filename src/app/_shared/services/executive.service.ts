@@ -11,9 +11,9 @@ export class ExecutiveService {
   getAll(): Observable<Executive[]> {
     return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetAll`);
   }
-  
+
   getActive(): Observable<Executive[]> {
-    return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetAll`);
+    return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetAllActive`);
   }
 
   getById(id: number): Observable<Executive> {

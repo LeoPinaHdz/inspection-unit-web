@@ -48,8 +48,15 @@
           <div class="form-cell-6">
             <mat-form-field appearance="outline">
               <mat-label>Cliente</mat-label>
-              <mat-select formControlName="idCliente" required>
-                <mat-option *ngFor="let client of clients" [value]="client.idCliente">{{client.nombre}}</mat-option>
+              <mat-select formControlName="idCliente" placeholder="Cliente" #clientSelect>
+                <mat-option>
+                  <ngx-mat-select-search placeholderLabel="Busca cliente"
+                    noEntriesFoundLabel="No se encontraron resultados"
+                    formControlName="clientFilter"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                  {{client.nombre}}
+                </mat-option>
               </mat-select>
               <mat-error>
                 <error-message nomCampo="Cliente"></error-message>
@@ -58,13 +65,13 @@
           </div>
           <div class="form-cell-3">
             <mat-form-field appearance="outline">
-              <mat-label>Funcionario</mat-label>
-              <mat-select formControlName="idFuncionario" required>
-                <mat-option *ngFor="let official of officials"
-                  [value]="official.idFuncionario">{{official.nombre}}</mat-option>
+              <mat-label>Ejecutivo</mat-label>
+              <mat-select formControlName="idEjecutivo" required>
+                <mat-option *ngFor="let executive of executives"
+                  [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
               </mat-select>
               <mat-error>
-                <error-message nomCampo="Funcionario"></error-message>
+                <error-message nomCampo="Ejecutivo"></error-message>
               </mat-error>
             </mat-form-field>
           </div>

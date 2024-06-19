@@ -32,9 +32,15 @@
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Cliente</mat-label>
-                            <mat-select formControlName="idCliente" required>
-                                <mat-option *ngFor="let client of clients"
-                                    [value]="client.idCliente">{{client.nombre}}</mat-option>
+                            <mat-select formControlName="idCliente" placeholder="Cliente" #clientSelect>
+                              <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                                  noEntriesFoundLabel="No se encontraron resultados"
+                                  formControlName="clientFilter"></ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                                {{client.nombre}}
+                              </mat-option>
                             </mat-select>
                             <mat-error>
                                 <error-message nomCampo="Cliente"></error-message>

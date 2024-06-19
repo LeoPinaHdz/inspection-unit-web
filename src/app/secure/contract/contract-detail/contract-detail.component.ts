@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, lastValueFrom, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, lastValueFrom, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { ContractService } from 'src/app/_shared/services/contract.service';
@@ -12,6 +12,7 @@ import { OfficialService } from 'src/app/_shared/services/official.service';
 import { addYears } from 'src/app/_shared/utils/date.utils';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
 import { UtilitiesService } from 'src/app/_shared/services/utilities.service';
+import { Client } from 'src/app/_shared/models/client.model';
 
 @Component({
   selector: 'contracts',
@@ -29,6 +30,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
   defaultKey = '';
   defaultNumber = 0;
   _onDestroy = new Subject<void>();
+  filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
 
   constructor(
     private router: Router,
@@ -54,6 +56,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       folio: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.min(1), Validators.max(999999)]),
       clave: new FormControl({ value: '', disabled: true }, [Validators.required]),
       idCliente: new FormControl('', [Validators.required]),
+      clientFilter: new FormControl('', []),
       fContrato: new FormControl(new Date(), [Validators.required]),
       fVigencia: new FormControl(addYears(new Date(), 1), [Validators.required]),
       idRepresentante: new FormControl('', [Validators.required]),
@@ -63,15 +66,21 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       assign: new FormControl(false)
     });
 
-
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
       if (this.clients.length > 0) this.contractForm.get('idCliente')!.setValue(this.clients[0].idCliente);
+      this.filteredClients.next(this.clients.slice());
 
       this.contractForm.get('idCliente')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
           this.loadRepresentatives();
+        });
+
+      this.contractForm.get('clientFilter')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterClients();
         });
       this.loadRepresentatives();
     } catch (error) {
@@ -203,6 +212,22 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.docx`,
         response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
     });
+  }
+
+  private filterClients() {
+    if (!this.clients) {
+      return;
+    }
+    let search = this.contractForm.get('clientFilter')!.value;
+    if (!search) {
+      this.filteredClients.next(this.clients.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredClients.next(
+      this.clients.filter(client => client.nombre!.toLowerCase().indexOf(search) > -1)
+    );
   }
 
   get form() {
