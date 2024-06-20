@@ -2,67 +2,125 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>Gestión de solicitudes</mat-card-title>
+      <a [routerLink]="['/secure/request/new']" class="button-new-header" color="primary" mat-stroked-button>
+        Nueva Solicitud
+      </a>
     </mat-card-header>
     <mat-card-content>
-      <a [routerLink]="['/secure/request/new']" class="float-left" color="primary" mat-fab extended>
-        Agregar
-      </a>
-      <div class="float-right">
-        <mat-form-field class="table-filter" appearance="outline">
+      <form [formGroup]="searchForm" class="form-container">
+        <div class="form-cell-3"><mat-form-field appearance="outline">
+            <mat-label>Fecha de Envio</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input formControlName="fechaDel" matStartDate placeholder="Fecha Inicio">
+              <input formControlName="fechaAl" matEndDate placeholder="Fecha Fin">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
 
-          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Servicio</mat-label>
+            <mat-select formControlName="servicio">
+              <mat-option value="-1">Todos</mat-option>
+              <mat-option value="0">Constancia</mat-option>
+              <mat-option value="1">Dictamen</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="cliente" placeholder="Cliente" #clientSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                  noEntriesFoundLabel="No se encontraron resultados"
+                  formControlName="clientFilter"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                {{client.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Pedimento</mat-label>
+            <input matInput formControlName="pedimento" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>De Folio</mat-label>
+            <input matInput formControlName="solDel" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>A Folio</mat-label>
+            <input matInput formControlName="solAl" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3 list-form-section">
+          <button class="form-button no-left-margin" color="primary" (click)="onSearch()" mat-fab extended>
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+          <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+            Limpia filtros
+          </button>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
 
   <div class="table-container mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
-      <ng-container matColumnDef="idSolicitud">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idSolicitud }} </mat-cell>
+      <ng-container matColumnDef="FolioSolicitud">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio Solicitud </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.FolioSolicitud }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="folio">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.folio }} </mat-cell>
+      <ng-container matColumnDef="NomCliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NomCliente }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="idCliente">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idCliente }} </mat-cell>
+      <ng-container matColumnDef="FSolicitud">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Solicitud </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.FSolicitud }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="fSolicitud">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de solicitud </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.fSolicitud }} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="pedimento">
+      <ng-container matColumnDef="Pedimento">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Pedimento </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.pedimento }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Pedimento }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="idNorma">
+      <ng-container matColumnDef="Norma">
         <mat-header-cell *matHeaderCellDef mat-sort-header> NOM </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idNorma }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Norma }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="tipoServicio">
+      <ng-container matColumnDef="Servicio">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.tipoServicio }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Servicio }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="idEstatus">
+      <ng-container matColumnDef="NomEstatus">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.idEstatus === 1 ? 'Activo' : 'Inactivo' }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NomEstatus }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <a [routerLink]="['/secure/request/', row.idSolicitud]" mat-raised-button color="primary">Editar</a>
+          <a [routerLink]="['/secure/request/', row.IdSolicitud]" mat-raised-button color="primary">Editar</a>
         </mat-cell>
       </ng-container>
 

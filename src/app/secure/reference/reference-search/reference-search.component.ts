@@ -70,7 +70,6 @@ export class ReferenceSearchComponent implements OnInit, OnDestroy, OnChanges {
       folioFin: new FormControl('', []),
       idEstatus: new FormControl('', [])
     });
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
