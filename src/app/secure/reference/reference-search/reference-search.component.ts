@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChil
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Contract } from 'src/app/_shared/models/contract.model';
 import { Client } from 'src/app/_shared/models/client.model';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -14,6 +13,7 @@ import { Reference } from 'src/app/_shared/models/reference.model';
 import { CountrySE } from 'src/app/_shared/models/country.model';
 import { Standard } from 'src/app/_shared/models/standard.model';
 import { formatDateString } from 'src/app/_shared/utils/date.utils';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'reference-search',
@@ -29,20 +29,28 @@ export class ReferenceSearchComponent implements OnInit, OnDestroy, OnChanges {
   selectedReference: any = 0;
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   _onDestroy = new Subject<void>();
+  selection = new SelectionModel<any>(true, []);
   displayedColumns: string[] = [
+    'select',
     'FolioFormato',
+    'TotalFolios',
     'NomCliente',
+    'FFolio',
+    'NOM',
     'Estatus',
+    'Pedimento',
     'NombreArchivo',
+    'IdSolicitud',
     'action'
   ];
-  dataSource: MatTableDataSource<Contract> = new MatTableDataSource();
+  dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
   constructor(
     private referenceService: ReferenceService,
+    private dialog: MatDialog
   ) { }
 
   ngOnDestroy() {
@@ -108,6 +116,47 @@ export class ReferenceSearchComponent implements OnInit, OnDestroy, OnChanges {
 
   onRefresh() {
     this.isListMode = true;
+  }
+
+  generateRequests() {
+    const request = {idFolio: this.selection.selected.map(s => s.IdFolio)};
+    
+    this.referenceService.generateRequests(request).
+      pipe()
+      .subscribe({
+        next: (response) => {
+          this.dialog.open(SimpleDialogComponent, {
+            data: { type: 'success', message: 'Solicitudes generadas correctamente' },
+          });
+          this.selection.clear();
+          this.onSearch();
+        },
+        error: () => {
+          console.error('Error trying to generate requests');
+        }
+      });
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.filter(r => !r.IdSolicitud).length;
+    return numSelected === numRows;
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data.filter(r => !r.IdSolicitud));
+  }
+
+  checkboxLabel(row?: Reference): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'Deselecciona' : 'Selecciona'} todos`;
+    }
+    return `${this.selection.isSelected(row) ? 'Deselecciona' : 'Selecciona'} row ${row.folio}`;
   }
 
   private filterClients() {

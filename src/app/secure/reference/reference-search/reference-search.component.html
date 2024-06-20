@@ -74,17 +74,50 @@
       </button>
     </div>
   </form>
+  <div class="form-container" *ngIf="isListMode && !selection.isEmpty()">
+    <button mat-raised-button color="accent" (click)="generateRequests()">
+      Generar Solicitudes
+    </button>
+  </div>
 </div>
 <div class="table-container mat-elevation-z8" *ngIf="isListMode">
   <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+    <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+            </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <mat-checkbox *ngIf="!row.IdSolicitud" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+            </mat-checkbox>
+        </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="FolioFormato">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.FolioFormato }} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="TotalFolios">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Sub-folio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.TotalFolios }} </mat-cell>
+    </ng-container>
+    
     <ng-container matColumnDef="NomCliente">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre del Cliente </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.NomCliente }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="FFolio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Envio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.FFolio }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="NOM">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> NOM </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.NOM }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="Estatus">
@@ -92,9 +125,19 @@
       <mat-cell *matCellDef="let row"> {{ row.Estatus }}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="Pedimento">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Pedimento </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.Pedimento }}</mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="NombreArchivo">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Archivo </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.NombreArchivo }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="IdSolicitud">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.IdSolicitud }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="action">

@@ -70,4 +70,8 @@ export class ReferenceService {
       responseType: 'blob' as 'json',
     });
   }
+  
+  generateRequests(request: any): Observable<any> {
+    return this.http.post<any>(`${environment.url}Requests/Generate`, request);
+  }
 }
