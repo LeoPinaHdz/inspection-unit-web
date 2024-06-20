@@ -11,29 +11,51 @@
         <mat-card-content>
             <form [formGroup]="certificateForm">
                 <div class="form-container">
-                    <div class="form-cell-3"><mat-form-field appearance="outline">
-                            <mat-label>ID</mat-label>
-                            <input matInput formControlName="idActa" appCurrencyMask type="text" />
-                        </mat-form-field>
-                    </div>
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Folio</mat-label>
                             <input matInput formControlName="folio" type="text" />
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cliente</mat-label>
+                            <mat-select formControlName="idCliente" placeholder="Cliente" #clientSelect>
+                              <mat-option>
+                                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                                  noEntriesFoundLabel="No se encontraron resultados"
+                                  formControlName="clientFilter"></ngx-mat-select-search>
+                              </mat-option>
+                              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                                {{client.nombre}}
+                              </mat-option>
+                            </mat-select>
                             <mat-error>
-                                <error-message [control]="form.folio" nomCampo="Folio"></error-message>
+                                <error-message [control]="form.cliente" nomCampo="Cliente"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-6">
+                    <div class="form-cell-3">
                         <mat-form-field appearance="outline">
-                            <mat-label>Cliente</mat-label>
-                            <mat-select formControlName="idCliente" required>
-                                <mat-option *ngFor="let client of clients"
-                                    [value]="client.idCliente">{{client.nombre}}</mat-option>
+                            <mat-label>Oficio</mat-label>
+                            <mat-select formControlName="idOficio" required>
+                                <mat-option *ngFor="let letter of letters"
+                                    [value]="letter.idOficio">{{letter.folio}}</mat-option>
                             </mat-select>
                             <mat-error>
-                                <error-message nomCampo="Cliente"></error-message>
+                                <error-message [control]="form.idOficio" nomCampo="Oficio"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Solicitud</mat-label>
+                            <mat-select formControlName="idSolicitud" required>
+                                <mat-option *ngFor="let request of requests"
+                                    [value]="request.idSolicitud">{{request.clave}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <error-message [control]="form.idSolicitud" nomCampo="Solicitud"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -56,16 +78,6 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>No. del oficio de comisión</mat-label>
-                            <input matInput formControlName="idOficio" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.idOficio"
-                                    nomCampo="No. del oficio de comisión"></error-message>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
                     <div class="form-cell-3">
                         <mat-form-field>
                             <mat-label>Fecha fin de la visita</mat-label>
@@ -82,16 +94,6 @@
                             <mat-error>
                                 <error-message [control]="form.hFinActa"
                                     nomCampo="Hora fin de la visita"></error-message>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-cell-6">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Solicitud de servicio</mat-label>
-                            <input matInput formControlName="idSolicitud" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.idSolicitud"
-                                    nomCampo="Solicitud de servicio"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>

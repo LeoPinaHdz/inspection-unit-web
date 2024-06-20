@@ -9,20 +9,20 @@ export class CertificateService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Certificate[]> {
-    return this.http.get<Certificate[]>(`${environment.url}Certificate/GetAll`);
+    return this.http.get<Certificate[]>(`${environment.url}Proceedings/GetAll`);
   }
 
   getActive(): Observable<Certificate[]> {
-    return this.http.get<Certificate[]>(`${environment.url}Certificate/GetActive`);
+    return this.http.get<Certificate[]>(`${environment.url}Proceedings/GetActive`);
   }
 
   getById(id: number): Observable<Certificate> {
-    return this.http.get<Certificate>(`${environment.url}Certificate/Get?id=${id}`);
+    return this.http.get<Certificate>(`${environment.url}Proceedings/Get?id=${id}`);
   }
 
   save(certificate: Certificate): Observable<any> {
     if (!certificate.idActa || certificate.idActa === 0)
-      return this.http.post<any>(`${environment.url}Certificate/Create`, certificate);
-    return this.http.put<any>(`${environment.url}Certificate/Update`, certificate);
+      return this.http.post<any>(`${environment.url}Proceedings/Create`, certificate);
+    return this.http.put<any>(`${environment.url}Proceedings/Update`, certificate);
   }
 }
