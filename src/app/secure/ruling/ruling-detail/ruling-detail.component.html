@@ -18,28 +18,22 @@
                     </div>
                     <div class="form-cell-3">
                         <mat-form-field appearance="outline">
-                            <mat-label>Cliente</mat-label>
-                            <input matInput formControlName="idCliente" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.idCliente" nomCampo="Cliente"></error-message>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-cell-3">
-                        <mat-form-field appearance="outline">
                             <mat-label>Folio</mat-label>
-                            <input matInput formControlName="folio" type="text" required />
+                            <input matInput formControlName="folio" type="text" />
                             <mat-error>
                                 <error-message [control]="form.folio" nomCampo="Folio"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-3">
+                    <div class="form-cell-6">
                         <mat-form-field appearance="outline">
-                            <mat-label>Dictaminacion</mat-label>
-                            <input matInput formControlName="dictaminacion" type="text" required />
+                            <mat-label>Cliente</mat-label>
+                            <mat-select formControlName="idCliente" required>
+                                <mat-option *ngFor="let client of clients"
+                                    [value]="client.idCliente">{{client.nombre}}</mat-option>
+                            </mat-select>
                             <mat-error>
-                                <error-message [control]="form.dictaminacion" nomCampo="Dictaminacion"></error-message>
+                                <error-message nomCampo="Cliente"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -53,6 +47,59 @@
                         </mat-form-field>
                     </div>
                     <div class="form-cell-3">
+                      <mat-label>Tipo de servicio</mat-label>
+                      <br>
+                      <mat-radio-group formControlName="tipoServicio" aria-label="Select an option">
+                        <mat-radio-button value="0">Constancia</mat-radio-button>
+                        <mat-radio-button value="1">Dictamen</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>No. Solicitud</mat-label>
+                            <mat-select formControlName="idSolicitud" required>
+                                <mat-option *ngFor="let request of requests"
+                                    [value]="request.idSolicitud">{{request.clave}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <error-message nomCampo="No. Solicitud"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Ejecutivo</mat-label>
+                            <mat-select formControlName="idEjecutivo" required>
+                                <mat-option *ngFor="let executive of executives"
+                                    [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <error-message nomCampo="Ejecutivo"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Funcionario</mat-label>
+                            <mat-select formControlName="idFuncionario" required>
+                                <mat-option *ngFor="let official of officials"
+                                    [value]="official.idFuncionario">{{official.nombre}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                <error-message nomCampo="Funcionario"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Dictaminación</mat-label>
+                            <input matInput formControlName="dictaminacion" type="text" required />
+                            <mat-error>
+                                <error-message [control]="form.dictaminacion" nomCampo="Dictaminación"></error-message>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
                         <mat-form-field appearance="outline">
                             <mat-label>Presentación</mat-label>
                             <input matInput formControlName="idPresentacion" type="text" required />
@@ -63,24 +110,9 @@
                         </mat-form-field>
                     </div>
                     <div class="form-cell-3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Funcionario</mat-label>
-                            <input matInput formControlName="idFuncionario" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.idFuncionario" nomCampo="Funcionario"></error-message>
-                            </mat-error>
-                        </mat-form-field>
+                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
                     </div>
-                    <div class="form-cell-3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Ejecutivo</mat-label>
-                            <input matInput formControlName="idEjecutivo" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.idEjecutivo" nomCampo="Ejecutivo"></error-message>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-cell-6">
+                    <div class="form-cell-12">
                         <mat-form-field appearance="outline">
                             <mat-label>Observaciones</mat-label>
                             <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255"
@@ -90,9 +122,6 @@
                                 <error-message nomCampo="Observaciones"></error-message>
                             </mat-error>
                         </mat-form-field>
-                    </div>
-                    <div class="form-cell-3">
-                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
                     </div>
                 </div>
             </form>
