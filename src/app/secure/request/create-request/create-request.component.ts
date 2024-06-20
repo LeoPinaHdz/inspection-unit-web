@@ -33,6 +33,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   standards: any[] = [];
   addresses: any[] = [];
+  warehouses: any[] = [];
   displayedColumns: string[] = ['modelo', 'producto', 'cantidad', 'idUnidad', 'marca', 'pais', 'actions'];
   dataSource: MatTableDataSource<RequestDetail> = new MatTableDataSource();
   units: Unit[] = [];
@@ -83,11 +84,23 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       pais: new FormControl('')
     });
 
+    this.requestForm.get('tipoRegimen')!.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.loadAddresses();
+    });
+
     try {
       this.units = await lastValueFrom(this.unitService.getAll());
       if (this.units.length > 0) this.requestDetailForm.get('idUnidad')!.setValue(this.units[0]);
     } catch (error) {
       console.error('Error trying to get units');
+    }
+
+    try {
+      this.warehouses = await lastValueFrom(this.clientAddressService.getWarehouses());
+    } catch (error) {
+      console.error('Error trying to get warehouses');
     }
 
     try {
@@ -106,7 +119,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
         .subscribe(() => {
           this.filterClients();
         });
-      this.loadAddresses();
+
+      if (!this.id) this.loadAddresses();
     } catch (error) {
       console.error('Error trying to get clients');
     }
@@ -240,21 +254,27 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       });
   }
 
-  loadAddresses() {
-    this.clientAddressService.getAllActive(this.requestForm.get('idCliente')!.value)
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.addresses = response;
-          if (response.length > 0) this.requestForm.get('idLugar')!.setValue(this.addresses[0].idLugar);
-        },
-        error: () => {
+  async loadAddresses() {
+    if (this.requestForm.get('tipoRegimen')!.value == 0) {
+      if (this.requestForm.get('idCliente')!.value && this.requestForm.get('idCliente')!.value !== '') {
+        try {
+          this.addresses = await lastValueFrom(this.clientAddressService.getAllActive(this.requestForm.get('idCliente')!.value));
+          this.addresses = this.requestForm.get('tipoRegimen')!.value == 0 ? this.addresses : this.warehouses;
+          const selected = this.id ? this.request.idLugar : this.addresses[0].idLugar;
+          this.requestForm.get('idLugar')!.setValue(selected);
+        } catch (error) {
           console.error('Error trying to get addresses');
         }
-      });
+      }
+    } else {
+      this.addresses = this.warehouses;
+      const selected = this.id ? this.request.idLugar : this.addresses[0].idLugar;
+      this.requestForm.get('idLugar')!.setValue(selected);
+    }
   }
 
   updateForm(request: Request): void {
+    this.request = request;
     this.requestForm.patchValue({
       idSolicitud: request.idSolicitud,
       idCliente: request.idCliente,
@@ -269,6 +289,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       clave: request.clave,
       active: (request.idEstatus && request.idEstatus === 1) || false
     });
+
+    //this.loadAddresses();
 
     this.requestDetails = request.detalles || [];
     this.dataSource = new MatTableDataSource(this.requestDetails);
