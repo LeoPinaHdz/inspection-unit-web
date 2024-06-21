@@ -1,0 +1,21 @@
+.preview-table {
+    width: 100%;
+
+    th {
+        color: #fff;
+        background-color: #1b6ec2;
+    }
+
+    td, tr, th {
+        border-color: inherit;
+        border-style: solid;
+        border-width: 0;
+        border: 1px solid #000;
+        border-collapse: collapse;
+        text-align: center;
+    }
+}
+
+.clear {
+    background-color: #FF7F27;
+}

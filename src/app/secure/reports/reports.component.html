@@ -1,32 +1,21 @@
-<div>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Reportes</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="formReports">
-        <div class="form-container">
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Reportes</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formReports">
+      <div class="form-container">
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Reporte</mat-label>
-            <mat-select formControlName="idReporte" required>
+            <mat-select formControlName="idReporte" (selectionChange)="clear()" required>
               <mat-option *ngFor="let type of reportTypes" [value]="type.idReporte">{{type.nombre}}</mat-option>
             </mat-select>
             <mat-error>
               <error-message [control]="form.idReporte" nomCampo="Reporte"></error-message>
             </mat-error>
           </mat-form-field></div>
-          
-          <div class="form-cell-4"><mat-form-field appearance="outline">
-            <mat-label>Almacen</mat-label>
-            <mat-select formControlName="idBodega" required>
-              <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.idBodega">{{warehouse.nombre}}</mat-option>
-            </mat-select>
-            <mat-error>
-              <error-message [control]="form.idBodega" nomCampo="Almacen"></error-message>
-            </mat-error>
-          </mat-form-field></div>
-          
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Cliente</mat-label>
             <mat-select formControlName="idCliente" required>
               <mat-option *ngFor="let client of clients" [value]="client.idCliente">{{client.nombre}}</mat-option>
@@ -36,7 +25,7 @@
             </mat-error>
           </mat-form-field></div>
 
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Movimientos en cero</mat-label>
             <mat-select formControlName="MovimientosEnCero" required>
               <mat-option [value]="1">Si</mat-option>
@@ -46,18 +35,18 @@
               <error-message [control]="form.MovimientosEnCero" nomCampo="Movimientos en cero"></error-message>
             </mat-error>
           </mat-form-field></div>
-          
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Recibo Inicial</mat-label>
             <input matInput formControlName="ReciboIni" appCurrencyMask type="text" />
           </mat-form-field></div>
-          
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Recibo Final</mat-label>
             <input matInput formControlName="ReciboFin" appCurrencyMask type="text" />
           </mat-form-field></div>
 
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Selecciona rango de fechas</mat-label>
             <mat-date-range-input [rangePicker]="picker" required>
               <input formControlName="Fecha" matStartDate placeholder="Fecha Inicio" required>
@@ -70,25 +59,46 @@
               <error-message [control]="form.Fecha" nomCampo="Selecciona rango de fechas"></error-message>
             </mat-error>
           </mat-form-field></div>
-          
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Articulo Inicial</mat-label>
             <input matInput formControlName="ArticuloIni" appCurrencyMask type="text" />
           </mat-form-field></div>
-          
-          <div class="form-cell-4"><mat-form-field appearance="outline">
+
+        <div class="form-cell-4"><mat-form-field appearance="outline">
             <mat-label>Articulo Final</mat-label>
             <input matInput formControlName="ArticuloFin" appCurrencyMask type="text" />
           </mat-form-field></div>
-        </div>
-      </form>
+      </div>
+    </form>
 
-    </mat-card-content>
-    <mat-card-footer>
-      <button matTooltip="Descargar Excel" (click)="onSubmit()" mat-fab extended>
-        <mat-icon>get_app</mat-icon> Descargar Excel
-      </button>
-    </mat-card-footer>
-  </mat-card>
-    
-</div>
+  </mat-card-content>
+  <mat-card-footer>
+    <button matTooltip="Consultar" (click)="onSubmit()" mat-fab extended color="primary" class="float-left"> Consultar
+    </button>
+    <button *ngIf="currentReport" matTooltip="Limpiar" (click)="clear()" class="clear float-left" mat-fab extended>
+      Limpiar </button>
+    <button *ngIf="currentReport" matTooltip="Descargar Excel" (click)="download()" class="float-right" mat-fab
+      extended>
+      <mat-icon>get_app</mat-icon> Descargar Excel
+    </button>
+  </mat-card-footer>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <table class="preview-table">
+      <thead>
+        <th *ngFor="let header of headers">{{header}}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of values">
+          <td *ngFor="let val of row">{{val}}</td>
+        </tr>
+        <tr class="font-700" *ngIf="totalsRow.length > 0">
+          <td *ngFor="let total of totalsRow">{{total}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>

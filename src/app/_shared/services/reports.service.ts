@@ -9,10 +9,10 @@ export class ReportsService {
   constructor(private http: HttpClient) { }
 
   getReportType(): Observable<ReportType[]> {
-    return this.http.get<ReportType[]>(`${environment.url}Report/GetAll`);
+    return this.http.get<ReportType[]>(`${environment.url}Reports/GetAll`);
   }
 
   getReport(reportParameters: ReportParameters): Observable<any> {
-    return this.http.post<any>(`${environment.url}Report/Report`, reportParameters);
+    return this.http.post<any>(`${environment.url}Reports/Report`, reportParameters);
   }
 }

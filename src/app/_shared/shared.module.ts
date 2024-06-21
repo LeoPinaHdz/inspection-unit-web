@@ -8,7 +8,6 @@ import { SimpleDialogComponent } from './components/simple-dialog/simple-dialog.
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ClientService } from './services/client.service';
-import { WarehouseService } from './services/warehouse.service';
 import { UploadButtonComponent } from './components/upload-button/upload-button.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './services/auth.service';
@@ -57,7 +56,6 @@ import { ProcessService } from './services/process.service';
     ClientService,
     AuthService,
     AuthGuard,
-    WarehouseService,
     ScreenService,
     UsersService,
     CountryService,

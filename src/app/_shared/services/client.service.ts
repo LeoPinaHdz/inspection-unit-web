@@ -8,10 +8,6 @@ import { Client } from '../models/client.model';
 export class ClientService {
   constructor(private http: HttpClient) { }
 
-  getClients(idUsuario: number): Observable<Client[]> {
-    return this.http.get<Client[]>(`${environment.url}Clientes/Get?idUsuario=${idUsuario}`);
-  }
-
   getAll(): Observable<Client[]> {
     return this.http.get<Client[]>(`${environment.url}Clientes/GetAll`);
   }
