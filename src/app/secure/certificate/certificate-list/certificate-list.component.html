@@ -2,52 +2,82 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>Gestión de actas</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <a [routerLink]="['/secure/certificate/new']" class="float-left" color="primary" mat-fab extended>
-        Agregar
+      <a [routerLink]="['/secure/certificate/new']" class="button-new-header" color="primary" mat-stroked-button>
+        Nueva Acta
       </a>
-      <div class="float-right">
-        <mat-form-field class="table-filter" appearance="outline">
+    </mat-card-header>
+    <mat-card-content>      
+      <form [formGroup]="searchForm" class="form-container">
+        <div class="form-cell-3"><mat-form-field appearance="outline">
+            <mat-label>Fecha de Envio</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input formControlName="fechaDel" matStartDate placeholder="Fecha Inicio">
+              <input formControlName="fechaAl" matEndDate placeholder="Fecha Fin">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="cliente" placeholder="Cliente" #clientSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                  noEntriesFoundLabel="No se encontraron resultados"
+                  formControlName="clientFilter"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                {{client.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
+        <div class="form-cell-3 list-form-section">
+          <button class="form-button no-left-margin" color="primary" (click)="onSearch()" mat-fab extended>
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+          <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+            Limpia filtros
+          </button>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
 
   <div class="table-container mat-elevation-z8">
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
-      <ng-container matColumnDef="folio">
+      <ng-container matColumnDef="NoFolio">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.folio }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NoFolio }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="cliente">
+      <ng-container matColumnDef="Cliente">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.cliente }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Cliente }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="solicitud">
+      <ng-container matColumnDef="Solicitud">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.solicitud }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Solicitud }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="oficio">
+      <ng-container matColumnDef="NoOficio">
         <mat-header-cell *matHeaderCellDef mat-sort-header> No. Oficio </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.oficio }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NoOficio }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="fActa">
+      <ng-container matColumnDef="FIniActa">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Acta </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.fActa }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.FIniActa }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <a [routerLink]="['/secure/certificate/', row.idActa]" mat-raised-button color="primary">Editar</a>
+          <a [routerLink]="['/secure/certificate/', row.IdActa]" mat-raised-button color="primary">Editar</a>
         </mat-cell>
       </ng-container>
 

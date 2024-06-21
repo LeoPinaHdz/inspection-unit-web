@@ -8,6 +8,9 @@ import { Certificate } from '../models/certificate.model';
 export class CertificateService {
   constructor(private http: HttpClient) { }
 
+  search(request: any): Observable<Certificate[]> {
+    return this.http.post<Certificate[]>(`${environment.url}Proceedings/Listado`, request);
+  }
   getAll(): Observable<Certificate[]> {
     return this.http.get<Certificate[]>(`${environment.url}Proceedings/GetAll`);
   }
