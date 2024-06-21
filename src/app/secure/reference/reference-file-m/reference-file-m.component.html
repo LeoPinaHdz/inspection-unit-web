@@ -1,15 +1,23 @@
 <mat-card>
     <mat-card-content>
         <div class="form-container">
-            <upload-button accept="M*.*,P*.*" buttonTitle="Adjuntar" (fileChange)="submitFile($event)"></upload-button>&nbsp;
+            <upload-button accept="M*.*,P*.*" class="margin-top-button" buttonTitle="Adjuntar"
+                (fileChange)="submitFile($event)"></upload-button>&nbsp;
 
-            <button class="no-left-margin" color="accent" (click)="getReferences()" mat-fab extended>
+            <button class="no-left-margin margin-top-button" color="accent" (click)="getReferences()" mat-fab extended>
                 Refrescar Pedimentos
             </button>&nbsp;
-            <button *ngIf="details.length > 0" class="form-button no-left-margin" color="primary" (click)="generate()"
+            <button *ngIf="details.length > 0" class="form-button no-left-margin margin-top-button" color="primary" (click)="generate()"
                 mat-fab extended>
                 Generar Folios
-            </button>
+            </button>&nbsp;
+            <mat-form-field class="form-cell-3" appearance="outline" *ngIf="details.length > 0">
+                <mat-label>Tipo Proceso</mat-label>
+                <mat-select [formControl]="processControl">
+                    <mat-option *ngFor="let process of processes"
+                        [value]="process.idProceso">{{process.nombre}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     </mat-card-content>
 </mat-card>

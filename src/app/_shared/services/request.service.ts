@@ -34,8 +34,8 @@ export class RequestService {
     return this.http.put<any>(`${environment.url}Requests/Update`, request);
   }
 
-  download(id: number, type: number): Observable<HttpResponse<any>> {
-    return this.http.get(`${environment.url}Document/GetActa?id=${id}&type=${type}`, {
+  download(id: number, type: number, template: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.url}Requests/Download?id=${id}&type=${type}&template=${template}`, {
       observe: 'response',
       responseType: 'blob' as 'json',
     });

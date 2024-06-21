@@ -15,6 +15,9 @@ import { UnitService } from 'src/app/_shared/services/unit.service';
 import { StandardService } from 'src/app/_shared/services/standard.service';
 import { Request, RequestDetail } from 'src/app/_shared/models/request.model';
 import { ClientAddressService } from 'src/app/_shared/services/client-address.service';
+import { saveFile } from 'src/app/_shared/utils/file.utils';
+import { TemplateService } from 'src/app/_shared/services/template.service';
+import { Template } from 'src/app/_shared/models/template.model';
 
 @Component({
   selector: 'create-request',
@@ -34,6 +37,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
   standards: any[] = [];
   addresses: any[] = [];
   warehouses: any[] = [];
+  templates: Template[] = [];
   displayedColumns: string[] = ['modelo', 'producto', 'cantidad', 'idUnidad', 'marca', 'pais', 'actions'];
   dataSource: MatTableDataSource<RequestDetail> = new MatTableDataSource();
   units: Unit[] = [];
@@ -47,6 +51,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     private standardService: StandardService,
     private clientAddressService: ClientAddressService,
     private unitService: UnitService,
+    private templateService: TemplateService,
     private dialog: MatDialog
   ) { }
 
@@ -70,6 +75,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       fSolicitud: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       fPrograma: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       idLugar: new FormControl('', [Validators.required]),
+      idFormato: new FormControl('', []),
       clave: new FormControl({ value: '', disabled: true }),
       active: new FormControl({ value: true, disabled: true })
     });
@@ -93,6 +99,14 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     try {
       this.units = await lastValueFrom(this.unitService.getAll());
       if (this.units.length > 0) this.requestDetailForm.get('idUnidad')!.setValue(this.units[0]);
+    } catch (error) {
+      console.error('Error trying to get units');
+    }
+
+    try {
+      this.templates = await lastValueFrom(this.templateService.getAll());
+      if (this.templates.length > 0) this.requestForm.get('idFormato')!.setValue(this.templates[0].idFormato);
+      if (this.templates.length === 1) this.requestForm.get('idFormato')!.disable();
     } catch (error) {
       console.error('Error trying to get units');
     }
@@ -294,6 +308,24 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
 
     this.requestDetails = request.detalles || [];
     this.dataSource = new MatTableDataSource(this.requestDetails);
+  }
+
+  downloadPdf(): void {
+    const template = this.requestForm.get('idFormato')!.value;
+
+    this.requestService.download(this.id, 2, template).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.request.clave}.pdf`,
+        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
+    });
+  }
+
+  downloadWord(): void {
+    const template = this.requestForm.get('idFormato')!.value;
+
+    this.requestService.download(this.id, 1, template).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.request.clave}.docx`,
+        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    });
   }
 
   private filterClients() {

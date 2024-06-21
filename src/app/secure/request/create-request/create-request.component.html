@@ -107,8 +107,24 @@
               <mat-datepicker #fProgramaPicker></mat-datepicker>
             </mat-form-field>
           </div>
-          <div class="form-cell-3">
+          <div class="form-cell-1">
             <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
+          </div>
+          <div class="form-cell-3" *ngIf="isEdit">
+              <button matTooltip="Exportar" class="export-pdf" mat-fab extended (click)="downloadPdf()">
+                  <mat-icon>get_app</mat-icon>PDF
+              </button>&nbsp;
+              <button matTooltip="Exportar" class="export-word" mat-fab extended (click)="downloadWord()">
+                  <mat-icon>get_app</mat-icon>WORD
+              </button>
+          </div>
+          <div class="form-cell-2" *ngIf="isEdit">
+            <mat-form-field appearance="outline">
+              <mat-label>Formato</mat-label>
+              <mat-select formControlName="idFormato">
+                <mat-option *ngFor="let template of templates" [value]="template.idFormato">{{template.nombre}}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
       </form>

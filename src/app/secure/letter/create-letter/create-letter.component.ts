@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/_shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ReplaySubject, Subject, lastValueFrom } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
@@ -74,7 +73,6 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
       if (this.clients.length > 0) this.letterForm.get('idCliente')!.setValue(this.clients[0].idCliente);
       this.filteredClients.next(this.clients.slice());
-
 
       this.letterForm.get('idCliente')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
@@ -149,7 +147,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     this.letterForm.markAllAsTouched();
     if (!this.letterForm.valid || this.selection.isEmpty()) return;
 
-    let request = this.letterForm.getRawValue();
+    let request = {...this.letter, ...this.letterForm.getRawValue()};
 
     request.oficio = request.oficio && request.oficio > 0 ? request.oficio : 0;
     request.folio = request.folio && request.folio > 0 ? request.folio : 0;
@@ -202,6 +200,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       const selected = this.letterDetails.filter(ld =>
         this.letter.detalles!.some(d => d.idSolicitud === ld.idSolicitud)
       );
+      this.selection.clear();
       this.selection.select(...selected);
     }
   }

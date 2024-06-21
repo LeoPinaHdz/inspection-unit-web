@@ -1,15 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, lastValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ReferenceDetailFileM, ReferenceHeaderFileM } from 'src/app/_shared/models/reference.model';
 import { ReferenceService } from 'src/app/_shared/services/reference.service';
+import { FormControl } from '@angular/forms';
+import { Process } from 'src/app/_shared/models/process.model';
+import { ProcessService } from 'src/app/_shared/services/process.service';
 
 @Component({
   selector: 'reference-file-m',
   templateUrl: './reference-file-m.component.html',
+  styleUrls: ['./reference-file-m.component.scss']
 })
 export class ReferenceFileMComponent implements OnInit, OnDestroy {
   displayedHeaderColumns: string[] = ['cons', 'pedimento', 'cliente', 'nombreArchivo', 'idBodega', 'action'];
@@ -18,13 +21,15 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
   headerDataSource: MatTableDataSource<ReferenceHeaderFileM> = new MatTableDataSource();
   details: ReferenceDetailFileM[] = [];
   selectedHeader: any;
+  processes: Process[] = [];
+  processControl = new FormControl(1);
   dataSource: MatTableDataSource<ReferenceDetailFileM> = new MatTableDataSource();
 
   _onDestroy = new Subject<void>();
 
   constructor(
-    private router: Router,
     private referenceService: ReferenceService,
+    private processService: ProcessService,
     private dialog: MatDialog
   ) { }
 
@@ -34,6 +39,22 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.init();
+
+    this.processService.getAll()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.processes = response;
+          if (this.processes.length > 0) this.processControl!.setValue(this.processes[0].idProceso);
+        },
+        error: (err) => {
+          console.log('Error trying to get processes');
+        }
+      });
+  }
+
+  init() {
     this.header = [];
     this.details = [];
     this.headerDataSource = new MatTableDataSource(this.header);
@@ -41,7 +62,7 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
   }
 
   getReferences() {
-    this.ngOnInit();
+    this.init();
 
     this.referenceService.getReferences()
       .pipe()
@@ -67,6 +88,7 @@ export class ReferenceFileMComponent implements OnInit, OnDestroy {
   }
 
   generate() {
+    this.selectedHeader.Modo = this.processControl!.value;
     this.referenceService.generate(this.selectedHeader)
       .pipe()
       .subscribe({

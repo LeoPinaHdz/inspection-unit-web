@@ -12,6 +12,10 @@ export class LetterService {
     return this.http.get<Letter[]>(`${environment.url}Oficios/GetAll`);
   }
 
+  search(request: any): Observable<Letter[]> {
+    return this.http.post<Letter[]>(`${environment.url}Oficios/Listado`, request);
+  }
+
   getByClient(id: number): Observable<Letter[]> {
     return this.http.get<Letter[]>(`${environment.url}Oficios/GetByClient?id=${id}`);
   }
