@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, lastValueFrom, takeUntil } from 'rxjs';
+import { ReplaySubject, Subject, lastValueFrom, takeUntil } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
 import { RulingService } from 'src/app/_shared/services/ruling.service';
@@ -28,7 +28,8 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
   executives: Executive[] = [];
   requests: Request[] = [];
   rulingForm!: FormGroup;
-  _onDestroy = new Subject<void>();
+  filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
+  protected _onDestroy = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -52,6 +53,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
     this.rulingForm = new FormGroup({
       idDictamen: new FormControl({ value: '', disabled: true }, []),
       idCliente: new FormControl('', [Validators.required]),
+      clientFilter: new FormControl('', []),
       idSolicitud: new FormControl('', [Validators.required]),
       tipoServicio: new FormControl({ value: '', disabled: true }),
       folio: new FormControl({ value: '', disabled: true }, []),
@@ -87,7 +89,26 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
     }
 
     try {
-      this.clients = await lastValueFrom(this.clientService.getAllActive());
+      this.clientService.getAllActive()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.clients = response;
+          this.filteredClients.next(this.clients.slice());
+          this.rulingForm.get('clientFilter')!.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+              this.filterClients();
+            });
+          if (this.clients.length) {
+            this.rulingForm.get('idCliente')!.setValue(this.clients[0].idCliente);
+            if (this.clients.length === 1) this.rulingForm.get('idCliente')!.disable();
+          }
+        },
+        error: () => {
+          console.error('Error trying to get clients');
+        }
+      });
       if (this.clients.length > 0) this.rulingForm.get('idCliente')!.setValue(this.clients[0].idCliente);
       this.rulingForm.get('idCliente')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
@@ -121,7 +142,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
         this.rulingForm.get('tipoServicio')!.setValue(this.requests[0].tipoServicio);
       }
     } catch (error) {
-      console.error('Error trying to get letters');
+      console.error('Error trying to get requests');
     }
   }
 
@@ -170,5 +191,21 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
 
   get form() {
     return this.rulingForm.controls;
+  }
+
+  protected filterClients() {
+    if (!this.clients) {
+      return;
+    }
+    let search = this.rulingForm.get('clientFilter')!.value;
+    if (!search) {
+      this.filteredClients.next(this.clients.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredClients.next(
+      this.clients.filter(client => client.nombre!.toLowerCase().indexOf(search!) > -1)
+    );
   }
 }

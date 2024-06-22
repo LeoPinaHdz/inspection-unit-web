@@ -8,6 +8,9 @@ import { Client } from 'src/app/_shared/models/client.model';
 import { ReportType } from 'src/app/_shared/models/reports.model';
 import { ReportsService } from 'src/app/_shared/services/reports.service';
 import { formatDateString } from 'src/app/_shared/utils/date.utils';
+import { ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { Standard } from 'src/app/_shared/models/standard.model';
+import { StandardService } from 'src/app/_shared/services/standard.service';
 
 @Component({
   selector: 'reports',
@@ -15,35 +18,38 @@ import { formatDateString } from 'src/app/_shared/utils/date.utils';
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-  formReports!: FormGroup;
+  reportsForm!: FormGroup;
   reportTypes: ReportType[] = [];
-  currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
   clients: Client[] = [];
+  standards: Standard[] = [];
   currentReport: any;
   headers: string[] = [];
   totalsRow: number[] = [];
-  values:(string | number)[][] = [[]];
+  values: (string | number)[][] = [[]];
+  filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
+  filteredReports: ReplaySubject<ReportType[]> = new ReplaySubject<ReportType[]>(1);
+  filteredStandards: ReplaySubject<Standard[]> = new ReplaySubject<Standard[]>(1);
+  protected _onDestroy = new Subject<void>();
 
   constructor(
     private reportsService: ReportsService,
     private dialog: MatDialog,
     private clientService: ClientService,
+    private standardService: StandardService,
     private excelService: ExcelService
   ) { }
 
 
   ngOnInit() {
-    this.formReports = new FormGroup({
+    this.reportsForm = new FormGroup({
       idReporte: new FormControl('', [Validators.required]),
-      Fecha: new FormControl(new Date(), [Validators.required]),
-      FechaCierre: new FormControl(new Date(), [Validators.required]),
-      ReciboIni: new FormControl('', []),
-      ReciboFin: new FormControl('', []),
-      ArticuloIni: new FormControl('', []),
-      ArticuloFin: new FormControl('', []),
+      reportFilter: new FormControl('', []),
+      fInicio: new FormControl(new Date(), [Validators.required]),
+      fFinal: new FormControl(new Date(), [Validators.required]),
       idCliente: new FormControl('', [Validators.required]),
-      idBodega: new FormControl('', [Validators.required]),
-      MovimientosEnCero: new FormControl(1, [Validators.required]),
+      clientFilter: new FormControl('', []),
+      idNorma: new FormControl('', [Validators.required]),
+      standardFilter: new FormControl('', [])
     });
 
     this.reportsService.getReportType()
@@ -51,9 +57,29 @@ export class ReportsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.reportTypes = response;
+          this.filteredReports.next(this.reportTypes.slice());
+          this.reportsForm.get('reportFilter')!.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+              this.filterReports();
+            });
         },
         error: () => {
           console.error('Error trying to get report types');
+        }
+      });
+
+    this.standardService.getAllActive()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.standards = response;
+          this.filteredStandards.next(this.standards.slice());
+          this.reportsForm.get('standardFilter')!.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+              this.filterStandards();
+            });
         }
       });
 
@@ -62,9 +88,15 @@ export class ReportsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.clients = response;
+          this.filteredClients.next(this.clients.slice());
+          this.reportsForm.get('clientFilter')!.valueChanges
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+              this.filterClients();
+            });
           if (this.clients.length) {
-            this.formReports.get('idCliente')!.setValue(this.clients[0].idCliente);
-            if (this.clients.length === 1) this.formReports.get('idCliente')!.disable();
+            this.reportsForm.get('idCliente')!.setValue(this.clients[0].idCliente);
+            if (this.clients.length === 1) this.reportsForm.get('idCliente')!.disable();
           }
         },
         error: () => {
@@ -92,7 +124,7 @@ export class ReportsComponent implements OnInit {
       sumColumns.forEach(c => {
         const index = this.headers.indexOf(c);
         const sum = this.values.map(d => Number(d[index]) || 0).reduce((acc, value) => acc + value, 0);
-        
+
         this.totalsRow[index] = sum;
       });
     }
@@ -106,12 +138,12 @@ export class ReportsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.formReports.markAllAsTouched();
-    if (!this.formReports.valid) return;
+    this.reportsForm.markAllAsTouched();
+    if (!this.reportsForm.valid) return;
 
     this.clear();
 
-    const reportParameters = this.formReports.getRawValue();
+    const reportParameters = this.reportsForm.getRawValue();
     reportParameters.Fecha = formatDateString(reportParameters.Fecha);
     reportParameters.FechaCierre = formatDateString(reportParameters.FechaCierre);
 
@@ -138,6 +170,54 @@ export class ReportsComponent implements OnInit {
   }
 
   get form() {
-    return this.formReports.controls;
+    return this.reportsForm.controls;
+  }
+
+  protected filterClients() {
+    if (!this.clients) {
+      return;
+    }
+    let search = this.reportsForm.get('clientFilter')!.value;
+    if (!search) {
+      this.filteredClients.next(this.clients.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredClients.next(
+      this.clients.filter(client => client.nombre!.toLowerCase().indexOf(search!) > -1)
+    );
+  }
+
+  protected filterReports() {
+    if (!this.reportTypes) {
+      return;
+    }
+    let search = this.reportsForm.get('reportFilter')!.value;
+    if (!search) {
+      this.filteredReports.next(this.reportTypes.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredReports.next(
+      this.reportTypes.filter(report => report.nombre!.toLowerCase().indexOf(search!) > -1)
+    );
+  }
+
+  protected filterStandards() {
+    if (!this.standards) {
+      return;
+    }
+    let search = this.reportsForm.get('standardFilter')!.value;
+    if (!search) {
+      this.filteredStandards.next(this.standards.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredStandards.next(
+      this.standards.filter(standard => standard.nombre!.toLowerCase().indexOf(search!) > -1)
+    );
   }
 }
