@@ -2,18 +2,96 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>Gestión de dictamenes</mat-card-title>
+      <a [routerLink]="['/secure/ruling/new']" class="button-new-header" color="primary" mat-stroked-button>
+        Nuevo dictamen
+      </a>
     </mat-card-header>
     <mat-card-content>
-      <a [routerLink]="['/secure/ruling/new']" class="float-left" color="primary" mat-fab extended>
-        Agregar
-      </a>
-      <div class="float-right">
-        <mat-form-field class="table-filter" appearance="outline">
+      <form [formGroup]="searchForm" class="form-container">
+        <div class="form-cell-3"><mat-form-field appearance="outline">
+            <mat-label>Fecha de dictamen</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input formControlName="fechaDel" matStartDate placeholder="Fecha Inicio">
+              <input formControlName="fechaAl" matEndDate placeholder="Fecha Fin">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
 
-          <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Servicio</mat-label>
+            <mat-select formControlName="servicio">
+              <mat-option value="-1">Todos</mat-option>
+              <mat-option value="0">Constancia</mat-option>
+              <mat-option value="1">Dictamen</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="cliente" placeholder="Cliente" #clientSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                  noEntriesFoundLabel="No se encontraron resultados"
+                  formControlName="clientFilter"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                {{client.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Pedimento</mat-label>
+            <input matInput formControlName="pedimento" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>De Folio</mat-label>
+            <input matInput formControlName="solDel" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>A Folio</mat-label>
+            <input matInput formControlName="solAl" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipo">
+              <mat-option value="-1">Todos</mat-option>
+              <mat-option value="0">Tipo 1</mat-option>
+              <mat-option value="1">Tipo 2</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+            <mat-checkbox formControlName="constancias" color="primary">Constancias</mat-checkbox>
+        </div>
+
+        <div class="form-cell-3 list-form-section">
+          <button class="form-button no-left-margin" color="primary" (click)="onSearch()" mat-fab extended>
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+          <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+            Limpia filtros
+          </button>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
 

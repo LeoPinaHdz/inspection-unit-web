@@ -9,15 +9,19 @@ export class RulingService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Ruling[]> {
-    return this.http.get<Ruling[]>(`${environment.url}Ruling/GetAll`);
+    return this.http.get<Ruling[]>(`${environment.url}Dictamenes/GetAll`);
+  }
+
+  search(request: any): Observable<Ruling[]> {
+    return this.http.post<Ruling[]>(`${environment.url}Dictamenes/Listado`, request);
   }
 
   getActive(): Observable<Ruling[]> {
-    return this.http.get<Ruling[]>(`${environment.url}Ruling/GetActive`);
+    return this.http.get<Ruling[]>(`${environment.url}Dictamenes/GetActive`);
   }
 
   getById(id: number): Observable<Ruling> {
-    return this.http.get<Ruling>(`${environment.url}Ruling/Get?id=${id}`);
+    return this.http.get<Ruling>(`${environment.url}Dictamenes/Get?id=${id}`);
   }
 
   save(ruling: Ruling): Observable<any> {
