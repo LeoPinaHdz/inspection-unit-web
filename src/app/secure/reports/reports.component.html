@@ -4,19 +4,17 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="reportsForm">
-      <div class="form-container">
-        <div class="form-cell-3"><mat-form-field appearance="outline">
+      <div class="form-container">        
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
             <mat-label>Reporte</mat-label>
-            <mat-select formControlName="idReporte" placeholder="Reporte" #reportSelect>
-              <mat-option>
-                <ngx-mat-select-search placeholderLabel="Busca reporte"
-                  noEntriesFoundLabel="No se encontraron resultados"
-                  formControlName="reportFilter"></ngx-mat-select-search>
-              </mat-option>
-              <mat-option *ngFor="let report of filteredReports | async" [value]="report.idReporte">
-                {{report.nombre}}
-              </mat-option>
+            <mat-select formControlName="idReporte" required>
+              <mat-option *ngFor="let report of reportTypes"
+                [value]="report.idReporte">{{report.nombre}}</mat-option>
             </mat-select>
+            <mat-error>
+              <error-message [control]="form.idReporte" nomCampo="Reporte"></error-message>
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -39,15 +37,13 @@
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Norma</mat-label>
-            <mat-select formControlName="idNorma" placeholder="Norma" #clientSelect>
-              <mat-option>
-                <ngx-mat-select-search placeholderLabel="Busca norma" noEntriesFoundLabel="No se encontraron resultados"
-                  formControlName="standardFilter"></ngx-mat-select-search>
-              </mat-option>
-              <mat-option *ngFor="let standard of filteredStandards | async" [value]="standard.idNorma">
-                {{standard.nombre}}
-              </mat-option>
+            <mat-select formControlName="idNorma" required>
+              <mat-option *ngFor="let standard of standards"
+                [value]="standard.idNorma">{{standard.nombre}}</mat-option>
             </mat-select>
+            <mat-error>
+              <error-message [control]="form.idNorma" nomCampo="Norma"></error-message>
+            </mat-error>
           </mat-form-field>
         </div>
 

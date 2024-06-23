@@ -1,12 +1,9 @@
 export interface ReportParameters {
     idReporte: Number;
-    ReciboIni?: string;
-    ReciboFin?: string;
-    ArticuloIni?: string;
-    ArticuloFin?: string;
-    Fecha: string;
-    FechaCierre: string;
-    MovimientosEnCero: Number;
+    fInicio: string;
+    fFinal: string;
+    idCliente: Number;
+    idNorma: Number;
 }
 
 export interface ReportType {

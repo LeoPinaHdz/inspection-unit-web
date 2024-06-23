@@ -13,6 +13,6 @@ export class ReportsService {
   }
 
   getReport(reportParameters: ReportParameters): Observable<any> {
-    return this.http.post<any>(`${environment.url}Reports/Report`, reportParameters);
+    return this.http.post<any>(`${environment.url}Reports/Reporte`, reportParameters);
   }
 }

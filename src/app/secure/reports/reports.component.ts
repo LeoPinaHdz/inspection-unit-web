@@ -27,8 +27,6 @@ export class ReportsComponent implements OnInit {
   totalsRow: number[] = [];
   values: (string | number)[][] = [[]];
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
-  filteredReports: ReplaySubject<ReportType[]> = new ReplaySubject<ReportType[]>(1);
-  filteredStandards: ReplaySubject<Standard[]> = new ReplaySubject<Standard[]>(1);
   protected _onDestroy = new Subject<void>();
 
   constructor(
@@ -43,13 +41,11 @@ export class ReportsComponent implements OnInit {
   ngOnInit() {
     this.reportsForm = new FormGroup({
       idReporte: new FormControl('', [Validators.required]),
-      reportFilter: new FormControl('', []),
       fInicio: new FormControl(new Date(), [Validators.required]),
       fFinal: new FormControl(new Date(), [Validators.required]),
       idCliente: new FormControl('', [Validators.required]),
       clientFilter: new FormControl('', []),
       idNorma: new FormControl('', [Validators.required]),
-      standardFilter: new FormControl('', [])
     });
 
     this.reportsService.getReportType()
@@ -57,12 +53,6 @@ export class ReportsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.reportTypes = response;
-          this.filteredReports.next(this.reportTypes.slice());
-          this.reportsForm.get('reportFilter')!.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-              this.filterReports();
-            });
         },
         error: () => {
           console.error('Error trying to get report types');
@@ -74,12 +64,9 @@ export class ReportsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.standards = response;
-          this.filteredStandards.next(this.standards.slice());
-          this.reportsForm.get('standardFilter')!.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-              this.filterStandards();
-            });
+        },
+        error: () => {
+          console.error('Error trying to get standard list');
         }
       });
 
@@ -144,8 +131,8 @@ export class ReportsComponent implements OnInit {
     this.clear();
 
     const reportParameters = this.reportsForm.getRawValue();
-    reportParameters.Fecha = formatDateString(reportParameters.Fecha);
-    reportParameters.FechaCierre = formatDateString(reportParameters.FechaCierre);
+    reportParameters.fInicio = formatDateString(reportParameters.fInicio);
+    reportParameters.fFinal = formatDateString(reportParameters.fFinal);
 
     this.reportsService.getReport(reportParameters)
       .pipe()
@@ -186,38 +173,6 @@ export class ReportsComponent implements OnInit {
     }
     this.filteredClients.next(
       this.clients.filter(client => client.nombre!.toLowerCase().indexOf(search!) > -1)
-    );
-  }
-
-  protected filterReports() {
-    if (!this.reportTypes) {
-      return;
-    }
-    let search = this.reportsForm.get('reportFilter')!.value;
-    if (!search) {
-      this.filteredReports.next(this.reportTypes.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    this.filteredReports.next(
-      this.reportTypes.filter(report => report.nombre!.toLowerCase().indexOf(search!) > -1)
-    );
-  }
-
-  protected filterStandards() {
-    if (!this.standards) {
-      return;
-    }
-    let search = this.reportsForm.get('standardFilter')!.value;
-    if (!search) {
-      this.filteredStandards.next(this.standards.slice());
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    this.filteredStandards.next(
-      this.standards.filter(standard => standard.nombre!.toLowerCase().indexOf(search!) > -1)
     );
   }
 }
