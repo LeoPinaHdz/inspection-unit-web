@@ -38,6 +38,8 @@ import { CertificateService } from './services/certificate.service';
 import { RulingService } from './services/ruling.service';
 import { TemplateService } from './services/template.service';
 import { ProcessService } from './services/process.service';
+import { ListService } from './services/list.service';
+import { DisplayService } from './services/display.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -81,7 +83,9 @@ import { ProcessService } from './services/process.service';
     CertificateService,
     RulingService,
     TemplateService,
-    ProcessService
+    ProcessService,
+    DisplayService,
+    ListService
   ],
 })
 export class SharedModule { }

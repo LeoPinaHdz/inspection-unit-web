@@ -64,6 +64,8 @@ import { CertificatesComponent } from './certificate/certificate-list/certificat
 import { CertificateDetailComponent } from './certificate/certificate-detail/certificate-detail.component';
 import { RulingsComponent } from './ruling/ruling-list/ruling-list.component';
 import { RulingDetailComponent } from './ruling/ruling-detail/ruling-detail.component';
+import { ListComponent } from './list/list/list.component';
+import { ListDetailComponent } from './list/list-detail/list-detail.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +107,9 @@ import { RulingDetailComponent } from './ruling/ruling-detail/ruling-detail.comp
     CertificatesComponent,
     CertificateDetailComponent,
     RulingsComponent,
-    RulingDetailComponent
+    RulingDetailComponent,
+    ListComponent,
+    ListDetailComponent
   ],
   imports: [
     SecureRoutingModule,

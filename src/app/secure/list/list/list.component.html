@@ -1,0 +1,128 @@
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Gestión de listas</mat-card-title>
+      <a [routerLink]="['/secure/list/new']" class="button-new-header" color="primary" mat-stroked-button>
+        Nueva Lista
+      </a>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="searchForm" class="form-container">
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>No. Lista</mat-label>
+            <input matInput formControlName="lista" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3"><mat-form-field appearance="outline">
+            <mat-label>Fecha de Envio</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input formControlName="fechaDel" matStartDate placeholder="Fecha Inicio">
+              <input formControlName="fechaAl" matEndDate placeholder="Fecha Fin">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Norma</mat-label>
+            <mat-select formControlName="norma">
+              <mat-option *ngFor="let standard of standards" [value]="standard.idNorma">{{standard.nombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="cliente" placeholder="Cliente" #clientSelect>
+              <mat-option>
+                <ngx-mat-select-search placeholderLabel="Busca cliente"
+                  noEntriesFoundLabel="No se encontraron resultados"
+                  formControlName="clientFilter"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let client of filteredClients | async" [value]="client.idCliente">
+                {{client.nombre}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Pedimento</mat-label>
+            <input matInput formControlName="pedimento" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-3 list-form-section">
+          <button class="form-button no-left-margin" color="primary" (click)="onSearch()" mat-fab extended>
+            <mat-icon>search</mat-icon> Buscar
+          </button>
+          <button class="form-button no-left-margin" color="accent" type="reset" mat-fab extended>
+            Limpia filtros
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="table-container mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
+      <ng-container matColumnDef="lista">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> No. Lista </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Folio }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="cliente">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NomCliente }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="norma">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Norma </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.NomNorma }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="pedimento">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Pedimento </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Pedimento }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="servicio">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Servicio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Servicio }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="conclusion">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Conclusion </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Conclusion }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="estatus">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Estatus }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="solicitud">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.IdSolicitud }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="['/secure/list/', row.IdLista]" mat-raised-button color="primary">Editar</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

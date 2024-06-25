@@ -87,6 +87,11 @@ body {
   width: 300px !important;
 }
 
+.list-comments-input {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .mat-column-select {
   width: 60px;
   flex: none;

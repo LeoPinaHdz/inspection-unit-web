@@ -27,6 +27,8 @@ import { CertificatesComponent } from './certificate/certificate-list/certificat
 import { CertificateDetailComponent } from './certificate/certificate-detail/certificate-detail.component';
 import { RulingsComponent } from './ruling/ruling-list/ruling-list.component';
 import { RulingDetailComponent } from './ruling/ruling-detail/ruling-detail.component';
+import { ListComponent } from './list/list/list.component';
+import { ListDetailComponent } from './list/list-detail/list-detail.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -70,9 +72,9 @@ const routes: Routes = [
   { path: 'certificate/new', component: CertificateDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},
   { path: 'certificate/:id', component: CertificateDetailComponent, canActivate: [AuthGuard], data: {role: 'ACTAS'}},
   
-  { path: 'lists', component: UsersComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'} },
-  { path: 'list/new', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'}},
-  { path: 'list/:id', component: UserDetailComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'}},
+  { path: 'lists', component: ListComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'} },
+  { path: 'list/new', component: ListDetailComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'}},
+  { path: 'list/:id', component: ListDetailComponent, canActivate: [AuthGuard], data: {role: 'LISTAS'}},
   
   { path: 'rulings', component: RulingsComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'} },
   { path: 'ruling/new', component: RulingDetailComponent, canActivate: [AuthGuard], data: {role: 'DICTAMENES'}},

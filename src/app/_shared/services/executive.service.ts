@@ -16,6 +16,10 @@ export class ExecutiveService {
     return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetAllActive`);
   }
 
+  getByStandard(standard: number): Observable<Executive[]> {
+    return this.http.get<Executive[]>(`${environment.url}Ejecutive/GetByNorma?idNorma=${standard}`);
+  }
+
   getById(id: number): Observable<Executive> {
     return this.http.get<Executive>(`${environment.url}Ejecutive/Get?id=${id}`);
   }
