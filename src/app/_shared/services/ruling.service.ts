@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Ruling } from '../models/ruling.model';
+import { List } from '../models/list.model';
 
 @Injectable()
 export class RulingService {
@@ -10,6 +11,10 @@ export class RulingService {
 
   getAll(): Observable<Ruling[]> {
     return this.http.get<Ruling[]>(`${environment.url}Dictamenes/GetAll`);
+  }
+
+  getListByClient(id: number): Observable<List[]> {
+    return this.http.get<List[]>(`${environment.url}Lista/GetByClient?id=${id}`);
   }
 
   search(request: any): Observable<Ruling[]> {
@@ -26,7 +31,7 @@ export class RulingService {
 
   save(ruling: Ruling): Observable<any> {
     if (!ruling.idDictamen || ruling.idDictamen === 0)
-      return this.http.post<any>(`${environment.url}Ruling/Create`, ruling);
-    return this.http.put<any>(`${environment.url}Ruling/Update`, ruling);
+      return this.http.post<any>(`${environment.url}Dictamenes/Create`, ruling);
+    return this.http.put<any>(`${environment.url}Dictamenes/Update`, ruling);
   }
 }

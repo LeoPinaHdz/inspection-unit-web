@@ -8,6 +8,20 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="searchForm" class="form-container">
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>De Folio</mat-label>
+            <input matInput formControlName="dictamenDe" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>A Folio</mat-label>
+            <input matInput formControlName="dictamenAl" type="text" />
+          </mat-form-field>
+        </div>
+
         <div class="form-cell-3"><mat-form-field appearance="outline">
             <mat-label>Fecha de dictamen</mat-label>
             <mat-date-range-input [rangePicker]="picker">
@@ -17,17 +31,6 @@
             <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
-          </mat-form-field>
-        </div>
-
-        <div class="form-cell-3">
-          <mat-form-field appearance="outline">
-            <mat-label>Servicio</mat-label>
-            <mat-select formControlName="servicio">
-              <mat-option value="-1">Todos</mat-option>
-              <mat-option value="0">Constancia</mat-option>
-              <mat-option value="1">Dictamen</mat-option>
-            </mat-select>
           </mat-form-field>
         </div>
 
@@ -47,40 +50,26 @@
           </mat-form-field>
         </div>
 
-        <div class="form-cell-3">
+        <div class="form-cell-2">
           <mat-form-field appearance="outline">
             <mat-label>Pedimento</mat-label>
             <input matInput formControlName="pedimento" type="text" />
           </mat-form-field>
         </div>
 
-        <div class="form-cell-2">
-          <mat-form-field appearance="outline">
-            <mat-label>De Folio</mat-label>
-            <input matInput formControlName="solDel" type="text" />
-          </mat-form-field>
-        </div>
-
-        <div class="form-cell-2">
-          <mat-form-field appearance="outline">
-            <mat-label>A Folio</mat-label>
-            <input matInput formControlName="solAl" type="text" />
-          </mat-form-field>
-        </div>
-
         <div class="form-cell-3">
           <mat-form-field appearance="outline">
             <mat-label>Tipo</mat-label>
-            <mat-select formControlName="tipo">
-              <mat-option value="-1">Todos</mat-option>
-              <mat-option value="0">Tipo 1</mat-option>
-              <mat-option value="1">Tipo 2</mat-option>
+            <mat-select formControlName="tipoDictamen">
+              <mat-option value="">Todos</mat-option>
+              <mat-option value="C">Cumple</mat-option>
+              <mat-option value="NC">No Cumple</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
         <div class="form-cell-3">
-            <mat-checkbox formControlName="constancias" color="primary">Constancias</mat-checkbox>
+          <mat-checkbox formControlName="tipo" color="primary">Constancias</mat-checkbox>
         </div>
 
         <div class="form-cell-3 list-form-section">
@@ -99,43 +88,43 @@
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 box-shadow">
       <ng-container matColumnDef="cliente">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.cliente }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Cliente }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="dictamen">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Dictamen </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.dictamen }} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Dictamen }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="solicitud">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.solicitud }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.FolioSol }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="pedimento">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Pedimento </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.pedimento }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Pedimento }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="estatus">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Estatus </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.estatus }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Estatus }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="fDictamen">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de dictamen </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.fDictamen }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.FDictamen }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="tipo">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{ row.tipo }}</mat-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Dictaminacion }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <a [routerLink]="['/secure/ruling/', row.idActa]" mat-raised-button color="primary">Editar</a>
+          <a [routerLink]="['/secure/ruling/', row.idDictamen]" mat-raised-button color="primary">Editar</a>
         </mat-cell>
       </ng-container>
 

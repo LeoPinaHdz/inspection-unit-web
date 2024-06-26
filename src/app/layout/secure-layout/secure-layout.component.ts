@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { LoadingService } from 'src/app/_shared/services/loading.service';
 
 @Component({
   selector: 'app-secure-layout',
@@ -7,9 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./secure-layout.component.scss']
 })
 export class SecureLayoutComponent implements OnInit {
+  loading$: Observable<boolean>;
 
-  constructor(private readonly router: Router)
-  { }
+  constructor(private router: Router,
+    private loadingService: LoadingService
+  ) {
+    this.loading$ = this.loadingService.loading$;
+  }
 
   ngOnInit() {
     if (!sessionStorage.getItem('currentUser')) {

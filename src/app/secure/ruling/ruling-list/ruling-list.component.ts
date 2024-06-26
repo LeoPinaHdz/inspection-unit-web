@@ -44,14 +44,13 @@ export class RulingsComponent implements OnInit {
     this.searchForm = new FormGroup({
       cliente: new FormControl('', []),
       clientFilter: new FormControl('', []),
-      servicio: new FormControl(-1, []),
-      constancias: new FormControl(false, []),
-      tipo: new FormControl(-1, []),
+      tipo: new FormControl(false, []),
+      tipoDictamen: new FormControl('', []),
       fechaDel: new FormControl('', []),
       fechaAl: new FormControl('', []),
       pedimento: new FormControl('', []),
-      solDel: new FormControl('', []),
-      solAl: new FormControl('', [])
+      dictamenDe: new FormControl('', []),
+      dictamenAl: new FormControl('', [])
     });
 
     this.clientService.getAllActive()
@@ -78,6 +77,7 @@ export class RulingsComponent implements OnInit {
     request.fechaDel = request.fechaDel ? formatDateString(request.fechaDel) : '';
     request.fechaAl = request.fechaAl ? formatDateString(request.fechaAl) : '';
     request.cliente = request.cliente || 0;
+    request.tipo = request.tipo ? 1 : 0;
 
     this.rulingService.search(request).
       pipe()
@@ -88,7 +88,7 @@ export class RulingsComponent implements OnInit {
           this.dataSource.sort = this.sort;
         },
         error: () => {
-          console.error('Error trying to get request list');
+          console.error('Error trying to get ruling list');
         }
       });
   }

@@ -14,6 +14,7 @@ import { Executive } from 'src/app/_shared/models/executive.model';
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 import { OfficialService } from 'src/app/_shared/services/official.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
+import { List } from 'src/app/_shared/models/list.model';
 
 @Component({
   selector: 'rulings',
@@ -26,7 +27,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
   clients: Client[] = [];
   officials: Official[] = [];
   executives: Executive[] = [];
-  requests: Request[] = [];
+  requests: List[] = [];
   rulingForm!: FormGroup;
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   protected _onDestroy = new Subject<void>();
@@ -38,7 +39,6 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private executiveService: ExecutiveService,
     private officialService: OfficialService,
-    private requestService: RequestService,
     private dialog: MatDialog
   ) { }
 
@@ -52,18 +52,17 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
 
     this.rulingForm = new FormGroup({
       idDictamen: new FormControl({ value: '', disabled: true }, []),
-      idCliente: new FormControl('', [Validators.required]),
+      idCliente: new FormControl({ value: '', disabled: this.id }, [Validators.required]),
       clientFilter: new FormControl('', []),
-      idSolicitud: new FormControl('', [Validators.required]),
+      idLista: new FormControl({ value: '', disabled: this.id }, [Validators.required]),
       tipoServicio: new FormControl({ value: '', disabled: true }),
-      folio: new FormControl({ value: '', disabled: true }, []),
-      dictaminacion: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      clave: new FormControl({ value: '', disabled: true }, []),
+      dictaminacion: new FormControl({ value: '', disabled: true }, []),
       fDictamen: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      idPresentacion: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       idFuncionario: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       idEjecutivo: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      active: new FormControl(false)
+      active: new FormControl({ value: true, disabled: true })
     });
 
     if (this.id) {
@@ -87,44 +86,41 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
           }
         });
     }
+    
+    this.rulingForm.get('idLista')!.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.updateSelectedList();
+    });
 
     try {
-      this.clientService.getAllActive()
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.clients = response;
-          this.filteredClients.next(this.clients.slice());
-          this.rulingForm.get('clientFilter')!.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(() => {
-              this.filterClients();
-            });
-          if (this.clients.length) {
-            this.rulingForm.get('idCliente')!.setValue(this.clients[0].idCliente);
-            if (this.clients.length === 1) this.rulingForm.get('idCliente')!.disable();
-          }
-        },
-        error: () => {
-          console.error('Error trying to get clients');
-        }
-      });
+      this.clients = await lastValueFrom(this.clientService.getAllActive());
+      this.filteredClients.next(this.clients.slice());
+      this.rulingForm.get('clientFilter')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filterClients();
+        });
+
       if (this.clients.length > 0) this.rulingForm.get('idCliente')!.setValue(this.clients[0].idCliente);
+
       this.rulingForm.get('idCliente')!.valueChanges
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
           this.loadRequests();
         });
-      if (!this.id) this.loadRequests()
+      if (!this.id) this.loadRequests();
     } catch (error) {
       console.error('Error trying to get clients');
     }
+
     try {
       this.executives = await lastValueFrom(this.executiveService.getActive());
       if (this.executives.length > 0) this.rulingForm.get('idEjecutivo')!.setValue(this.executives[0].idEjecutivo);
     } catch (error) {
       console.error('Error trying to get executives');
     }
+
     try {
       this.officials = await lastValueFrom(this.officialService.getActive());
       if (this.officials.length > 0) this.rulingForm.get('idFuncionario')!.setValue(this.officials[0].idFuncionario);
@@ -135,38 +131,58 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
 
   async loadRequests() {
     this.requests = [];
+    if (!this.rulingForm.get('idCliente')!.value) return;
     try {
-      this.requests = await lastValueFrom(this.requestService.getByLetter(this.rulingForm.get('idOficio')!.value));
-      if (this.requests.length > 0 && !this.id) {
-        this.rulingForm.get('idSolicitud')!.setValue(this.requests[0].idSolicitud);
-        this.rulingForm.get('tipoServicio')!.setValue(this.requests[0].tipoServicio);
-      }
+      this.requests = await lastValueFrom(this.rulingService.getListByClient(this.rulingForm.get('idCliente')!.value));
+      if (this.requests.length > 0) this.rulingForm.get('idLista')!.setValue(this.ruling.idLista || this.requests[0].idLista);
     } catch (error) {
       console.error('Error trying to get requests');
     }
+  }
+
+  updateSelectedList() {
+    const selectedList = this.rulingForm.get('idLista')!.value;
+    const selectedRequest = this.requests.filter(r => r.idLista === selectedList)[0];
+    
+    this.rulingForm.get('tipoServicio')!.setValue(selectedRequest.tipoServicio ? '1' : '0');
+    this.rulingForm.get('dictaminacion')!.setValue(selectedRequest.dictaminacion == 'C' ? 'CUMPLE' : 'NO CUMPLE');
   }
 
   updateForm(ruling: Ruling): void {
     this.rulingForm.patchValue({
       idDictamen: ruling.idDictamen,
       idCliente: ruling.idCliente,
+      idLista: ruling.idLista,
       folio: ruling.folio,
       dictaminacion: ruling.dictaminacion,
       fDictamen: ruling.fDictamen,
-      idPresentacion: ruling.idPresentacion,
       idFuncionario: ruling.idFuncionario,
       idEjecutivo: ruling.idEjecutivo,
       observaciones: ruling.observaciones,
+      clave: ruling.clave,
+      tipoServicio: ruling.tipoServicio ? '1' : '0',
       active: (ruling.idEstatus && ruling.idEstatus === 1) || false
     });
+
+    this.ruling = ruling;
+
+    this.loadRequests();
   }
 
   onSubmit(): void {
     this.rulingForm.markAllAsTouched();
     if (!this.rulingForm.valid) return;
 
-    const rulingRequest = this.rulingForm.getRawValue();;
+    let rulingRequest = { ...this.ruling, ...this.rulingForm.getRawValue() };
     rulingRequest.idEstatus = rulingRequest.active ? 1 : 3;
+    rulingRequest.tipoServicio = rulingRequest.tipoServicio === '1';
+
+    if (!this.id) {
+      const selectedList = this.rulingForm.get('idLista')!.value;
+      const selectedRequest = this.requests.filter(r => r.idLista === selectedList)[0];
+
+      rulingRequest.idNorma = selectedRequest.idNorma;
+    }
 
     this.rulingService.save(rulingRequest)
       .pipe()

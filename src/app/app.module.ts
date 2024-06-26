@@ -16,6 +16,7 @@ import { SecureLayoutComponent } from './layout/secure-layout/secure-layout.comp
 import { SecureModule } from './secure/secure.module';
 import { AuthInterceptorService } from './_shared/interceptors/auth-interceptor.service';
 import { NgChartsModule } from 'ng2-charts';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NgChartsModule } from 'ng2-charts';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
+    MatProgressSpinnerModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

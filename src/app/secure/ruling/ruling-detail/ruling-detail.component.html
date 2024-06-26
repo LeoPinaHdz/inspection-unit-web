@@ -11,18 +11,15 @@
         <mat-card-content>
             <form [formGroup]="rulingForm">
                 <div class="form-container">
-                    <div class="form-cell-3"><mat-form-field appearance="outline">
+                    <div class="form-cell-2"><mat-form-field appearance="outline">
                             <mat-label>ID</mat-label>
                             <input matInput formControlName="idDictamen" appCurrencyMask type="text" />
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-3">
+                    <div class="form-cell-4">
                         <mat-form-field appearance="outline">
                             <mat-label>Folio</mat-label>
-                            <input matInput formControlName="folio" type="text" />
-                            <mat-error>
-                                <error-message [control]="form.folio" nomCampo="Folio"></error-message>
-                            </mat-error>
+                            <input matInput formControlName="clave" type="text" />
                         </mat-form-field>
                     </div>
                     <div class="form-cell-6">
@@ -60,16 +57,16 @@
                     <div class="form-cell-6">
                         <mat-form-field appearance="outline">
                             <mat-label>No. Solicitud</mat-label>
-                            <mat-select formControlName="idSolicitud" required>
+                            <mat-select formControlName="idLista" required>
                                 <mat-option *ngFor="let request of requests"
-                                    [value]="request.idSolicitud">{{request.clave}}</mat-option>
+                                    [value]="request.idLista">{{request.claveSolicitud}}</mat-option>
                             </mat-select>
                             <mat-error>
                                 <error-message nomCampo="No. Solicitud"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-6">
+                    <div class="form-cell-4">
                         <mat-form-field appearance="outline">
                             <mat-label>Ejecutivo</mat-label>
                             <mat-select formControlName="idEjecutivo" required>
@@ -81,7 +78,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-6">
+                    <div class="form-cell-4">
                         <mat-form-field appearance="outline">
                             <mat-label>Funcionario</mat-label>
                             <mat-select formControlName="idFuncionario" required>
@@ -93,29 +90,13 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-6">
+                    <div class="form-cell-4">
                         <mat-form-field appearance="outline">
                             <mat-label>Dictaminación</mat-label>
-                            <input matInput formControlName="dictaminacion" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.dictaminacion" nomCampo="Dictaminación"></error-message>
-                            </mat-error>
+                            <input matInput formControlName="dictaminacion" type="text" />
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-3">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Presentación</mat-label>
-                            <input matInput formControlName="idPresentacion" type="text" required />
-                            <mat-error>
-                                <error-message [control]="form.idPresentacion"
-                                    nomCampo="Presentación"></error-message>
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="form-cell-3">
-                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
-                    </div>
-                    <div class="form-cell-12">
+                    <div class="form-cell-9">
                         <mat-form-field appearance="outline">
                             <mat-label>Observaciones</mat-label>
                             <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255"
@@ -125,6 +106,9 @@
                                 <error-message nomCampo="Observaciones"></error-message>
                             </mat-error>
                         </mat-form-field>
+                    </div>
+                    <div class="form-cell-3">
+                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
                     </div>
                 </div>
             </form>

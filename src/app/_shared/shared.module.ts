@@ -40,6 +40,7 @@ import { TemplateService } from './services/template.service';
 import { ProcessService } from './services/process.service';
 import { ListService } from './services/list.service';
 import { DisplayService } from './services/display.service';
+import { LoadingService } from './services/loading.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
@@ -85,7 +86,8 @@ import { DisplayService } from './services/display.service';
     TemplateService,
     ProcessService,
     DisplayService,
-    ListService
+    ListService,
+    LoadingService
   ],
 })
 export class SharedModule { }
