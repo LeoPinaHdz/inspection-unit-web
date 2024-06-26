@@ -69,14 +69,14 @@ export class ListDetailComponent implements OnInit, OnDestroy {
 
     this.listForm = new FormGroup({
       idLista: new FormControl({ value: '', disabled: true }, []),
-      idCliente: new FormControl('', [Validators.required]),
-      idSolicitud: new FormControl('', [Validators.required]),
+      idCliente: new FormControl({ value: '', disabled: this.id }, [Validators.required]),
+      idSolicitud: new FormControl({ value: '', disabled: this.id }, [Validators.required]),
       clientFilter: new FormControl('', []),
       fInspeccion: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       fPresentacion: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       idEjecutivo: new FormControl('', [Validators.required]),
       idEjecutivo2: new FormControl('', [Validators.required]),
-      tipoServicio: new FormControl('0', [Validators.required]),
+      tipoServicio: new FormControl({ value: '0', disabled: this.id }, [Validators.required]),
       tecnica: new FormControl('', [Validators.required]),
       lote: new FormControl('', [Validators.required]),
       muestra: new FormControl('', [Validators.required]),
@@ -86,48 +86,45 @@ export class ListDetailComponent implements OnInit, OnDestroy {
       puntos: new FormControl(''),
       resumen: new FormControl(''),
       contenido: new FormControl(''),
-      active: new FormControl({value: true, disabled: true})
+      active: new FormControl({ value: true, disabled: true })
     });
 
-    this.listFormComments = new FormGroup({
-      observaciones: new FormControl(''),
-      puntos: new FormControl(''),
-      resumen: new FormControl(''),
-      contenido: new FormControl('')
-    });
+    if (!this.id) {
+      this.listForm.get('idSolicitud')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.loadExecutive();
+          this.loadStandardPoints();
+          this.loadRequestDetail();
+        });
 
-    this.listForm.get('idSolicitud')!.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.loadExecutive();
-        this.loadStandardPoints();
-        this.loadRequestDetail();
-      });
-
-    this.listForm.get('tipoServicio')!.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.displayedColumns = this.listForm.get('tipoServicio')!.value == 0 ? this.displayedColumnsType0 : this.displayedColumnsType1;
-        this.loadRequests();
-      });
+      this.listForm.get('tipoServicio')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.displayedColumns = this.listForm.get('tipoServicio')!.value == 0 ? this.displayedColumnsType0 : this.displayedColumnsType1;
+          this.loadRequests();
+        });
+    }
 
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
       if (this.clients.length > 0) this.listForm.get('idCliente')!.setValue(this.clients[0].idCliente);
       this.filteredClients.next(this.clients.slice());
 
-      this.listForm.get('idCliente')!.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.loadRequests();
-        });
-      this.loadRequests();
+      if (!this.id) {
+        this.listForm.get('idCliente')!.valueChanges
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.loadRequests();
+          });
+        this.loadRequests();
 
-      this.listForm.get('clientFilter')!.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.filterClients();
-        });
+        this.listForm.get('clientFilter')!.valueChanges
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.filterClients();
+          });
+      }
     } catch (error) {
       console.error('Error trying to get clients', error);
     }
@@ -277,7 +274,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
 
     request.listasPunto = this.standardDetails.data.map(s => {
       return {
-        idPunto: s.idPunto,
+        idPunto: s.idNormaPunto,
         dictaminacion: s.dictaminacion,
         observaciones: s.observaciones ? s.observaciones : ''
       };
@@ -305,26 +302,41 @@ export class ListDetailComponent implements OnInit, OnDestroy {
   }
 
   updateForm(list: List): void {
+    this.list = list;
     this.listForm.patchValue({
       idLista: list.idLista,
+      idCliente: list.idCliente,
+      idSolicitud: list.idSolicitud,
+      fInspeccion: list.fInspeccion,
+      fPresentacion: list.fPresentacion,
       idEjecutivo: list.idEjecutivo,
+      idEjecutivo2: list.idEjecutivo2,
+      tecnica: list.tecnica,
+      lote: list.lote,
+      muestra: list.muestra,
+      idPresentacion: list.idPresentacion,
+      instrumento: list.instrumento,
+      puntos: list.puntos,
+      resumen: list.resumen,
+      contenido: list.contenido,
       observaciones: list.observaciones,
-      active: list.idEstatus && list.idEstatus === 1
+      active: list.idEstatus && list.idEstatus === 1,
+      tipoServicio: list.tipoServicio ? '1' : '0'
     });
 
-    this.list = list;
+    this.requests = [{idSolicitud: list.idSolicitud || 0, clave: list.claveSolicitud, idNorma: list.idNorma}];
+    this.result = list.dictaminacion || 'C';
+    this.displayedColumns = list.tipoServicio ? this.displayedColumnsType1 : this.displayedColumnsType0;
 
-    this.updateSelection();
-  }
+    this.loadExecutive();
 
-  updateSelection() {
-    /*if (this.list.detalles) {
-      const selected = this.listDetails.filter(ld =>
-        this.list.detalles!.some(d => d.idSolicitud === ld.idSolicitud)
-      );
-      this.selection.clear();
-      this.selection.select(...selected);
-    }*/
+    this.referenceDetails = list.listasDetalle || [];
+    this.dataSource = new MatTableDataSource(this.referenceDetails);
+    this.toggleAllRows();
+
+    this.standardPoints = list.listasPunto || [];
+    this.standardDetails = new MatTableDataSource(this.standardPoints);
+    this.standardDetails.paginator = this.paginator;
   }
 
   isAllSelected() {

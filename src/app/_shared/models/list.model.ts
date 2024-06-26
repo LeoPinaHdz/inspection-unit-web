@@ -1,7 +1,11 @@
 export interface List {
     idLista: number;
     idSolicitud?: number;
+    idCliente?: number;
+    tipoServicio?: number;
     dictaminacion?: string;
+    idNorma?: number;
+    claveSolicitud?: string;
     idEjecutivo?: number;
     idEjecutivo2?: number;
     fInspeccion?: string;
