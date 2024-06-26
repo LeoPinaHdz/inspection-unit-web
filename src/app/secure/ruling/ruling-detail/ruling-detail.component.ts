@@ -87,11 +87,13 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
         });
     }
     
-    this.rulingForm.get('idLista')!.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.updateSelectedList();
-    });
+    if (!this.id) {
+      this.rulingForm.get('idLista')!.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.updateSelectedList();
+      });
+    }
 
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
@@ -135,6 +137,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
     try {
       this.requests = await lastValueFrom(this.rulingService.getListByClient(this.rulingForm.get('idCliente')!.value));
       if (this.requests.length > 0) this.rulingForm.get('idLista')!.setValue(this.ruling.idLista || this.requests[0].idLista);
+      if (this.id) this.updateSelectedList();
     } catch (error) {
       console.error('Error trying to get requests');
     }
