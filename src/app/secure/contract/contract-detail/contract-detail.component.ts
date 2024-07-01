@@ -172,7 +172,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     this.contractForm.markAllAsTouched();
     if (!this.contractForm.valid) return;
 
-    const contractRequest = this.contractForm.getRawValue();
+    const contractRequest = { ...this.contract, ...this.contractForm.getRawValue() };
 
     if (!this.isEdit) {
       contractRequest.idEstatus = contractRequest.active ? 1 : 3;

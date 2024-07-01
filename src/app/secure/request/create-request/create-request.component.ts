@@ -304,8 +304,6 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       active: (request.idEstatus && request.idEstatus === 1) || false
     });
 
-    //this.loadAddresses();
-
     this.requestDetails = request.detalles || [];
     this.dataSource = new MatTableDataSource(this.requestDetails);
   }
