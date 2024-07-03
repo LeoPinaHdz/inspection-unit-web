@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LoadingService } from 'src/app/_shared/services/loading.service';
@@ -8,11 +8,12 @@ import { LoadingService } from 'src/app/_shared/services/loading.service';
   templateUrl: './secure-layout.component.html',
   styleUrls: ['./secure-layout.component.scss']
 })
-export class SecureLayoutComponent implements OnInit {
+export class SecureLayoutComponent implements OnInit, AfterViewInit {
   loading$: Observable<boolean>;
 
   constructor(private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loading$ = this.loadingService.loading$;
   }
@@ -21,6 +22,12 @@ export class SecureLayoutComponent implements OnInit {
     if (!sessionStorage.getItem('currentUser')) {
       this.router.navigate(['/auth/login']);
     }
+  }
+
+  ngAfterViewInit() {
+    this.loading$.subscribe(() => {
+      this.cdr.detectChanges();
+    });
   }
 
 }
