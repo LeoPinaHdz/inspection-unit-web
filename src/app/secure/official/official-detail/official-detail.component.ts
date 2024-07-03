@@ -77,7 +77,7 @@ export class OfficialDetailComponent implements OnInit, OnDestroy {
     if (!this.officialForm.valid) return;
 
     const officialRequest = this.officialForm.getRawValue();;
-    officialRequest.idEstatus = officialRequest.active ? 1 : 3;
+    officialRequest.idEstatus = officialRequest.active ? 1 : 4;
 
     this.officialService.save(officialRequest)
       .pipe()

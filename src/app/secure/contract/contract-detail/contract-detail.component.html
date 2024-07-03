@@ -88,9 +88,6 @@
                             <input matInput formControlName="observaciones" type="text" />
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-3">
-                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
-                    </div>
                     <div class="form-cell-1" *ngIf="isEdit">
                         <button matTooltip="Exportar" class="export-pdf" mat-fab extended (click)="downloadPdf()">
                             <mat-icon>get_app</mat-icon>PDF

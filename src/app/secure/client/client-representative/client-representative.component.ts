@@ -91,7 +91,7 @@ export class ClientRepresentativeComponent implements OnInit, OnChanges {
     if (!this.clientRepresentativeForm.valid) return;
 
     const clientRepresentativeRequest = this.clientRepresentativeForm.getRawValue();
-    clientRepresentativeRequest.idEstatus = clientRepresentativeRequest.active ? 1 : 3;
+    clientRepresentativeRequest.idEstatus = clientRepresentativeRequest.active ? 1 : 4;
     clientRepresentativeRequest.idCliente = clientRepresentativeRequest.idCliente || this.client.idCliente;
 
     this.clientRepresentativeService.save(clientRepresentativeRequest)

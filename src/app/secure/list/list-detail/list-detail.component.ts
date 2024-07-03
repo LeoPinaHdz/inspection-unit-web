@@ -85,8 +85,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
       observaciones: new FormControl(''),
       puntos: new FormControl(''),
       resumen: new FormControl(''),
-      contenido: new FormControl(''),
-      active: new FormControl({ value: true, disabled: true })
+      contenido: new FormControl('')
     });
 
     if (!this.id) {
@@ -261,7 +260,6 @@ export class ListDetailComponent implements OnInit, OnDestroy {
 
     let request = { ...this.list, ...this.listForm.getRawValue() };
 
-    request.idEstatus = request.active ? 1 : 3;
     request.dictaminacion = this.result;
     request.listasDetalle = this.selection.selected.map(r => {
       return {
@@ -320,7 +318,6 @@ export class ListDetailComponent implements OnInit, OnDestroy {
       resumen: list.resumen,
       contenido: list.contenido,
       observaciones: list.observaciones,
-      active: list.idEstatus && list.idEstatus === 1,
       tipoServicio: list.tipoServicio ? '1' : '0'
     });
 

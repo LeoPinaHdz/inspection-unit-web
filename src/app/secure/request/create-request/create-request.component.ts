@@ -76,8 +76,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       fPrograma: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       idLugar: new FormControl('', [Validators.required]),
       idFormato: new FormControl('', []),
-      clave: new FormControl({ value: '', disabled: true }),
-      active: new FormControl({ value: true, disabled: true })
+      clave: new FormControl({ value: '', disabled: true })
     });
 
     this.requestDetailForm = new FormGroup({
@@ -240,7 +239,6 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     if (!this.requestForm.valid || this.requestDetails.length === 0) return;
 
     let request = this.requestForm.getRawValue();
-    request.idEstatus = request.active ? 1 : 3;
     request.tipoServicio = request.tipoServicio == 1;
     request.tipoRegimen = request.tipoRegimen == 1;
 
@@ -300,8 +298,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       fSolicitud: request.fSolicitud,
       fPrograma: request.fPrograma,
       idLugar: request.idLugar,
-      clave: request.clave,
-      active: (request.idEstatus && request.idEstatus === 1) || false
+      clave: request.clave
     });
 
     this.requestDetails = request.detalles || [];

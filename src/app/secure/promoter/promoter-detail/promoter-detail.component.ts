@@ -75,7 +75,7 @@ export class PromoterDetailComponent implements OnInit, OnDestroy {
     if (!this.promoterForm.valid) return;
 
     const promoterRequest = this.promoterForm.getRawValue();
-    promoterRequest.idEstatus = promoterRequest.active ? 1 : 3;
+    promoterRequest.idEstatus = promoterRequest.active ? 1 : 4;
 
     this.promoterService.save(promoterRequest)
       .pipe()

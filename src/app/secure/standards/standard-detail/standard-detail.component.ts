@@ -167,7 +167,7 @@ export class StandardDetailComponent implements OnInit, OnDestroy {
     if (!this.standardForm.valid) return;
 
     const standardRequest = this.standardForm.getRawValue();
-    standardRequest.idEstatus = standardRequest.active ? 1 : 3;
+    standardRequest.idEstatus = standardRequest.active ? 1 : 4;
     standardRequest.normaPuntos = this.standardSpecs;
 
     this.standardService.save(standardRequest)

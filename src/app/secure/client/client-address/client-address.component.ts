@@ -88,7 +88,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
     if (!this.clientAddressForm.valid) return;
 
     const clientAddressRequest = this.clientAddressForm.getRawValue();
-    clientAddressRequest.idEstatus = clientAddressRequest.active ? 1 : 3;
+    clientAddressRequest.idEstatus = clientAddressRequest.active ? 1 : 4;
     clientAddressRequest.prioridad = clientAddressRequest.prioridad ? 1 : 0;
     clientAddressRequest.idCliente = clientAddressRequest.idCliente || this.client.idCliente;
 

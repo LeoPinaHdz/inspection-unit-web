@@ -86,7 +86,7 @@ export class ClientContactComponent implements OnInit, OnChanges {
     if (!this.clientContactForm.valid) return;
 
     const clientContactRequest = this.clientContactForm.getRawValue();
-    clientContactRequest.idEstatus = clientContactRequest.active ? 1 : 3;
+    clientContactRequest.idEstatus = clientContactRequest.active ? 1 : 4;
     clientContactRequest.idCliente = clientContactRequest.idCliente || this.client.idCliente;
 
     this.clientContactService.save(clientContactRequest)

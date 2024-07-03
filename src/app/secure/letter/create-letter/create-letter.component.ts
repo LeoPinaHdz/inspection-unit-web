@@ -65,8 +65,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       hPresentacion: new FormControl('', []),
       observaciones: new FormControl('', [Validators.required, Validators.maxLength(250)]),
       idEjecutivo: new FormControl('', [Validators.required]),
-      clave: new FormControl('', []),
-      active: new FormControl(false)
+      clave: new FormControl('', [])
     });
 
     try {
@@ -151,7 +150,6 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
 
     request.oficio = request.oficio && request.oficio > 0 ? request.oficio : 0;
     request.folio = request.folio && request.folio > 0 ? request.folio : 0;
-    request.idEstatus = request.active ? 1 : 3;
     request.detalles = this.selection.selected.map(r => {
       return { idSolicitud: r.idSolicitud };
     });
@@ -186,8 +184,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       fOficio: letter.fOficio,
       idEjecutivo: letter.idEjecutivo,
       clave: letter.clave,
-      observaciones: letter.observaciones,
-      active: letter.idEstatus && letter.idEstatus === 1
+      observaciones: letter.observaciones
     });
 
     this.letter = letter;

@@ -21,7 +21,7 @@ import { Client } from 'src/app/_shared/models/client.model';
 export class ContractDetailComponent implements OnInit, OnDestroy {
   id: any;
   isEdit = false;
-  contract: Contract = { idContrato: 0 };
+  contract: Contract = { idContrato: 0, idEstatus: 1 };
   contractForm!: FormGroup;
   clients: any[] = [];
   representatives: any[] = [];
@@ -62,7 +62,6 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       idRepresentante: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       observaciones: new FormControl(''),
-      active: new FormControl({ value: true, disabled: true }),
       assign: new FormControl(false)
     });
 
@@ -160,8 +159,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       fVigencia: contract.fVigencia,
       idRepresentante: contract.idRepresentante,
       idFuncionario: contract.idFuncionario,
-      observaciones: contract.observaciones,
-      active: (contract.idEstatus && contract.idEstatus === 1) || false
+      observaciones: contract.observaciones
     });
 
     this.contract = contract;
@@ -173,10 +171,6 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     if (!this.contractForm.valid) return;
 
     const contractRequest = { ...this.contract, ...this.contractForm.getRawValue() };
-
-    if (!this.isEdit) {
-      contractRequest.idEstatus = contractRequest.active ? 1 : 3;
-    }
 
     this.contractService.save(contractRequest)
       .pipe()

@@ -122,7 +122,7 @@ export class ClientDetailComponent implements OnInit, OnDestroy, OnChanges {
     if (!this.clientForm.valid) return;
 
     const clientRequest = this.clientForm.getRawValue();
-    clientRequest.idEstatus = clientRequest.active ? 1 : 3;
+    clientRequest.idEstatus = clientRequest.active ? 1 : 4;
     clientRequest.tipoMunicipio = clientRequest.tipoMunicipio === '0';
 
     this.clientService.save(clientRequest)

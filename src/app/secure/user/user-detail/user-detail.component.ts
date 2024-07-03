@@ -116,7 +116,7 @@ export class UserDetailComponent implements OnInit, OnDestroy{
       userRequest = this.userForm.getRawValue();
     }
 
-    userRequest.idEstatus = this.active ? 1 : 3;
+    userRequest.idEstatus = this.active ? 1 : 4;
     userRequest.pantallas = this.screens.filter(t => t.selected).map(t => t.pantalla);
 
     this.usersService.save(userRequest)

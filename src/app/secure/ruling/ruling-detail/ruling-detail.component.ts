@@ -23,7 +23,7 @@ import { List } from 'src/app/_shared/models/list.model';
 export class RulingDetailComponent implements OnInit, OnDestroy {
   id: any;
   isEdit = false;
-  ruling: Ruling = { idDictamen: 0 };
+  ruling: Ruling = { idDictamen: 0, idEstatus: 1 };
   clients: Client[] = [];
   officials: Official[] = [];
   executives: Executive[] = [];
@@ -61,8 +61,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
       fDictamen: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       idFuncionario: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       idEjecutivo: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      active: new FormControl({ value: true, disabled: true })
+      observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)])
     });
 
     if (this.id) {
@@ -163,8 +162,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
       idEjecutivo: ruling.idEjecutivo,
       observaciones: ruling.observaciones,
       clave: ruling.clave,
-      tipoServicio: ruling.tipoServicio ? '1' : '0',
-      active: (ruling.idEstatus && ruling.idEstatus === 1) || false
+      tipoServicio: ruling.tipoServicio ? '1' : '0'
     });
 
     this.ruling = ruling;
@@ -177,7 +175,6 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
     if (!this.rulingForm.valid) return;
 
     let rulingRequest = { ...this.ruling, ...this.rulingForm.getRawValue() };
-    rulingRequest.idEstatus = rulingRequest.active ? 1 : 3;
     rulingRequest.tipoServicio = rulingRequest.tipoServicio === '1';
 
     if (!this.id) {

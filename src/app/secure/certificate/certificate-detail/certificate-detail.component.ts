@@ -20,7 +20,7 @@ import { Request } from 'src/app/_shared/models/request.model';
 export class CertificateDetailComponent implements OnInit, OnDestroy {
   id: any;
   isEdit = false;
-  certificate: Certificate = { idActa: 0 };
+  certificate: Certificate = { idActa: 0, idEstatus: 1 };
   clients: Client[] = [];
   letters: Letter[] = [];
   requests: Request[] = [];
@@ -63,8 +63,7 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
       cantidad: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       instrumento: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       estadoInstrumento: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      active: new FormControl(false)
+      observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)])
     });
 
     try {
@@ -165,8 +164,7 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
       cantidad: certificate.cantidad,
       instrumento: certificate.instrumento,
       estadoInstrumento: certificate.estadoInstrumento,
-      observaciones: certificate.observaciones,
-      active: (certificate.idEstatus && certificate.idEstatus === 1) || false
+      observaciones: certificate.observaciones
     });
 
     this.loadLetters();
@@ -179,7 +177,6 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
     if (!this.certificateForm.valid) return;
 
     const form = this.certificateForm.getRawValue();
-    form.idEstatus = form.active ? 1 : 3;
     const certificateRequest = { ...this.certificate, ...form }
     certificateRequest.folio = certificateRequest.folio && certificateRequest.folio > 0 ? certificateRequest.folio : 0;
 

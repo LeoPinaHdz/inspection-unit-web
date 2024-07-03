@@ -74,7 +74,7 @@ export class ClientNotarialDataComponent implements OnInit, OnChanges {
     if (!this.clientNotarialDataForm.valid) return;
 
     const clientNotarialDataRequest = this.clientNotarialDataForm.getRawValue();
-    clientNotarialDataRequest.idEstatus = clientNotarialDataRequest.active ? 1 : 3;
+    clientNotarialDataRequest.idEstatus = clientNotarialDataRequest.active ? 1 : 4;
     clientNotarialDataRequest.idCliente = clientNotarialDataRequest.idCliente || this.client.idCliente;
 
     this.clientNotarialDataService.save(clientNotarialDataRequest)
