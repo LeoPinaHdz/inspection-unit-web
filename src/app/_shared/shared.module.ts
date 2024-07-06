@@ -41,9 +41,10 @@ import { ProcessService } from './services/process.service';
 import { ListService } from './services/list.service';
 import { DisplayService } from './services/display.service';
 import { LoadingService } from './services/loading.service';
+import { StatusPipe } from './components/pipes/status.pipe';
 
 @NgModule({
-  declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent],
+  declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent, StatusPipe],
   imports: [FormsModule, CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatIconModule],
   exports: [
     FormsModule,
@@ -52,7 +53,8 @@ import { LoadingService } from './services/loading.service';
     ErrorMessageComponent,
     ConfirmationDialogComponent,
     SimpleDialogComponent,
-    UploadButtonComponent
+    UploadButtonComponent,
+    StatusPipe
   ],
   providers: [
     ExcelService,

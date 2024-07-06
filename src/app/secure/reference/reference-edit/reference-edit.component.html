@@ -209,7 +209,7 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="folio">
           <th mat-header-cell *matHeaderCellDef>Folio</th>
-          <td mat-cell *matCellDef="let element"> {{element.folio}} </td>
+          <td mat-cell *matCellDef="let element"> {{form.folio.value + (element.subFolio ? '-' + element.subFolio  : '')}} </td>
         </ng-container>
         <ng-container matColumnDef="marca">
           <th mat-header-cell *matHeaderCellDef>Marca</th>
@@ -228,12 +228,12 @@
           <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
         </ng-container>
         <ng-container matColumnDef="idUnidad">
-          <th mat-header-cell *matHeaderCellDef>UMC</th>
-          <td mat-cell *matCellDef="let element"> {{element.idUnidad}} </td>
+          <th mat-header-cell *matHeaderCellDef>Unidad</th>
+          <td mat-cell *matCellDef="let element"> {{element.nombreUnidad}} </td>
         </ng-container>
         <ng-container matColumnDef="idPais">
           <th mat-header-cell *matHeaderCellDef>Pa&iacute;s</th>
-          <td mat-cell *matCellDef="let element"> {{element.idPais}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.nombrePais}} </td>
         </ng-container>
         <ng-container matColumnDef="etiquetas">
           <th mat-header-cell *matHeaderCellDef>Etiquetas</th>
@@ -245,7 +245,7 @@
         </ng-container>
         <ng-container matColumnDef="idEstatus">
           <th mat-header-cell *matHeaderCellDef>Estatus</th>
-          <td mat-cell *matCellDef="let element"> {{element.idEstatus}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.idEstatus | status}} </td>
         </ng-container>
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>

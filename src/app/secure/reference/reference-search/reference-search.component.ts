@@ -115,6 +115,7 @@ export class ReferenceSearchComponent implements OnInit, OnDestroy, OnChanges {
 
   onRefresh() {
     this.isListMode = true;
+    this.selectedReference = undefined;
   }
 
   generateRequests() {

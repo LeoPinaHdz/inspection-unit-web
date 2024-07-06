@@ -8,8 +8,8 @@ import { Reference } from '../models/reference.model';
 export class ConversionService {
   constructor(private http: HttpClient) { }
 
-  getPendings(pendings: number): Observable<Reference[]> {
-    return this.http.get<Reference[]>(`${environment.url}FolioEtiquetas/GetPendientes?pendientes=${pendings}`);
+  getPendings(pendings: number): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.url}FolioEtiquetas/GetPendientes?pendientes=${pendings}`);
   }
 
   getDetails(idFolio: number): Observable<any[]> {

@@ -52,7 +52,7 @@
         </ng-container>
         <ng-container matColumnDef="Cantidad">
           <th mat-header-cell *matHeaderCellDef>Cantidad</th>
-          <td mat-cell *matCellDef="let element"> {{element.Cantidad}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.OldCantidad}} </td>
         </ng-container>
         <ng-container matColumnDef="NomUnidad">
           <th mat-header-cell *matHeaderCellDef>UMC</th>
@@ -63,7 +63,7 @@
           <td mat-cell *matCellDef="let element"> {{element.Fraccion}} </td>
         </ng-container>
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
+          <th mat-header-cell *matHeaderCellDef>Etiquetas</th>
           <td mat-cell *matCellDef="let element">
             <div>
               <input class="quantity-table-input w-50" type="number" [(ngModel)]="element.Cantidad" (change)="validateQty(element)" required />

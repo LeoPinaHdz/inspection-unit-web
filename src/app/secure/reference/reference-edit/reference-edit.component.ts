@@ -132,6 +132,7 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
   initComponent() {
     this.referenceDetails = [];
     this.selectedDetail = undefined;
+    this.resetDetatilForm();
     this.initDetailsTable(this.referenceDetails, true);
   }
 
@@ -210,6 +211,9 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
 
     const subfolio: string = referenceDetail.partida && referenceDetail.partida === 1 ? '' : (referenceDetail.partida - 1).toString();
     referenceDetail.subfolio = subfolio;
+
+    referenceDetail.nombrePais = this.countries.filter(c => c.idPais == referenceDetail.idPais)[0].nombre;
+    referenceDetail.nombreUnidad = this.units.filter(c => c.idUnidad == referenceDetail.idUnidad)[0].nombre;
 
     this.referenceDetails.push(referenceDetail);
     this.selectedDetail = undefined;

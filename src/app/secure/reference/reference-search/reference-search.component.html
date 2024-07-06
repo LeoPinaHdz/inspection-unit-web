@@ -112,7 +112,7 @@
 
     <ng-container matColumnDef="FFolio">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Envio </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.FFolio }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.FFolio | date:'yyyy-MM-dd' }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="NOM">

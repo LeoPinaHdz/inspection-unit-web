@@ -98,6 +98,7 @@ export class ConversionComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.length > 0) {
+            response.forEach(e => e.OldCantidad = e.Cantidad);
             this.details = response;
             this.dataSource = new MatTableDataSource(this.details);
           } else {

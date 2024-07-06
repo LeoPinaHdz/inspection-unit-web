@@ -172,13 +172,15 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
 
     if (this.selectedDetail) {
       referenceDetail.partida = this.selectedDetail.partida;
-
     } else {
       referenceDetail.partida = referenceDetail.partida == 0 ? this.referenceDetails.length + 1 : referenceDetail.partida;
     }
 
     const subfolio: string = referenceDetail.partida && referenceDetail.partida === 1 ? '' : (referenceDetail.partida - 1).toString();
     referenceDetail.subfolio = subfolio;
+
+    referenceDetail.nombrePais = this.countries.filter(c => c.idPais == referenceDetail.idPais)[0].nombre;
+    referenceDetail.nombreUnidad = this.units.filter(c => c.idUnidad == referenceDetail.idUnidad)[0].nombre;
 
     this.referenceDetails.push(referenceDetail);
     this.selectedDetail = undefined;
