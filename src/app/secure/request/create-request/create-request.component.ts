@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +18,7 @@ import { ClientAddressService } from 'src/app/_shared/services/client-address.se
 import { saveFile } from 'src/app/_shared/utils/file.utils';
 import { TemplateService } from 'src/app/_shared/services/template.service';
 import { Template } from 'src/app/_shared/models/template.model';
+import { addMonths } from 'src/app/_shared/utils/date.utils';
 
 @Component({
   selector: 'create-request',
@@ -65,15 +66,15 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
 
     this.requestForm = new FormGroup({
       idSolicitud: new FormControl({ value: '', disabled: true }, []),
-      idCliente: new FormControl('', [Validators.required]),
+      idCliente: new FormControl({ value: '', disabled: this.id }, [Validators.required]),
       clientFilter: new FormControl('', []),
       folio: new FormControl({ value: '', disabled: true }),
-      idNorma: new FormControl('', [Validators.required]),
+      idNorma: new FormControl({ value: '', disabled: this.id }, [Validators.required]),
       pedimento: new FormControl({ value: '', disabled: true }),
       tipoServicio: new FormControl({ value: '0', disabled: true }, [Validators.required]),
       tipoRegimen: new FormControl('0', [Validators.required]),
-      fSolicitud: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
-      fPrograma: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
+      fSolicitud: new FormControl(new Date(), [Validators.required]),
+      fPrograma: new FormControl(addMonths(new Date(), 1), [Validators.required]),
       idLugar: new FormControl('', [Validators.required]),
       idFormato: new FormControl('', []),
       clave: new FormControl({ value: '', disabled: true })
@@ -90,10 +91,10 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     });
 
     this.requestForm.get('tipoRegimen')!.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.loadAddresses();
-    });
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.loadAddresses();
+      });
 
     try {
       this.units = await lastValueFrom(this.unitService.getAll());
@@ -238,7 +239,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     this.requestForm.markAllAsTouched();
     if (!this.requestForm.valid || this.requestDetails.length === 0) return;
 
-    let request = this.requestForm.getRawValue();
+    let request = { ...this.request, ...this.requestForm.getRawValue() };
     request.tipoServicio = request.tipoServicio == 1;
     request.tipoRegimen = request.tipoRegimen == 1;
 
@@ -300,6 +301,11 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       idLugar: request.idLugar,
       clave: request.clave
     });
+
+    if (this.request.tipoServicio) {
+      this.requestForm.get('fSolicitud')?.disable();
+      this.requestForm.get('fPrograma')?.disable();
+    }
 
     this.requestDetails = request.detalles || [];
     this.dataSource = new MatTableDataSource(this.requestDetails);

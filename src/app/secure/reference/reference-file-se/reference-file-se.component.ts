@@ -35,8 +35,8 @@ export class ReferenceFileSEComponent implements OnInit, OnDestroy, OnChanges {
       clientFilter: new FormControl('', []),
       folioIni: new FormControl('', []),
       folioFin: new FormControl('', []),
-      fechaIni: new FormControl('', []),
-      fechaFin: new FormControl('', []),
+      fechaIni: new FormControl(new Date(), []),
+      fechaFin: new FormControl(new Date(), []),
       cancelar: new FormControl(false, [])
     });
   }

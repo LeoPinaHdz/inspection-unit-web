@@ -18,6 +18,7 @@ import { formatDateString } from 'src/app/_shared/utils/date.utils';
 export class RulingsComponent implements OnInit {
   displayedColumns: string[] = [
     'cliente',
+    'norma',
     'dictamen',
     'solicitud',
     'pedimento',

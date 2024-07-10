@@ -66,14 +66,14 @@
 
           <div class="form-cell-2">
             <mat-form-field>
-              <mat-label>Fecha de presentaci&oacute;n</mat-label>
+              <mat-label>Fecha Desaduanamiento</mat-label>
               <input matInput formControlName="fPresentacion" [matDatepicker]="fPresentacionPicker" required>
               <mat-hint>MM/DD/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="fPresentacionPicker"></mat-datepicker-toggle>
               <mat-datepicker #fPresentacionPicker></mat-datepicker>
             </mat-form-field>
             <mat-error>
-              <error-message [control]="form.fPresentacion" nomCampo="Fecha de presentación"></error-message>
+              <error-message [control]="form.fPresentacion" nomCampo="Fecha Desaduanamiento"></error-message>
             </mat-error>
           </div>
 
@@ -197,7 +197,7 @@
 
             <ng-container *ngIf="form.tipoServicio.value == 1" matColumnDef="SubFolio">
               <th mat-header-cell *matHeaderCellDef>SubFolio</th>
-              <td mat-cell *matCellDef="let element"> {{element.SubFolio}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.FolioSub}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Marca">

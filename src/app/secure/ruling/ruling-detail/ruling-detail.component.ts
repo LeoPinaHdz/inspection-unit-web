@@ -58,7 +58,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
       tipoServicio: new FormControl({ value: '', disabled: true }),
       clave: new FormControl({ value: '', disabled: true }, []),
       dictaminacion: new FormControl({ value: '', disabled: true }, []),
-      fDictamen: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      fDictamen: new FormControl(new Date(), [Validators.required, Validators.maxLength(100)]),
       idFuncionario: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       idEjecutivo: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)])

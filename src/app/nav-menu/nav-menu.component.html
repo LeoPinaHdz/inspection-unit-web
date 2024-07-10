@@ -21,7 +21,7 @@
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
-          <li *ngIf="hasRoles(['CLIENTES', 'NORMAS', 'EJECUTIVOS', 'FUNCIONARIOS', 'CONVERSION'])"
+          <li *ngIf="hasRoles(['CLIENTES', 'NORMAS', 'EJECUTIVOS', 'FUNCIONARIOS'])"
             class="nav-item"
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -35,10 +35,9 @@
               <a *ngIf="hasRole('EJECUTIVOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/executives']">Ejecutivos</a>
               <a *ngIf="hasRole('PROMOTORES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/promoters']">Promotores</a>
               <a *ngIf="hasRole('FUNCIONARIOS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/officials']">Funcionarios</a>
-              <a *ngIf="hasRole('CONVERSION')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/conversions']">Conversi&oacute;n</a>
             </div>
           </li>
-          <li *ngIf="hasRoles(['CONTRATOS', 'FOLIOS', 'SOLICITUDES', 'OFICIOS', 'ACTAS', 'LISTAS', 'DICTAMENES'])"
+          <li *ngIf="hasRoles(['CONTRATOS', 'FOLIOS', 'SOLICITUDES', 'OFICIOS', 'ACTAS', 'LISTAS', 'DICTAMENES', 'CONVERSION'])"
             class="nav-item"
             [routerLinkActive]="['link-active']"
             [routerLinkActiveOptions]="{ exact: true }"
@@ -54,6 +53,7 @@
               <a *ngIf="hasRole('ACTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/certificates']">Actas</a>
               <a *ngIf="hasRole('LISTAS')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/lists']">Listas</a>
               <a *ngIf="hasRole('DICTAMENES')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/rulings']">Dictamenes</a>
+              <a *ngIf="hasRole('CONVERSION')" class="nav-link text-dark" (click)="closeAllMenus()" [routerLink]="['/secure/conversions']">Conversi&oacute;n</a>
             </div>
           </li>
           <li *ngIf="hasRole('REPORTES')" class="nav-item" [routerLinkActive]="['link-active']">

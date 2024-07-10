@@ -56,13 +56,13 @@
                     </div>
                     <div class="form-cell-6">
                         <mat-form-field appearance="outline">
-                            <mat-label>No. Solicitud</mat-label>
+                            <mat-label>No. Solicitud-Lista</mat-label>
                             <mat-select formControlName="idLista" required>
                                 <mat-option *ngFor="let request of requests"
                                     [value]="request.idLista">{{request.claveSolicitud}}</mat-option>
                             </mat-select>
                             <mat-error>
-                                <error-message nomCampo="No. Solicitud"></error-message>
+                                <error-message nomCampo="No. Solicitud-Lista"></error-message>
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="form-cell-4">
                         <mat-form-field appearance="outline">
-                            <mat-label>Funcionario</mat-label>
+                            <mat-label>Responsable</mat-label>
                             <mat-select formControlName="idFuncionario" required>
                                 <mat-option *ngFor="let official of officials"
                                     [value]="official.idFuncionario">{{official.nombre}}</mat-option>

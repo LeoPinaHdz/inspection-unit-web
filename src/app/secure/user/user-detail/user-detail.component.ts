@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenService } from 'src/app/_shared/services/screen.service';
 import { SimpleDialogComponent } from 'src/app/_shared/components/simple-dialog/simple-dialog.component';
@@ -38,7 +38,7 @@ export class UserDetailComponent implements OnInit, OnDestroy{
     this._onDestroy.complete();
   }  
 
-  ngOnInit() {
+  async ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
 
     this.userForm = new FormGroup({
@@ -48,16 +48,11 @@ export class UserDetailComponent implements OnInit, OnDestroy{
       contrasena: new FormControl('', [Validators.required])
     });
 
-    this.screenService.getAll()
-    .pipe()
-    .subscribe({
-      next: (response) => {
-        this.screens = response;
-      },
-      error: () => {
-        console.error('Error trying to get clients');
-      }
-    });
+    try {
+      this.screens = await lastValueFrom(this.screenService.getAll());
+    } catch (error) {
+      console.error('Error trying to get screens');
+    }
 
     if (this.id) {
       this.isEdit = true;

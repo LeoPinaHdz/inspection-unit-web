@@ -91,6 +91,11 @@
         <mat-cell *matCellDef="let row"> {{ row.Cliente }} </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="norma">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Norma </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.Norma }} </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="dictamen">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Dictamen </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.Dictamen }} </mat-cell>

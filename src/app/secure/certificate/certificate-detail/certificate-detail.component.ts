@@ -58,7 +58,7 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
       fFinActa: new FormControl('', [Validators.required]),
       hFinActa: new FormControl('', [Validators.required]),
       otroServicio: new FormControl(false),
-      cual: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      cual: new FormControl('', [Validators.maxLength(100)]),
       tipoLote: new FormControl('1', [Validators.required]),
       cantidad: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       instrumento: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -185,7 +185,7 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `Acta ${certificateRequest.idActa} guardada con éxito` },
+            data: { type: 'success', message: `Acta ${this.isEdit ? certificateRequest.folio : ''} guardada con éxito` },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
@@ -194,7 +194,7 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar acta ${certificateRequest.idActa}` },
+            data: { type: 'error', message: `Error al guardar acta ${this.isEdit ? certificateRequest.folio : ''}` },
           });
           console.error('Error trying to save certificate');
         }

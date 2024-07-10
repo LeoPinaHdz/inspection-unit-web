@@ -11,6 +11,7 @@ import { formatDateString } from 'src/app/_shared/utils/date.utils';
 import { ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { Standard } from 'src/app/_shared/models/standard.model';
 import { StandardService } from 'src/app/_shared/services/standard.service';
+import { removeEmptyAttributes } from 'src/app/_shared/utils/object.utils';
 
 @Component({
   selector: 'reports',
@@ -41,11 +42,11 @@ export class ReportsComponent implements OnInit {
   ngOnInit() {
     this.reportsForm = new FormGroup({
       idReporte: new FormControl('', [Validators.required]),
-      fInicio: new FormControl(new Date(), [Validators.required]),
-      fFinal: new FormControl(new Date(), [Validators.required]),
-      idCliente: new FormControl('', [Validators.required]),
-      clientFilter: new FormControl('', []),
-      idNorma: new FormControl('', [Validators.required]),
+      fInicio: new FormControl(new Date()),
+      fFinal: new FormControl(new Date()),
+      idCliente: new FormControl(''),
+      clientFilter: new FormControl(''),
+      idNorma: new FormControl(''),
     });
 
     this.reportsService.getReportType()
@@ -81,10 +82,6 @@ export class ReportsComponent implements OnInit {
             .subscribe(() => {
               this.filterClients();
             });
-          if (this.clients.length) {
-            this.reportsForm.get('idCliente')!.setValue(this.clients[0].idCliente);
-            if (this.clients.length === 1) this.reportsForm.get('idCliente')!.disable();
-          }
         },
         error: () => {
           console.error('Error trying to get clients');
@@ -134,7 +131,7 @@ export class ReportsComponent implements OnInit {
     reportParameters.fInicio = formatDateString(reportParameters.fInicio);
     reportParameters.fFinal = formatDateString(reportParameters.fFinal);
 
-    this.reportsService.getReport(reportParameters)
+    this.reportsService.getReport(removeEmptyAttributes(reportParameters))
       .pipe()
       .subscribe({
         next: (response) => {
