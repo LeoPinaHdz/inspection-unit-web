@@ -47,6 +47,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
   _onDestroy = new Subject<void>();
   selection = new SelectionModel<any>(true, []);
   result: string = 'C';
+  resultText: string = 'Cumple';
 
   constructor(
     private router: Router,
@@ -247,10 +248,13 @@ export class ListDetailComponent implements OnInit, OnDestroy {
 
     if (nc && nc.length > 0) {
       this.result = 'NC';
+      this.resultText = 'No Cumple';
     } else if (c && c.length > 0) {
       this.result = 'C';
+      this.resultText = 'Cumple';
     } else {
       this.result = 'NA';
+      this.resultText = 'NO esta SUJETA';
     }
   }
 
@@ -278,25 +282,31 @@ export class ListDetailComponent implements OnInit, OnDestroy {
       };
     });
 
-    this.listService.save(request)
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `La lista ${request.idLista} fue guardado con éxito` },
-          })
-            .afterClosed()
-            .subscribe((confirmado: Boolean) => {
-              this.router.navigate([`/secure/lists`]);
+    this.dialog.open(SimpleDialogComponent, {
+      data: { type: 'alert', message: `Esta Lista de Verificación : ${this.resultText}` },
+    })
+    .afterClosed()
+    .subscribe((confirmado: Boolean) => {
+      this.listService.save(request)
+        .pipe()
+        .subscribe({
+          next: (response) => {
+            this.dialog.open(SimpleDialogComponent, {
+              data: { type: 'success', message: `La lista ${request.idLista} fue guardado con éxito` },
+            })
+              .afterClosed()
+              .subscribe((confirmado: Boolean) => {
+                this.router.navigate([`/secure/lists`]);
+              });
+          },
+          error: () => {
+            this.dialog.open(SimpleDialogComponent, {
+              data: { type: 'error', message: `Error al guardar la lista ${request.idLista}` },
             });
-        },
-        error: () => {
-          this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar la lista ${request.idLista}` },
-          });
-          console.error('Error trying to save lists');
-        }
-      });
+            console.error('Error trying to save lists');
+          }
+        });
+    });
   }
 
   updateForm(list: List): void {
@@ -324,6 +334,14 @@ export class ListDetailComponent implements OnInit, OnDestroy {
     this.requests = [{idSolicitud: list.idSolicitud || 0, clave: list.claveSolicitud, idNorma: list.idNorma}];
     this.result = list.dictaminacion || 'C';
     this.displayedColumns = list.tipoServicio ? this.displayedColumnsType1 : this.displayedColumnsType0;
+
+    if (this.result === 'NC') {
+      this.resultText = 'No Cumple';
+    } else if (this.result === 'C') {
+      this.resultText = 'Cumple';
+    } else {
+      this.resultText = 'NO esta SUJETA';
+    }
 
     this.loadExecutive();
 
