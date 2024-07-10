@@ -229,6 +229,8 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
       requestDetail.partida = requestDetail.partida == 0 ? this.requestDetails.length + 1 : requestDetail.partida;
     }
 
+    requestDetail.nombreUnidad = this.units.filter(c => c.idUnidad == requestDetail.idUnidad)[0].nombre;
+
     this.requestDetails.push(requestDetail);
     this.selectedDetail = undefined;
     this.initDetailsTable(this.requestDetails, true);
