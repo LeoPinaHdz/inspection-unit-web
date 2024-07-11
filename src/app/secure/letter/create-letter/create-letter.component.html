@@ -68,7 +68,7 @@
           </div>
           <div class="form-cell-3">
             <mat-form-field appearance="outline">
-              <mat-label>Ejecutivo</mat-label>
+              <mat-label>Inspector</mat-label>
               <mat-select formControlName="idEjecutivo" required>
                 <mat-option *ngFor="let executive of executives"
                   [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
@@ -78,7 +78,22 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="form-cell-6">
+          <div class="form-cell-3">
+            <mat-form-field appearance="outline">
+              <mat-label>Hora Presentaci&oacute;n</mat-label>
+              <input matInput formControlName="hPresentacion" type="text" />
+            </mat-form-field>
+          </div>
+          <div class="form-cell-2">
+            <mat-form-field appearance="outline">
+              <mat-label>Solicitudes Por</mat-label>
+              <mat-select formControlName="requestsBy">
+                <mat-option value="0">Norma</mat-option>
+                <mat-option value="1">Pedimento</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-cell-4" *ngIf="form.requestsBy.value === '0'">
             <mat-form-field appearance="outline">
               <mat-label>Norma oficial</mat-label>
               <mat-select formControlName="idNorma" required>
@@ -90,7 +105,28 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="form-cell-6">
+          <div class="form-cell-4" *ngIf="form.requestsBy.value === '1'">
+            <mat-form-field appearance="outline">
+              <mat-label>Pedimento</mat-label>
+              <mat-select formControlName="import" required>
+                <mat-option *ngFor="let import of imports"
+                  [value]="import">{{import}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-cell-3">
+            <mat-form-field appearance="outline">
+              <mat-label>Responsable</mat-label>
+              <mat-select formControlName="idFuncionario" required>
+                <mat-option *ngFor="let official of officials"
+                  [value]="official.idFuncionario">{{official.nombre}}</mat-option>
+              </mat-select>
+              <mat-error>
+                <error-message [control]="form.idFuncionario" nomCampo="Responsable"></error-message>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-cell-3">
             <mat-form-field appearance="outline">
               <mat-label>Observaciones</mat-label>
               <textarea matInput formControlName="observaciones" appCurrencyMask maxlength="255" cdkTextareaAutosize
@@ -108,7 +144,7 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        Detalle
+        Solicitudes
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>

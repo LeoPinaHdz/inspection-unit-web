@@ -16,8 +16,16 @@ export class RequestService {
     return this.http.post<Request[]>(`${environment.url}Requests/Listado`, request);
   }
 
-  getByClient(id: number): Observable<Request[]> {
-    return this.http.get<Request[]>(`${environment.url}Requests/GetByClient?id=${id}`);
+  getByClientAndStandard(id: number, standard: number): Observable<Request[]> {
+    return this.http.get<Request[]>(`${environment.url}Requests/GetByClientAndStandard?id=${id}&idNorma=${standard}`);
+  }
+
+  getByClientAndImport(id: number, importNumber: string): Observable<Request[]> {
+    return this.http.get<Request[]>(`${environment.url}Requests/GetByClientAndImport?id=${id}&pedimento=${importNumber}`);
+  }
+
+  getImportsByClient(id: number): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.url}Requests/GetImportsByClient?id=${id}`);
   }
 
   getByLetter(id: number): Observable<Request[]> {

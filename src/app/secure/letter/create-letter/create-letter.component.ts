@@ -14,6 +14,7 @@ import { LetterService } from 'src/app/_shared/services/letter.service';
 import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { OfficialService } from 'src/app/_shared/services/official.service';
 
 @Component({
   selector: 'create-letter',
@@ -26,10 +27,12 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
   letter: Letter = { idOficio: 0, idEstatus: 1 };
   selectedDetail?: LetterDetail;
   letterDetails: any[] = [];
+  imports: string[] = [];
   clients: Client[] = [];
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   standards: any[] = [];
   executives: any[] = [];
+  officials: any[] = [];
   displayedColumns: string[] = ['select', 'clave', 'fSolicitudFmt'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
   _onDestroy = new Subject<void>();
@@ -39,6 +42,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private letterService: LetterService,
+    private officialService: OfficialService,
     private clientService: ClientService,
     private executiveService: ExecutiveService,
     private standardService: StandardService,
@@ -65,8 +69,36 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       hPresentacion: new FormControl('', []),
       observaciones: new FormControl('', [Validators.required, Validators.maxLength(250)]),
       idEjecutivo: new FormControl('', [Validators.required]),
-      clave: new FormControl('', [])
+      idFuncionario: new FormControl('', [Validators.required]),
+      clave: new FormControl('', []),
+      requestsBy: new FormControl('0', []),
+      import: new FormControl('', [])
     });
+
+    this.letterForm.get('import')!.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.loadRequests();
+    });
+
+    this.letterForm.get('requestsBy')!.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.loadRequests();
+    });
+
+    try {
+      this.standards = await lastValueFrom(this.standardService.getAllActive());
+      if (this.standards.length > 0) this.letterForm.get('idNorma')!.setValue(this.standards[0].idNorma);
+
+      this.letterForm.get('idNorma')!.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.loadRequests();
+        });
+    } catch (error) {
+      console.error('Error trying to get standards');
+    }
 
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
@@ -77,8 +109,10 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {
           this.loadRequests();
+          this.loadImports();
         });
 
+      this.loadImports();
       this.loadRequests();
 
       this.letterForm.get('clientFilter')!.valueChanges
@@ -91,17 +125,17 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     }
 
     try {
-      this.standards = await lastValueFrom(this.standardService.getAllActive());
-      if (this.standards.length > 0) this.letterForm.get('idNorma')!.setValue(this.standards[0].idNorma);
-    } catch (error) {
-      console.error('Error trying to get standards');
-    }
-
-    try {
       this.executives = await lastValueFrom(this.executiveService.getActive());
       if (this.executives.length > 0) this.letterForm.get('idEjecutivo')!.setValue(this.executives[0].idEjecutivo);
     } catch (error) {
       console.error('Error trying to get executives');
+    }
+
+    try {
+      this.officials = await lastValueFrom(this.officialService.getActive());
+      if (this.officials.length > 0) this.letterForm.get('idFuncionario')!.setValue(this.officials[0].idFuncionario);
+    } catch (error) {
+      console.error('Error trying to get officials');
     }
 
     if (this.id) {
@@ -128,13 +162,43 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
   }
 
   loadRequests() {
-    this.requestService.getByClient(this.letterForm.get('idCliente')!.value)
+    if (this.letterForm.get('requestsBy')!.value == '0'){ 
+      if (!this.letterForm.get('idCliente')!.value || !this.letterForm.get('idNorma')!.value) return;
+      this.requestService.getByClientAndStandard(this.letterForm.get('idCliente')!.value, this.letterForm.get('idNorma')!.value)
       .pipe()
       .subscribe({
         next: (response) => {
           this.letterDetails = response;
           this.dataSource = new MatTableDataSource(this.letterDetails);
           this.updateSelection();
+        },
+        error: () => {
+          console.error('Error trying to get requests by standard');
+        }
+      });
+    } else {
+      if (!this.letterForm.get('idCliente')!.value || !this.letterForm.get('import')!.value) return;
+      this.requestService.getByClientAndImport(this.letterForm.get('idCliente')!.value, this.letterForm.get('import')!.value)
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.letterDetails = response;
+          this.dataSource = new MatTableDataSource(this.letterDetails);
+          this.updateSelection();
+        },
+        error: () => {
+          console.error('Error trying to get requests by import');
+        }
+      });
+    }
+  }
+
+  loadImports() {
+      this.requestService.getImportsByClient(this.letterForm.get('idCliente')!.value)
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.imports = response;
         },
         error: () => {
           console.error('Error trying to get addresses');
@@ -180,9 +244,11 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       idOficio: letter.idOficio,
       idCliente: letter.idCliente,
       folio: letter.folio,
+      hPresentacion: letter.hPresentacion,
       idNorma: letter.idNorma,
       fOficio: letter.fOficio,
       idEjecutivo: letter.idEjecutivo,
+      idFuncionario: letter.idFuncionario,
       clave: letter.clave,
       observaciones: letter.observaciones
     });

@@ -21,6 +21,10 @@ export class ListService {
     return this.http.get<List[]>(`${environment.url}Lista/GetByClient?id=${id}`);
   }
 
+  getMuestreo(cantidad: number): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.url}Lista/GetMuestreo?cantidad=${cantidad}`);
+  }
+
   getPendingRequests(idCliente: number, tipoServicio: boolean): Observable<Request[]> {
     return this.http.get<Request[]>(`${environment.url}Requests/Pendientes?IdCliente=${idCliente}&tipoServicio=${tipoServicio}`);
   }

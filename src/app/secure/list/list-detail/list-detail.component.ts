@@ -285,28 +285,28 @@ export class ListDetailComponent implements OnInit, OnDestroy {
     this.dialog.open(SimpleDialogComponent, {
       data: { type: 'alert', message: `Esta Lista de Verificación : ${this.resultText}` },
     })
-    .afterClosed()
-    .subscribe((confirmado: Boolean) => {
-      this.listService.save(request)
-        .pipe()
-        .subscribe({
-          next: (response) => {
-            this.dialog.open(SimpleDialogComponent, {
-              data: { type: 'success', message: `La lista ${request.idLista} fue guardado con éxito` },
-            })
-              .afterClosed()
-              .subscribe((confirmado: Boolean) => {
-                this.router.navigate([`/secure/lists`]);
+      .afterClosed()
+      .subscribe((confirmado: Boolean) => {
+        this.listService.save(request)
+          .pipe()
+          .subscribe({
+            next: (response) => {
+              this.dialog.open(SimpleDialogComponent, {
+                data: { type: 'success', message: `La lista ${request.idLista} fue guardado con éxito` },
+              })
+                .afterClosed()
+                .subscribe((confirmado: Boolean) => {
+                  this.router.navigate([`/secure/lists`]);
+                });
+            },
+            error: () => {
+              this.dialog.open(SimpleDialogComponent, {
+                data: { type: 'error', message: `Error al guardar la lista ${request.idLista}` },
               });
-          },
-          error: () => {
-            this.dialog.open(SimpleDialogComponent, {
-              data: { type: 'error', message: `Error al guardar la lista ${request.idLista}` },
-            });
-            console.error('Error trying to save lists');
-          }
-        });
-    });
+              console.error('Error trying to save lists');
+            }
+          });
+      });
   }
 
   updateForm(list: List): void {
@@ -331,7 +331,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
       tipoServicio: list.tipoServicio ? '1' : '0'
     });
 
-    this.requests = [{idSolicitud: list.idSolicitud || 0, clave: list.claveSolicitud, idNorma: list.idNorma}];
+    this.requests = [{ idSolicitud: list.idSolicitud || 0, clave: list.claveSolicitud, idNorma: list.idNorma }];
     this.result = list.dictaminacion || 'C';
     this.displayedColumns = list.tipoServicio ? this.displayedColumnsType1 : this.displayedColumnsType0;
 
@@ -363,10 +363,19 @@ export class ListDetailComponent implements OnInit, OnDestroy {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
+      this.updateLote();
+
       return;
     }
 
     this.selection.select(...this.dataSource.data);
+    this.updateLote();
+  }
+
+  toggleRow(row: any) {
+    this.selection.toggle(row);
+
+    this.updateLote();
   }
 
   checkboxLabel(row?: any): string {
@@ -374,6 +383,27 @@ export class ListDetailComponent implements OnInit, OnDestroy {
       return `${this.isAllSelected() ? 'Deselecciona' : 'Selecciona'} todos`;
     }
     return `${this.selection.isSelected(row) ? 'Deselecciona' : 'Selecciona'} row ${row.folio}`;
+  }
+
+  updateLote() {
+    const sum = this.selection.selected.map(s => Number(s.Etiquetas || 0)).reduce((acc, value) => acc + value, 0);
+
+    this.listForm.get('lote')!.setValue(sum);
+
+    if (sum != 0) {
+      this.listService.getMuestreo(sum)
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.listForm.get('muestra')!.setValue(response && response.length ? response[0].Muestra : 0);
+        },
+        error: () => {
+          console.error('Error trying to get range');
+        }
+      });
+    } else {
+      this.listForm.get('muestra')!.setValue(0);
+    }
   }
 
   private filterClients() {
