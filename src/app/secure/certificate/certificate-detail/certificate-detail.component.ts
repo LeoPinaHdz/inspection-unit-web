@@ -12,6 +12,7 @@ import { LetterService } from 'src/app/_shared/services/letter.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
 import { Letter } from 'src/app/_shared/models/letter.model';
 import { Request } from 'src/app/_shared/models/request.model';
+import { saveFile } from 'src/app/_shared/utils/file.utils';
 
 @Component({
   selector: 'certificates',
@@ -199,6 +200,20 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
           console.error('Error trying to save certificate');
         }
       });
+  }
+
+  downloadPdf(): void {
+    this.certificateService.download(this.id, 2).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.certificate.folio}.pdf`,
+        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
+    });
+  }
+
+  downloadWord(): void {
+    this.certificateService.download(this.id, 1).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.certificate.folio}.docx`,
+        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    });
   }
 
   private filterClients() {

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -27,5 +27,12 @@ export class CertificateService {
     if (!certificate.idActa || certificate.idActa === 0)
       return this.http.post<any>(`${environment.url}Proceedings/Create`, certificate);
     return this.http.put<any>(`${environment.url}Proceedings/Update`, certificate);
+  }
+
+  download(id: number, type: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.url}Proceedings/GetDocument?id=${id}&type=${type}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
   }
 }

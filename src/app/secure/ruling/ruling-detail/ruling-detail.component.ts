@@ -15,6 +15,7 @@ import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 import { OfficialService } from 'src/app/_shared/services/official.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
 import { List } from 'src/app/_shared/models/list.model';
+import { saveFile } from 'src/app/_shared/utils/file.utils';
 
 @Component({
   selector: 'rulings',
@@ -203,6 +204,24 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
           console.error('Error trying to save ruling');
         }
       });
+  }
+
+  downloadPdf(): void {
+    const serviceType = this.rulingForm.get('tipoServicio')!.value;
+
+    this.rulingService.download(this.id, 2, serviceType).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${serviceType == 1 ? 'UDC' : 'UDN'}${this.ruling.folio}.pdf`,
+        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
+    });
+  }
+
+  downloadWord(): void {
+    const serviceType = this.rulingForm.get('tipoServicio')!.value;
+
+    this.rulingService.download(this.id, 1, serviceType).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${serviceType == 1 ? 'UDC' : 'UDN'}${this.ruling.folio}.docx`,
+        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    });
   }
 
   get form() {

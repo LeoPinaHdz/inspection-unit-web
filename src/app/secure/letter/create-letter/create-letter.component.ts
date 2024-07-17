@@ -15,6 +15,7 @@ import { ExecutiveService } from 'src/app/_shared/services/executive.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { OfficialService } from 'src/app/_shared/services/official.service';
+import { saveFile } from 'src/app/_shared/utils/file.utils';
 
 @Component({
   selector: 'create-letter',
@@ -288,6 +289,20 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       return `${this.isAllSelected() ? 'Deselecciona' : 'Selecciona'} todos`;
     }
     return `${this.selection.isSelected(row) ? 'Deselecciona' : 'Selecciona'} row ${row.folio}`;
+  }
+
+  downloadPdf(): void {
+    this.letterService.download(this.id, 2).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `Oficio-${this.letter.folio}.pdf`,
+        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
+    });
+  }
+
+  downloadWord(): void {
+    this.letterService.download(this.id, 1).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `Oficio-${this.letter.folio}.docx`,
+        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    });
   }
 
   private filterClients() {

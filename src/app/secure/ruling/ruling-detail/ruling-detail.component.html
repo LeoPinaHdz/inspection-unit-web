@@ -107,6 +107,16 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
+                    <div class="form-cell-1" *ngIf="isEdit">
+                        <button matTooltip="Exportar" class="export-pdf" mat-fab extended (click)="downloadPdf()">
+                            <mat-icon>get_app</mat-icon>PDF
+                        </button>
+                    </div>
+                    <div class="form-cell-2" *ngIf="isEdit">
+                        <button matTooltip="Exportar" class="export-word" mat-fab extended (click)="downloadWord()">
+                            <mat-icon>get_app</mat-icon>WORD
+                        </button>
+                    </div>
                 </div>
             </form>
         </mat-card-content>

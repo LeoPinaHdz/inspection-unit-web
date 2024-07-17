@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -33,5 +33,12 @@ export class RulingService {
     if (!ruling.idDictamen || ruling.idDictamen === 0)
       return this.http.post<any>(`${environment.url}Dictamenes/Create`, ruling);
     return this.http.put<any>(`${environment.url}Dictamenes/Update`, ruling);
+  }
+
+  download(id: number, type: number, typeFormat: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.url}Dictamenes/GetDocument?id=${id}&type=${type}&typeFormat=${typeFormat}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
   }
 }
