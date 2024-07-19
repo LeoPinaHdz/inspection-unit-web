@@ -17,6 +17,7 @@ import { DisplayService } from 'src/app/_shared/services/display.service';
 import { Request } from 'src/app/_shared/models/request.model';
 import { StandardService } from 'src/app/_shared/services/standard.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { saveFile } from 'src/app/_shared/utils/file.utils';
 
 @Component({
   selector: 'list-detail',
@@ -404,6 +405,20 @@ export class ListDetailComponent implements OnInit, OnDestroy {
     } else {
       this.listForm.get('muestra')!.setValue(0);
     }
+  }
+
+  downloadPdf(): void {
+    this.listService.download(this.id, 2).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `Lista-${this.list.idLista}.pdf`,
+        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
+    });
+  }
+
+  downloadWord(): void {
+    this.listService.download(this.id, 1).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `Lista-${this.list.idLista}.docx`,
+        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    });
   }
 
   private filterClients() {

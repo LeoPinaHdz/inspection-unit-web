@@ -30,7 +30,7 @@ export class CertificateService {
   }
 
   download(id: number, type: number): Observable<HttpResponse<any>> {
-    return this.http.get(`${environment.url}Proceedings/GetDocument?id=${id}&type=${type}`, {
+    return this.http.get(`${environment.url}Acta/GetDocument?id=${id}&type=${type}`, {
       observe: 'response',
       responseType: 'blob' as 'json',
     });
