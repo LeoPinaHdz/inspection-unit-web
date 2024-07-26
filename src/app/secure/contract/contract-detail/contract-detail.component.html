@@ -98,6 +98,9 @@
                             <mat-icon>get_app</mat-icon>WORD
                         </button>
                     </div>
+                    <div class="form-cell-3" *ngIf="isEdit">
+                        <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
+                    </div>
                 </div>
             </form>
         </mat-card-content>

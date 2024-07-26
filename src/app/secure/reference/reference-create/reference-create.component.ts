@@ -32,7 +32,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   @Input() countries: CountrySE[] = [];
   filteredCountries: ReplaySubject<CountrySE[]> = new ReplaySubject<CountrySE[]>(1);
   @Input() standards: any[] = [];
-  displayedColumns: string[] = ['folio', 'marca', 'producto', 'modelo', 'cantidad', 'idUnidad', 'idPais', 'etiquetas', 'fraccion', 'idEstatus', 'actions'];
+  displayedColumns: string[] = ['partida', 'folio', 'marca', 'producto', 'modelo', 'cantidad', 'idUnidad', 'idPais', 'etiquetas', 'fraccion', 'idEstatus', 'actions'];
   dataSource: MatTableDataSource<ReferenceDetail> = new MatTableDataSource();
   units: Unit[] = [];
   _onDestroy = new Subject<void>();
@@ -107,7 +107,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       modelo: new FormControl('', [Validators.required]),
       producto: new FormControl('', [Validators.required]),
       cantidad: new FormControl('', [Validators.required]),
-      partida: new FormControl('0', [Validators.required]),
+      partida: new FormControl('', [Validators.required]),
       subfolio: new FormControl('0', []),
       etiquetas: new FormControl('', [Validators.required]),
       idUnidad: new FormControl('', [Validators.required]),
@@ -121,7 +121,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
   }
 
   resetDetatilForm() {
-    this.formReferenceDetail.reset({ idFolioDetalle: 0, partida: 0 });
+    this.formReferenceDetail.reset({ idFolioDetalle: 0 });
   }
 
   editDetail(detail: ReferenceDetail): void {
@@ -150,7 +150,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       .subscribe((confirmado: Boolean) => {
         if (confirmado) {
           this.referenceDetails = this.referenceDetails.filter(d => d.partida !== detail.partida);
-          this.initDetailsTable(this.referenceDetails, true);
+          this.initDetailsTable(this.referenceDetails);
         }
       });
   }
@@ -170,13 +170,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
 
     const referenceDetail = this.formReferenceDetail.getRawValue();
 
-    if (this.selectedDetail) {
-      referenceDetail.partida = this.selectedDetail.partida;
-    } else {
-      referenceDetail.partida = referenceDetail.partida == 0 ? this.referenceDetails.length + 1 : referenceDetail.partida;
-    }
-
-    const subfolio: string = referenceDetail.partida && referenceDetail.partida === 1 ? '' : (referenceDetail.partida - 1).toString();
+    const subfolio: string = referenceDetail.partida && referenceDetail.partida == 1 ? '' : (referenceDetail.partida - 1).toString();
     referenceDetail.subfolio = subfolio;
 
     referenceDetail.nombrePais = this.countries.filter(c => c.idPais == referenceDetail.idPais)[0].nombre;
@@ -184,7 +178,7 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
 
     this.referenceDetails.push(referenceDetail);
     this.selectedDetail = undefined;
-    this.initDetailsTable(this.referenceDetails, true);
+    this.initDetailsTable(this.referenceDetails);
     this.resetDetatilForm();
   }
 
@@ -202,16 +196,17 @@ export class ReferenceCreateComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El folio ${reference.idFolio} fue guardado con éxito` },
+            data: { type: 'success', message: 'El folio fue guardado con éxito' },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {
               this.ngOnInit();
             });
         },
-        error: () => {
+        error: (err) => {
+          const errMessage = err.error && err.error.Message ? err.error.Message : 'Error al guardar el folio';
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'error', message: `Error al guardar el folio ${reference.idFolio}` },
+            data: { type: 'error', message: errMessage },
           });
           console.error('Error trying to save references');
         }

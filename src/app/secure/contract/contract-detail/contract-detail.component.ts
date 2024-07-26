@@ -62,6 +62,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       idRepresentante: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       observaciones: new FormControl(''),
+      active: new FormControl(true, [Validators.required]),
       assign: new FormControl(false)
     });
 
@@ -159,6 +160,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       fVigencia: contract.fVigencia,
       idRepresentante: contract.idRepresentante,
       idFuncionario: contract.idFuncionario,
+      active: (contract.idEstatus && contract.idEstatus === 1) || false,
       observaciones: contract.observaciones
     });
 
@@ -171,13 +173,20 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     if (!this.contractForm.valid) return;
 
     const contractRequest = { ...this.contract, ...this.contractForm.getRawValue() };
+    contractRequest.idEstatus = contractRequest.active ? 1 : 4;
 
     this.contractService.save(contractRequest)
       .pipe()
       .subscribe({
         next: (response) => {
+          let alertMessage = `El contrato ${contractRequest.idContrato} fue guardado con éxito.`;
+
+          if (this.isEdit && response.contratosActivos === 0) {
+            alertMessage = `${alertMessage} No Existen Contratos Activos`;
+          }
+
           this.dialog.open(SimpleDialogComponent, {
-            data: { type: 'success', message: `El contrato ${contractRequest.idContrato} fue guardado con éxito` },
+            data: { type: 'success', message: alertMessage },
           })
             .afterClosed()
             .subscribe((confirmado: Boolean) => {

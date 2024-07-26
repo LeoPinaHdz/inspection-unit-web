@@ -38,6 +38,8 @@ export class ReferenceFileCsvComponent implements OnInit, OnDestroy {
 
     formData.append('file', selectedFile, selectedFile.name);
 
+    this.clear();
+    
     this.referenceService.uploadFileCsv(formData)
       .pipe()
       .subscribe({

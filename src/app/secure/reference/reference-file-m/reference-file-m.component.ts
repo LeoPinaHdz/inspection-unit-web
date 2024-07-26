@@ -16,7 +16,7 @@ import { ProcessService } from 'src/app/_shared/services/process.service';
 })
 export class ReferenceFileMComponent implements OnInit, OnDestroy {
   displayedHeaderColumns: string[] = ['cons', 'pedimento', 'cliente', 'nombreArchivo', 'idBodega', 'action'];
-  displayedColumns: string[] = ['uva', 'norma', 'fraccion', 'modalidad', 'producto', 'cantidad', 'umc'];
+  displayedColumns: string[] = ['uva', 'norma', 'partida', 'fraccion', 'modelo', 'producto', 'cantidad', 'umc'];
   header: ReferenceHeaderFileM[] = [];
   headerDataSource: MatTableDataSource<ReferenceHeaderFileM> = new MatTableDataSource();
   details: ReferenceDetailFileM[] = [];

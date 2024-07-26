@@ -102,7 +102,7 @@ export class ExecutiveDetailComponent implements OnInit, OnDestroy{
     this.executiveForm.markAllAsTouched();
     if (!this.executiveForm.valid) return;
 
-    const executiveRequest = this.executiveForm.getRawValue();;
+    const executiveRequest = this.executiveForm.getRawValue();
     executiveRequest.idEstatus = executiveRequest.active ? 1 : 4;
     executiveRequest.normaEjecutivo = this.standards.filter(t => t.selected).map(t => {
       return {idNorma: t.idNorma, idEjecutivo: executiveRequest.idEjecutivo || 0};

@@ -67,6 +67,12 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
       observaciones: new FormControl('', [Validators.required, Validators.maxLength(255)])
     });
 
+    this.certificateForm.get('idOficio')!.valueChanges
+    .pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.loadRequests();
+    });
+
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
       if (this.clients.length > 0) this.certificateForm.get('idCliente')!.setValue(this.clients[0].idCliente);
@@ -120,19 +126,12 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  async loadLetters() {
+  async loadLetters(isFirstTime = false) {
     this.letters = [];
     try {
       this.letters = await lastValueFrom(this.letterService.getByClient(this.certificateForm.get('idCliente')!.value));
       if (this.letters.length > 0 && !this.id) this.certificateForm.get('idOficio')!.setValue(this.letters[0].idOficio);
-
-      this.certificateForm.get('idOficio')!.valueChanges
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.loadRequests();
-        });
-
-      this.loadRequests();
+      if (this.letters.length === 0) this.certificateForm.get('idOficio')!.setValue('');
     } catch (error) {
       console.error('Error trying to get letters');
     }
@@ -140,11 +139,12 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
 
   async loadRequests() {
     this.requests = [];
+    if (!this.certificateForm.get('idOficio')!.value) return;
     try {
       this.requests = await lastValueFrom(this.requestService.getByLetter(this.certificateForm.get('idOficio')!.value));
       if (this.requests.length > 0 && !this.id) this.certificateForm.get('idSolicitud')!.setValue(this.requests[0].idSolicitud);
     } catch (error) {
-      console.error('Error trying to get letters');
+      console.error('Error trying to get requests');
     }
   }
 

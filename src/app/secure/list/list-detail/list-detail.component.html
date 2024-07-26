@@ -105,9 +105,9 @@
 
           <div class="form-cell-3">
             <mat-form-field appearance="outline">
-              <mat-label>Ejecutivo</mat-label>
+              <mat-label>Ejecutivo Auxiliar</mat-label>
               <mat-select formControlName="idEjecutivo2" required>
-                <mat-option *ngFor="let executive of executives"
+                <mat-option *ngFor="let executive of allExecutives"
                   [value]="executive.idEjecutivo">{{executive.nombre}}</mat-option>
               </mat-select>
               <mat-error>
@@ -190,7 +190,7 @@
           <div *ngIf="selection.isEmpty()" class="error-message">
             *La lista debe contener al menos un detalle
           </div>
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
             <ng-container matColumnDef="select">
               <th mat-header-cell *matHeaderCellDef>
                 <mat-checkbox (change)="$event ? toggleAllRows() : null"
@@ -206,47 +206,47 @@
             </ng-container>
 
             <ng-container *ngIf="form.tipoServicio.value == 1" matColumnDef="SubFolio">
-              <th mat-header-cell *matHeaderCellDef>SubFolio</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>SubFolio</th>
               <td mat-cell *matCellDef="let element"> {{element.FolioSub}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Marca">
-              <th mat-header-cell *matHeaderCellDef>Marca</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
               <td mat-cell *matCellDef="let element"> {{element.Marca}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Producto">
-              <th mat-header-cell *matHeaderCellDef>Producto</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
               <td mat-cell *matCellDef="let element"> {{element.Producto}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Modelo">
-              <th mat-header-cell *matHeaderCellDef>Modelo</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Modelo</th>
               <td mat-cell *matCellDef="let element"> {{element.Modelo}} </td>
             </ng-container>
 
             <ng-container matColumnDef="UMC">
-              <th mat-header-cell *matHeaderCellDef>UMC</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>UMC</th>
               <td mat-cell *matCellDef="let element"> {{element.UMC}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Cantidad">
-              <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
               <td mat-cell *matCellDef="let element"> {{element.Cantidad}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Etiquetas">
-              <th mat-header-cell *matHeaderCellDef>Etiquetas</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Etiquetas</th>
               <td mat-cell *matCellDef="let element"> {{element.Etiquetas}} </td>
             </ng-container>
 
             <ng-container matColumnDef="Pais">
-              <th mat-header-cell *matHeaderCellDef>Pa&iacute;s</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Pa&iacute;s</th>
               <td mat-cell *matCellDef="let element"> {{element.Pais}} </td>
             </ng-container>
 
             <ng-container *ngIf="form.tipoServicio.value == 1" matColumnDef="Fraccion">
-              <th mat-header-cell *matHeaderCellDef>Fracci&oacute;n</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fracci&oacute;n</th>
               <td mat-cell *matCellDef="let element"> {{element.Fraccion}} </td>
             </ng-container>
 

@@ -68,7 +68,7 @@ export class ReferenceSearchComponent implements OnInit, OnDestroy, OnChanges {
       pedimento: new FormControl('', []),
       folioIni: new FormControl('', []),
       folioFin: new FormControl('', []),
-      idEstatus: new FormControl('', [])
+      idEstatus: new FormControl('0', [])
     });
   }
 
@@ -92,7 +92,6 @@ export class ReferenceSearchComponent implements OnInit, OnDestroy, OnChanges {
     request.folioFin = request.folioFin || 0;
     request.cliente = request.cliente || 0;
     request.norma = request.norma || 0;
-    request.idEstatus = request.idEstatus || 0;
 
     this.referenceService.search(request).
       pipe()

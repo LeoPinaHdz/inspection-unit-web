@@ -61,7 +61,12 @@
     <div class="form-cell-2">
       <mat-form-field appearance="outline">
         <mat-label>Estatus</mat-label>
-        <input matInput formControlName="idEstatus" type="text" />
+        <mat-select formControlName="idEstatus">
+          <mat-option value="0">Todos</mat-option>
+          <mat-option value="1">Activo</mat-option>
+          <mat-option value="3">Cancelado</mat-option>
+          <mat-option value="5">Validado</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 

@@ -18,6 +18,7 @@ import { Request } from 'src/app/_shared/models/request.model';
 import { StandardService } from 'src/app/_shared/services/standard.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'list-detail',
@@ -36,6 +37,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
   filteredClients: ReplaySubject<Client[]> = new ReplaySubject<Client[]>(1);
   displays: any[] = [];
   executives: any[] = [];
+  allExecutives: any[] = [];
   referenceDetails: any[] = [];
   standardPoints: any[] = [];
   displayedColumns: string[] = ['select', 'Marca', 'Producto', 'Modelo', 'UMC', 'Cantidad', 'Etiquetas', 'Pais'];
@@ -43,6 +45,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
   displayedColumnsType1: string[] = ['select', 'SubFolio', 'Marca', 'Producto', 'Modelo', 'UMC', 'Cantidad', 'Etiquetas', 'Pais', 'Fraccion'];
   displayedColumnsStandard: string[] = ['contenido', 'dictaminacion', 'observaciones'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
+  @ViewChild(MatSort, { static: true }) sort!: MatSort;
   standardDetails: MatTableDataSource<any> = new MatTableDataSource();
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
   _onDestroy = new Subject<void>();
@@ -106,6 +109,18 @@ export class ListDetailComponent implements OnInit, OnDestroy {
           this.loadRequests();
         });
     }
+
+    this.executiveService.getActive()
+      .pipe()
+      .subscribe({
+        next: (response) => {
+          this.allExecutives = response;
+          if (this.allExecutives.length > 0) this.listForm.get('idEjecutivo2')!.setValue(this.allExecutives[0].idEjecutivo);
+        },
+        error: () => {
+          console.error('Error trying to get all executives');
+        }
+      });
 
     try {
       this.clients = await lastValueFrom(this.clientService.getAllActive());
@@ -186,6 +201,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.referenceDetails = response;
           this.dataSource = new MatTableDataSource(this.referenceDetails);
+          this.dataSource.sort = this.sort;
           this.selection.clear();
         },
         error: () => {
@@ -265,6 +281,8 @@ export class ListDetailComponent implements OnInit, OnDestroy {
 
     let request = { ...this.list, ...this.listForm.getRawValue() };
 
+    request.muestra = `${request.muestra}`;
+    request.lote = `${request.lote}`;
     request.dictaminacion = this.result;
     request.listasDetalle = this.selection.selected.map(r => {
       return {
@@ -293,7 +311,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (response) => {
               this.dialog.open(SimpleDialogComponent, {
-                data: { type: 'success', message: `La lista ${request.idLista} fue guardado con éxito` },
+                data: { type: 'success', message: `La lista ${request.idLista} fue guardada con éxito` },
               })
                 .afterClosed()
                 .subscribe((confirmado: Boolean) => {
@@ -393,15 +411,15 @@ export class ListDetailComponent implements OnInit, OnDestroy {
 
     if (sum != 0) {
       this.listService.getMuestreo(sum)
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.listForm.get('muestra')!.setValue(response && response.length ? response[0].Muestra : 0);
-        },
-        error: () => {
-          console.error('Error trying to get range');
-        }
-      });
+        .pipe()
+        .subscribe({
+          next: (response) => {
+            this.listForm.get('muestra')!.setValue(response && response.length ? response[0].Muestra : 0);
+          },
+          error: () => {
+            console.error('Error trying to get range');
+          }
+        });
     } else {
       this.listForm.get('muestra')!.setValue(0);
     }

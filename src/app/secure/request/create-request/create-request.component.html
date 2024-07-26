@@ -115,7 +115,7 @@
                   <mat-icon>get_app</mat-icon>WORD
               </button>
           </div>
-          <div class="form-cell-2" *ngIf="isEdit">
+          <div class="form-cell-2" *ngIf="isEdit && form.tipoServicio.value == 0 && templates.length > 1">
             <mat-form-field appearance="outline">
               <mat-label>Formato</mat-label>
               <mat-select formControlName="idFormato">
@@ -159,7 +159,7 @@
         <div class="form-cell-3">
           <mat-form-field class="mat-mdc-form-field-small" appearance="outline">
             <mat-label>Cantidad</mat-label>
-            <input matInput formControlName="cantidad" appCurrencyMask type="text" required />
+            <input matInput formControlName="cantidad" appCurrencyMask type="number" required />
             <mat-error>
               <error-message [control]="form.cantidad" nomCampo="Cantidad"></error-message>
             </mat-error>

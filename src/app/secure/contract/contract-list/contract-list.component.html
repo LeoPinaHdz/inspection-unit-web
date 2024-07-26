@@ -84,9 +84,7 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <a [routerLink]="['/secure/contract/', row.idContrato]" mat-raised-button color="accent" class="view-edit">{{row.idEstatus !== 1 ? 'Ver' : 'Editar'}}</a>
-          <button mat-raised-button color="warn" [disabled]="row.idEstatus !== 1" (click)="showConfirmDialog(row.idContrato, 3)">Cancelar</button>&nbsp;
-          <button mat-raised-button color="primary" [disabled]="row.idEstatus !== 1" (click)="showConfirmDialog(row.idContrato, 2)">Concluir</button>
+          <a [routerLink]="['/secure/contract/', row.idContrato]" mat-raised-button color="accent" class="view-edit">Editar</a>
         </mat-cell>
       </ng-container>
 

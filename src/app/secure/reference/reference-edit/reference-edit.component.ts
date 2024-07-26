@@ -33,7 +33,7 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
   @Input() countries: CountrySE[] = [];
   filteredCountries: ReplaySubject<CountrySE[]> = new ReplaySubject<CountrySE[]>(1);
   @Input() standards: any[] = [];
-  displayedColumns: string[] = ['folio', 'marca', 'producto', 'modelo', 'cantidad', 'idUnidad', 'idPais', 'etiquetas', 'fraccion', 'idEstatus', 'actions'];
+  displayedColumns: string[] = ['folio', 'marca', 'producto', 'modelo', 'cantidad', 'idUnidad', 'idPais', 'etiquetas', 'fraccion', 'partida', 'idEstatus', 'actions'];
   dataSource: MatTableDataSource<ReferenceDetail> = new MatTableDataSource();
   units: Unit[] = [];
   _onDestroy = new Subject<void>();
@@ -73,7 +73,7 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
       modelo: new FormControl('', [Validators.required]),
       producto: new FormControl('', [Validators.required]),
       cantidad: new FormControl('', [Validators.required]),
-      partida: new FormControl('0', [Validators.required]),
+      partida: new FormControl('', [Validators.required]),
       subfolio: new FormControl('0', []),
       etiquetas: new FormControl('', [Validators.required]),
       idUnidad: new FormControl('', [Validators.required]),
@@ -137,13 +137,19 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
   }
 
   resetDetatilForm() {
-    this.formReferenceDetail.reset({ idFolioDetalle: 0, partida: 0 });
+    this.formReferenceDetail.get('partida')!.enable();
+    this.formReferenceDetail.reset({ idFolioDetalle: 0 });
   }
 
   editDetail(detail: ReferenceDetail): void {
     this.selectedDetail = detail;
     this.referenceDetails = this.referenceDetails.filter(d => d.partida !== detail.partida);
     this.initDetailsTable(this.referenceDetails);
+    if (detail.idFolioDetalle == 0) {
+      this.formReferenceDetail.get('partida')!.enable();
+    } else {
+      this.formReferenceDetail.get('partida')!.disable();
+    }
     this.formReferenceDetail.patchValue({
       idFolioDetalle: detail.idFolioDetalle,
       fraccion: detail.fraccion,
@@ -186,7 +192,7 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
       .subscribe((confirmado: Boolean) => {
         if (confirmado) {
           this.referenceDetails = this.referenceDetails.filter(d => d.partida !== detail.partida);
-          this.initDetailsTable(this.referenceDetails, true);
+          this.initDetailsTable(this.referenceDetails);
         }
       });
   }
@@ -207,8 +213,6 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
     const form = this.formReferenceDetail.getRawValue();
     const referenceDetail = {...this.selectedDetail, ...form}
 
-    referenceDetail.partida = referenceDetail.partida == 0 ? this.referenceDetails.length + 1 : referenceDetail.partida;
-
     const subfolio: string = referenceDetail.partida && referenceDetail.partida === 1 ? '' : (referenceDetail.partida - 1).toString();
     referenceDetail.subfolio = subfolio;
 
@@ -217,7 +221,7 @@ export class ReferenceEditComponent implements OnInit, OnDestroy {
 
     this.referenceDetails.push(referenceDetail);
     this.selectedDetail = undefined;
-    this.initDetailsTable(this.referenceDetails, true);
+    this.initDetailsTable(this.referenceDetails);
     this.resetDetatilForm();
   }
 
