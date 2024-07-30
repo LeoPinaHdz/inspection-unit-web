@@ -87,13 +87,16 @@
           <div class="form-cell-2">
             <mat-form-field appearance="outline">
               <mat-label>Solicitudes Por</mat-label>
-              <mat-select formControlName="requestsBy">
+              <mat-select formControlName="solicitudPor" required>
                 <mat-option value="0">Norma</mat-option>
                 <mat-option value="1">Pedimento</mat-option>
               </mat-select>
+              <mat-error>
+                <error-message [control]="form.solicitudPor" nomCampo="Solicitudes Por"></error-message>
+              </mat-error>
             </mat-form-field>
           </div>
-          <div class="form-cell-4" *ngIf="form.requestsBy.value === '0'">
+          <div class="form-cell-4" *ngIf="form.solicitudPor.value === '0'">
             <mat-form-field appearance="outline">
               <mat-label>Norma oficial</mat-label>
               <mat-select formControlName="idNorma" required>
@@ -105,10 +108,10 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="form-cell-4" *ngIf="form.requestsBy.value === '1'">
+          <div class="form-cell-4" *ngIf="form.solicitudPor.value === '1'">
             <mat-form-field appearance="outline">
               <mat-label>Pedimento</mat-label>
-              <mat-select formControlName="import" required>
+              <mat-select formControlName="pedimento" required>
                 <mat-option *ngFor="let import of imports"
                   [value]="import">{{import}}</mat-option>
               </mat-select>

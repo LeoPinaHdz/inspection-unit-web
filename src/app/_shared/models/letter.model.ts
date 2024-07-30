@@ -14,6 +14,8 @@ export interface Letter {
     idUsuario?: number;
     idEstatus?: number;
     clave?: string;
+    solicitudPor?: number;
+    pedimento?: string;
     detalles?: LetterDetail[];
 }
 

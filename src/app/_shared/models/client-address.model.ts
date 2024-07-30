@@ -9,6 +9,7 @@ export interface ClientAddress {
     idEstado?: Number;
     idPais?: Number;
     cp?: string;
+    idBodega?: Number;
     prioridad?: Number;
     fCaptura?: string;
     fModificacion?: string;

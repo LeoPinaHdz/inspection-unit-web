@@ -100,7 +100,16 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="form-cell-3">
+        <div class="form-cell-2">
+          <mat-form-field appearance="outline">
+            <mat-label>No. Almacen</mat-label>
+            <input matInput formControlName="idBodega" type="number" />
+            <mat-error>
+              <error-message nomCampo="No. Almacen"></error-message>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-cell-2">
           <mat-checkbox formControlName="active" color="primary">Activo</mat-checkbox>
         </div>
       </div>

@@ -42,6 +42,7 @@ import { ListService } from './services/list.service';
 import { DisplayService } from './services/display.service';
 import { LoadingService } from './services/loading.service';
 import { StatusPipe } from './components/pipes/status.pipe';
+import { DocumentService } from './services/documents.service';
 
 @NgModule({
   declarations: [ErrorMessageComponent, ConfirmationDialogComponent, SimpleDialogComponent, UploadButtonComponent, StatusPipe],
@@ -89,7 +90,8 @@ import { StatusPipe } from './components/pipes/status.pipe';
     ProcessService,
     DisplayService,
     ListService,
-    LoadingService
+    LoadingService,
+    DocumentService
   ],
 })
 export class SharedModule { }

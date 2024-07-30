@@ -13,6 +13,7 @@ import { addYears } from 'src/app/_shared/utils/date.utils';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
 import { UtilitiesService } from 'src/app/_shared/services/utilities.service';
 import { Client } from 'src/app/_shared/models/client.model';
+import { DocumentService } from 'src/app/_shared/services/documents.service';
 
 @Component({
   selector: 'contracts',
@@ -39,6 +40,7 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private clientRepresentativeService: ClientRepresentativeService,
     private officialService: OfficialService,
+    private documentService: DocumentService,
     private dialog: MatDialog,
     private utilitiesService: UtilitiesService
   ) { }
@@ -204,15 +206,15 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
   }
 
   downloadPdf(): void {
-    this.contractService.download(this.id, 2).subscribe(response => {
+    this.documentService.downloadContractPDF(this.id).subscribe(response => {
       saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.pdf`,
         response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
     });
   }
 
   downloadWord(): void {
-    this.contractService.download(this.id, 1).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.docx`,
+    this.documentService.downloadContractWord(this.id).subscribe(response => {
+      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.doc`,
         response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
     });
   }

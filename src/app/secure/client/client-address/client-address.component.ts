@@ -49,6 +49,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
       idEstado: new FormControl('', [Validators.required]),
       idPais: new FormControl('', [Validators.required]),
       cp: new FormControl('', [Validators.required]),
+      idBodega: new FormControl(''),
       prioridad: new FormControl(false, [Validators.required]),
       active: new FormControl(false, [Validators.required])
     });
@@ -137,6 +138,7 @@ export class ClientAddressComponent implements OnInit, OnChanges {
       idEstado: clientAddress.idEstado,
       idPais: clientAddress.idPais,
       cp: clientAddress.cp,
+      idBodega: clientAddress.idBodega,
       prioridad: (clientAddress.prioridad && clientAddress.prioridad === 1) || false,
       active: (clientAddress.idEstatus && clientAddress.idEstatus === 1) || false
     });

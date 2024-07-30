@@ -63,7 +63,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       idOficio: new FormControl({ value: '', disabled: true }, []),
       idCliente: new FormControl('', [Validators.required]),
       clientFilter: new FormControl('', []),
-      idNorma: new FormControl('', [Validators.required]),
+      idNorma: new FormControl('', []),
       folio: new FormControl({ value: '', disabled: true }),
       fOficio: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
       fPresentacion: new FormControl({ value: new Date(), disabled: false }, [Validators.required]),
@@ -72,21 +72,21 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       idEjecutivo: new FormControl('', [Validators.required]),
       idFuncionario: new FormControl('', [Validators.required]),
       clave: new FormControl('', []),
-      requestsBy: new FormControl('0', []),
-      import: new FormControl('', [])
+      solicitudPor: new FormControl('0', [Validators.required]),
+      pedimento: new FormControl('', [])
     });
 
-    this.letterForm.get('import')!.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.loadRequests();
-    });
+    this.letterForm.get('pedimento')!.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.loadRequests();
+      });
 
-    this.letterForm.get('requestsBy')!.valueChanges
-    .pipe(takeUntil(this._onDestroy))
-    .subscribe(() => {
-      this.loadRequests();
-    });
+    this.letterForm.get('solicitudPor')!.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.loadRequests();
+      });
 
     try {
       this.standards = await lastValueFrom(this.standardService.getAllActive());
@@ -162,40 +162,34 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadRequests() {
-    if (this.letterForm.get('requestsBy')!.value == '0'){ 
+  async loadRequests() {
+    if (this.letterForm.get('solicitudPor')!.value == '0') {
       if (!this.letterForm.get('idCliente')!.value || !this.letterForm.get('idNorma')!.value) return;
-      this.requestService.getByClientAndStandard(this.letterForm.get('idCliente')!.value, this.letterForm.get('idNorma')!.value)
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.letterDetails = response;
-          this.dataSource = new MatTableDataSource(this.letterDetails);
-          this.updateSelection();
-        },
-        error: () => {
-          console.error('Error trying to get requests by standard');
-        }
-      });
+
+      try {
+        this.letterDetails = await lastValueFrom(this.requestService.getByClientAndStandard(this.letterForm.get('idCliente')!.value, this.letterForm.get('idNorma')!.value));
+
+        this.dataSource = new MatTableDataSource(this.letterDetails);
+        this.updateSelection();
+      } catch (error) {
+        console.error('Error trying to get requests by standard');
+      }
     } else {
-      if (!this.letterForm.get('idCliente')!.value || !this.letterForm.get('import')!.value) return;
-      this.requestService.getByClientAndImport(this.letterForm.get('idCliente')!.value, this.letterForm.get('import')!.value)
-      .pipe()
-      .subscribe({
-        next: (response) => {
-          this.letterDetails = response;
-          this.dataSource = new MatTableDataSource(this.letterDetails);
-          this.updateSelection();
-        },
-        error: () => {
-          console.error('Error trying to get requests by import');
-        }
-      });
+      if (!this.letterForm.get('idCliente')!.value || !this.letterForm.get('pedimento')!.value) return;
+
+      try {
+        this.letterDetails = await lastValueFrom(this.requestService.getByClientAndImport(this.letterForm.get('idCliente')!.value, this.letterForm.get('pedimento')!.value));
+
+        this.dataSource = new MatTableDataSource(this.letterDetails);
+        this.updateSelection();
+      } catch (error) {
+        console.error('Error trying to get requests by import');
+      }
     }
   }
 
   loadImports() {
-      this.requestService.getImportsByClient(this.letterForm.get('idCliente')!.value)
+    this.requestService.getImportsByClient(this.letterForm.get('idCliente')!.value)
       .pipe()
       .subscribe({
         next: (response) => {
@@ -211,7 +205,7 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     this.letterForm.markAllAsTouched();
     if (!this.letterForm.valid || this.selection.isEmpty()) return;
 
-    let request = {...this.letter, ...this.letterForm.getRawValue()};
+    let request = { ...this.letter, ...this.letterForm.getRawValue() };
 
     request.oficio = request.oficio && request.oficio > 0 ? request.oficio : 0;
     request.folio = request.folio && request.folio > 0 ? request.folio : 0;
@@ -251,6 +245,8 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
       idEjecutivo: letter.idEjecutivo,
       idFuncionario: letter.idFuncionario,
       clave: letter.clave,
+      solicitudPor: `${letter.solicitudPor}`,
+      pedimento: letter.pedimento,
       observaciones: letter.observaciones
     });
 
