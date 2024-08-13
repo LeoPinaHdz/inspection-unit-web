@@ -77,10 +77,15 @@ body {
 
 .export-word {
   background-color: #000080 !important;
+  margin: 0 5px;
 }
 
 .export-pdf {
   background-color: #FF0000 !important;
+}
+
+.export-writer {
+  background-color: #589eee !important;
 }
 
 .form-login-container .mat-mdc-form-field {

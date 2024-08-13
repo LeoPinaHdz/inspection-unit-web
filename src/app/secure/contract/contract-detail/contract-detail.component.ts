@@ -205,17 +205,10 @@ export class ContractDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  downloadPdf(): void {
-    this.documentService.downloadContractPDF(this.id).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.pdf`,
-        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
-    });
-  }
-
-  downloadWord(): void {
-    this.documentService.downloadContractWord(this.id).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.contract.folio}.doc`,
-        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+  downloadFile(type: number): void {
+    this.documentService.downloadContract(this.id, type).subscribe(response => {
+      saveFile(response.body, this.documentService.getAttachmentFilename(`Contrato-${this.contract.folio}.pdf`, response.headers.get('Content-Disposition')),
+        response.headers.get('Content-Type') || 'application/octet-stream');
     });
   }
 

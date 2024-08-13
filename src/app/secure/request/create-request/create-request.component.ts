@@ -19,6 +19,7 @@ import { saveFile } from 'src/app/_shared/utils/file.utils';
 import { TemplateService } from 'src/app/_shared/services/template.service';
 import { Template } from 'src/app/_shared/models/template.model';
 import { addMonths } from 'src/app/_shared/utils/date.utils';
+import { DocumentService } from 'src/app/_shared/services/documents.service';
 
 @Component({
   selector: 'create-request',
@@ -53,6 +54,7 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     private clientAddressService: ClientAddressService,
     private unitService: UnitService,
     private templateService: TemplateService,
+    private documentService: DocumentService,
     private dialog: MatDialog
   ) { }
 
@@ -313,21 +315,12 @@ export class CreateRequestComponent implements OnInit, OnDestroy {
     this.dataSource = new MatTableDataSource(this.requestDetails);
   }
 
-  downloadPdf(): void {
+  downloadFile(type: number): void {
     const template = this.requestForm.get('idFormato')!.value;
 
-    this.requestService.download(this.id, 2, template).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.request.clave}.pdf`,
-        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
-    });
-  }
-
-  downloadWord(): void {
-    const template = this.requestForm.get('idFormato')!.value;
-
-    this.requestService.download(this.id, 1, template).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.request.clave}.docx`,
-        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+    this.documentService.downloadRequest(this.id, template, type).subscribe(response => {
+      saveFile(response.body, this.documentService.getAttachmentFilename(`Solicitud-${this.request.clave}.pdf`, response.headers.get('Content-Disposition')),
+        response.headers.get('Content-Type') || 'application/octet-stream');
     });
   }
 
