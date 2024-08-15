@@ -156,14 +156,15 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="form-cell-1" *ngIf="isEdit">
-                        <button matTooltip="Exportar" class="export-pdf" mat-fab extended (click)="downloadPdf()">
+                    <div class="form-cell-4" *ngIf="isEdit">
+                        <button matTooltip="Exportar" class="export-pdf" mat-fab extended (click)="downloadFile(0)">
                             <mat-icon>get_app</mat-icon>PDF
                         </button>
-                    </div>
-                    <div class="form-cell-2" *ngIf="isEdit">
-                        <button matTooltip="Exportar" class="export-word" mat-fab extended (click)="downloadWord()">
+                        <button matTooltip="Exportar" class="export-word" mat-fab extended (click)="downloadFile(2)">
                             <mat-icon>get_app</mat-icon>WORD
+                        </button>
+                        <button matTooltip="Exportar" class="export-writer" mat-fab extended (click)="downloadFile(1)">
+                            <mat-icon>get_app</mat-icon>WRITER
                         </button>
                     </div>
                 </div>

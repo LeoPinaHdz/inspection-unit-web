@@ -19,6 +19,7 @@ import { StandardService } from 'src/app/_shared/services/standard.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
 import { MatSort } from '@angular/material/sort';
+import { DocumentService } from 'src/app/_shared/services/documents.service';
 
 @Component({
   selector: 'list-detail',
@@ -61,6 +62,7 @@ export class ListDetailComponent implements OnInit, OnDestroy {
     private executiveService: ExecutiveService,
     private displayService: DisplayService,
     private dialog: MatDialog,
+    private documentService: DocumentService,
     private standardService: StandardService
   ) { }
 
@@ -425,17 +427,10 @@ export class ListDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadPdf(): void {
-    this.listService.download(this.id, 2).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `Lista-${this.list.idLista}.pdf`,
-        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
-    });
-  }
-
-  downloadWord(): void {
-    this.listService.download(this.id, 1).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `Lista-${this.list.idLista}.docx`,
-        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+  downloadFile(type: number): void {
+    this.documentService.downloadList(this.id, type).subscribe(response => {
+      saveFile(response.body, this.documentService.getAttachmentFilename(`Lista-${this.list.idLista}.pdf`, response.headers.get('Content-Disposition')),
+        response.headers.get('Content-Type') || 'application/octet-stream');
     });
   }
 

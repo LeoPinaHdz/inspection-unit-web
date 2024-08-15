@@ -16,6 +16,7 @@ import { OfficialService } from 'src/app/_shared/services/official.service';
 import { RequestService } from 'src/app/_shared/services/request.service';
 import { List } from 'src/app/_shared/models/list.model';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
+import { DocumentService } from 'src/app/_shared/services/documents.service';
 
 @Component({
   selector: 'rulings',
@@ -40,6 +41,7 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
     private clientService: ClientService,
     private executiveService: ExecutiveService,
     private officialService: OfficialService,
+    private documentService: DocumentService,
     private dialog: MatDialog
   ) { }
 
@@ -206,21 +208,10 @@ export class RulingDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  downloadPdf(): void {
-    const serviceType = this.rulingForm.get('tipoServicio')!.value;
-
-    this.rulingService.download(this.id, 2, serviceType).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${serviceType == 1 ? 'UDC' : 'UDN'}${this.ruling.folio}.pdf`,
-        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
-    });
-  }
-
-  downloadWord(): void {
-    const serviceType = this.rulingForm.get('tipoServicio')!.value;
-
-    this.rulingService.download(this.id, 1, serviceType).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${serviceType == 1 ? 'UDC' : 'UDN'}${this.ruling.folio}.docx`,
-        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+  downloadFile(type: number): void {
+    this.documentService.downloadRuling(this.id, type).subscribe(response => {
+      saveFile(response.body, this.documentService.getAttachmentFilename(`Dictamen-${this.ruling.clave}.pdf`, response.headers.get('Content-Disposition')),
+        response.headers.get('Content-Type') || 'application/octet-stream');
     });
   }
 

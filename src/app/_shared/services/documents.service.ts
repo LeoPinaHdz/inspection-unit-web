@@ -21,6 +21,34 @@ export class DocumentService {
     });
   }
 
+  downloadLetter(id: number, tipo: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.urlDocuments}document/oficios?iOficio=${id}&tipoArchivo=${tipo}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
+  }
+
+  downloadCertificate(id: number, tipo: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.urlDocuments}document/actas?iActa=${id}&tipoArchivo=${tipo}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
+  }
+
+  downloadList(id: number, tipo: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.urlDocuments}document/listas?iLista=${id}&tipoArchivo=${tipo}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
+  }
+
+  downloadRuling(id: number, tipo: number): Observable<HttpResponse<any>> {
+    return this.http.get(`${environment.urlDocuments}document/dictamenes?iDictamen=${id}&tipoArchivo=${tipo}`, {
+      observe: 'response',
+      responseType: 'blob' as 'json',
+    });
+  }
+
   getAttachmentFilename(defaultName: string, contentDisposition: string | null): string {
     if (!contentDisposition) return defaultName;
 

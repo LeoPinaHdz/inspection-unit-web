@@ -16,6 +16,7 @@ import { RequestService } from 'src/app/_shared/services/request.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { OfficialService } from 'src/app/_shared/services/official.service';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
+import { DocumentService } from 'src/app/_shared/services/documents.service';
 
 @Component({
   selector: 'create-letter',
@@ -48,7 +49,8 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     private executiveService: ExecutiveService,
     private standardService: StandardService,
     private dialog: MatDialog,
-    private requestService: RequestService
+    private requestService: RequestService,
+    private documentService: DocumentService
   ) { }
 
   ngOnDestroy() {
@@ -287,17 +289,10 @@ export class CreateLetterComponent implements OnInit, OnDestroy {
     return `${this.selection.isSelected(row) ? 'Deselecciona' : 'Selecciona'} row ${row.folio}`;
   }
 
-  downloadPdf(): void {
-    this.letterService.download(this.id, 2).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `Oficio-${this.letter.folio}.pdf`,
-        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
-    });
-  }
-
-  downloadWord(): void {
-    this.letterService.download(this.id, 1).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `Oficio-${this.letter.folio}.docx`,
-        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+  downloadFile(type: number): void {
+    this.documentService.downloadLetter(this.id, type).subscribe(response => {
+      saveFile(response.body, this.documentService.getAttachmentFilename(`Oficio-${this.letter.clave}.pdf`, response.headers.get('Content-Disposition')),
+        response.headers.get('Content-Type') || 'application/octet-stream');
     });
   }
 

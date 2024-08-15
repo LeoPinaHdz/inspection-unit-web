@@ -13,6 +13,7 @@ import { RequestService } from 'src/app/_shared/services/request.service';
 import { Letter } from 'src/app/_shared/models/letter.model';
 import { Request } from 'src/app/_shared/models/request.model';
 import { saveFile } from 'src/app/_shared/utils/file.utils';
+import { DocumentService } from 'src/app/_shared/services/documents.service';
 
 @Component({
   selector: 'certificates',
@@ -36,6 +37,7 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
     private certificateService: CertificateService,
     private letterService: LetterService,
     private requestService: RequestService,
+    private documentService: DocumentService,
     private dialog: MatDialog
   ) { }
 
@@ -202,17 +204,10 @@ export class CertificateDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  downloadPdf(): void {
-    this.certificateService.download(this.id, 2).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.certificate.folio}.pdf`,
-        response.headers.get('Content-Type') || 'application/pdf; charset=utf-8');
-    });
-  }
-
-  downloadWord(): void {
-    this.certificateService.download(this.id, 1).subscribe(response => {
-      saveFile(response.body, response.headers.get('filename') || `${this.certificate.folio}.docx`,
-        response.headers.get('Content-Type') || 'application/msword; charset=utf-8');
+  downloadFile(type: number): void {
+    this.documentService.downloadCertificate(this.id, type).subscribe(response => {
+      saveFile(response.body, this.documentService.getAttachmentFilename(`Acta-${this.certificate.folio}.pdf`, response.headers.get('Content-Disposition')),
+        response.headers.get('Content-Type') || 'application/octet-stream');
     });
   }
 
